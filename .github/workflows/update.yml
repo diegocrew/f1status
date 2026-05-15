@@ -1,0 +1,36 @@
+name: Update F1 Data
+
+on:
+  schedule:
+    # Run every 4 hours — covers post-race result uploads
+    - cron: "0 */4 * * *"
+  push:
+    paths:
+      - "scripts/fetch_data.py"
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Fetch F1 data
+        run: python scripts/fetch_data.py
+
+      - name: Commit updated data
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: update F1 data [skip ci]"
+          file_pattern: "data/*.json"

@@ -23,10 +23,7 @@ body { font-family: Calibri, Arial, sans-serif; font-size: 11px; background: #f5
 #status.error { color: #c00; }
 .last-updated { font-size: 10px; color: #999; padding: 0 12px 6px; }
 
-.main-content {
-  padding: 8px; display: flex; gap: 14px; align-items: flex-start;
-}
-
+.main-content { padding: 8px; display: flex; gap: 14px; align-items: flex-start; }
 .drivers-wrap { overflow: auto; max-height: calc(100vh - 80px); }
 .constructors-wrap { flex-shrink: 0; }
 .constructors-wrap h3 { font-size: 11px; color: #555; margin-bottom: 4px; }
@@ -45,29 +42,29 @@ td:nth-child(2), th:nth-child(2) { position: sticky; left: 16px; z-index: 8; min
 td:nth-child(3), th:nth-child(3) { position: sticky; left: 94px; z-index: 8; min-width: 82px; text-align: left; background: inherit; }
 thead th:nth-child(1), thead th:nth-child(2), thead th:nth-child(3) { z-index: 20; }
 
-/* group header row */
-.gh th { height: 20px; font-size: 10px; font-weight: 600; color: #fff; }
+/* group header */
+.gh th  { height: 20px; font-size: 10px; font-weight: 600; color: #fff; }
 .gh .blank { background: #e8e8e8 !important; color: transparent; }
 .gh .sgrp  { background: #843C0C !important; }
 .gh .rgrp  { background: #1F4E79 !important; }
 .gh .tgrp  { background: #375623 !important; }
 
-/* col header row */
-.ch th { font-size: 10px; line-height: 1.3; padding: 1px 3px; }
-.ch .sh { background: #FCE4D6; color: #843C0C; }
-.ch .rh { background: #DDEBF7; color: #1F4E79; }
-.ch .th { background: #E2EFDA; color: #375623; font-weight: bold; }
-.ch .ph { background: #f2f2f2; color: #777; }
+/* col header */
+.ch th    { font-size: 10px; line-height: 1.3; padding: 1px 3px; }
+.ch .sh   { background: #FCE4D6; color: #843C0C; }
+.ch .rh   { background: #DDEBF7; color: #1F4E79; }
+.ch .th   { background: #E2EFDA; color: #375623; font-weight: bold; }
+.ch .ph   { background: #f2f2f2; color: #777; }
 
 /* data rows */
 tbody tr { background: #fff; }
 tbody tr:hover { filter: brightness(0.96); }
 
-.sc { font-size: 10px; color: #bbb; }
-.sc.s1 { color: #333; font-weight: 600; }
-.sc.s2 { color: #aaa; }
-.tc { text-align: left !important; font-size: 10px; color: #555; padding-left: 6px !important; }
-.nc { text-align: left !important; font-weight: 500; }
+.sc      { font-size: 10px; color: #bbb; }
+.sc.s1   { color: #333; font-weight: 600; }
+.sc.s2   { color: #aaa; }
+.tc      { text-align: left !important; font-size: 10px; color: #555; padding-left: 6px !important; }
+.nc      { text-align: left !important; font-weight: 500; }
 
 /* race point colours */
 .p25 { background: #00B050 !important; color: #fff !important; font-weight: bold; }
@@ -82,19 +79,19 @@ tbody tr:hover { filter: brightness(0.96); }
 .p1  { background: #FCE4D6 !important; }
 
 /* sprint point colours */
-.s8 { background: #00B050 !important; color: #fff !important; font-weight: bold; }
-.s7 { background: #92D050 !important; }
-.s6 { background: #C6EFCE !important; }
-.s5 { background: #FFEB9C !important; }
-.s4 { background: #FFEB9C !important; }
-.s3 { background: #FFF2CC !important; }
+.s8  { background: #00B050 !important; color: #fff !important; font-weight: bold; }
+.s7  { background: #92D050 !important; }
+.s6  { background: #C6EFCE !important; }
+.s5  { background: #FFEB9C !important; }
+.s4  { background: #FFEB9C !important; }
+.s3  { background: #FFF2CC !important; }
 .s2c { background: #FCE4D6 !important; }
 .s1c { background: #FCE4D6 !important; }
 
-.future { background: #fafafa !important; color: transparent; }
+.future   { background: #fafafa !important; color: transparent; }
 .cancelled { background: #e8e8e8 !important; color: #bbb; font-size: 9px; font-style: italic; }
-.totcell { background: #E2EFDA !important; font-weight: bold; color: #375623; }
-.poscell { background: #fafafa !important; color: #888; }
+.totcell  { background: #E2EFDA !important; font-weight: bold; color: #375623; }
+.poscell  { background: #fafafa !important; color: #888; }
 
 /* constructors */
 .constructors-wrap table { min-width: 190px; }
@@ -123,287 +120,6 @@ tbody tr:hover { filter: brightness(0.96); }
   </div>
 </div>
 
-<script>
-const BASE = 'https://api.jolpi.ca/ergast/f1';
-
-const DRIVER_STATUS = {
-  2026: {
-    russell:1, antonelli:2,
-    hamilton:1, leclerc:2,
-    norris:1,   piastri:2,
-    verstappen:1, hadjar:2,
-    sainz:1,    albon:2,
-    gasly:1,    colapinto:2,
-    ocon:1,     bearman:2,
-    lawson:1,   lindblad:2,
-    hulkenberg:1, bortileto:2,
-    alonso:1,   stroll:2,
-    perez:1,    bottas:2,
-  }
-};
-
-const TEAM_COLORS = {
-  mercedes:'#00D2BE', ferrari:'#DC0000', mclaren:'#FF8000',
-  red_bull:'#3671C6', williams:'#005AFF', alpine:'#FF87BC',
-  haas:'#B6BABD', rb:'#6692FF', aston_martin:'#358C75',
-  audi:'#52E252', cadillac:'#8B5E3C',
-};
-
-const RACE_NAMES = {
-  'Australian Grand Prix':'AUS', 'Chinese Grand Prix':'CHN',
-  'Japanese Grand Prix':'JPN',   'Bahrain Grand Prix':'BHR',
-  'Saudi Arabian Grand Prix':'SAU', 'Miami Grand Prix':'MIA',
-  'Emilia Romagna Grand Prix':'IML', 'Monaco Grand Prix':'MON',
-  'Spanish Grand Prix':'ESP',    'Canadian Grand Prix':'CAN',
-  'Austrian Grand Prix':'AUT',   'British Grand Prix':'GBR',
-  'Belgian Grand Prix':'BEL',    'Hungarian Grand Prix':'HUN',
-  'Dutch Grand Prix':'NTL',      'Italian Grand Prix':'ITA',
-  'Azerbaijan Grand Prix':'AZB', 'Singapore Grand Prix':'SIN',
-  'United States Grand Prix':'USA', 'Mexico City Grand Prix':'MEX',
-  'São Paulo Grand Prix':'BRZ',  'Las Vegas Grand Prix':'LV',
-  'Qatar Grand Prix':'QAT',      'Abu Dhabi Grand Prix':'ABU',
-};
-
-function teamKey(id) {
-  const s = (id||'').toLowerCase();
-  if (s.includes('mercedes')) return 'mercedes';
-  if (s.includes('ferrari'))  return 'ferrari';
-  if (s.includes('mclaren'))  return 'mclaren';
-  if (s.includes('red_bull')||s.includes('redbull')) return 'red_bull';
-  if (s.includes('williams')) return 'williams';
-  if (s.includes('alpine'))   return 'alpine';
-  if (s.includes('haas'))     return 'haas';
-  if (s.includes('rb')||s.includes('racing_bulls')||s.includes('visa')||s.includes('alphatauri')||s.includes('toro')) return 'rb';
-  if (s.includes('aston'))    return 'aston_martin';
-  if (s.includes('audi')||s.includes('sauber')||s.includes('kick')) return 'audi';
-  if (s.includes('cadillac')||s.includes('andretti')) return 'cadillac';
-  return s;
-}
-
-function raceCode(race) {
-  return RACE_NAMES[race.raceName] ||
-    race.Circuit.Location.country.slice(0,3).toUpperCase();
-}
-
-function sprintClass(pts) {
-  const map = {8:'s8',7:'s7',6:'s6',5:'s5',4:'s4',3:'s3',2:'s2c',1:'s1c'};
-  return map[pts] || '';
-}
-
-function raceClass(pts) {
-  const map = {25:'p25',18:'p18',15:'p15',12:'p12',10:'p10',8:'p8',6:'p6',4:'p4',2:'p2',1:'p1'};
-  return map[pts] || (pts >= 1 ? 'p1' : '');
-}
-
-async function get(url) {
-  const r = await fetch(url);
-  if (!r.ok) throw new Error(`HTTP ${r.status}`);
-  return r.json();
-}
-
-async function loadSeason(year) {
-  const [sched, res, spr] = await Promise.all([
-    get(`${BASE}/${year}.json?limit=100`),
-    get(`${BASE}/${year}/results.json?limit=1000`),
-    get(`${BASE}/${year}/sprint.json?limit=500`).catch(() => null),
-  ]);
-
-  const races       = sched.MRData.RaceTable.Races;
-  const resRaces    = res.MRData.RaceTable.Races;
-  const sprRaces    = spr?.MRData?.RaceTable?.Races || [];
-
-  const byRound     = {};   // round -> race Results[]
-  const sprintByRnd = {};   // round -> SprintResults[]
-
-  for (const r of resRaces)  byRound[+r.round]     = r.Results       || [];
-  for (const s of sprRaces)  sprintByRnd[+s.round] = s.SprintResults || [];
-
-  // Sprint rounds: completed + scheduled (SprintRace field in schedule)
-  const sprintRoundSet = new Set(
-    Object.keys(sprintByRnd).map(Number).filter(r => sprintByRnd[r].length > 0)
-  );
-  for (const race of races) {
-    if (race.SprintRace || race.SprintQualifying) sprintRoundSet.add(+race.round);
-  }
-
-  // Drivers
-  const drivers = {};
-  const addD = (did, d, c) => {
-    if (!drivers[did]) drivers[did] = {
-      id: did, familyName: d.familyName, givenName: d.givenName,
-      constructorId: c.constructorId, constructorName: c.name,
-      rp: {}, sp: {},
-    };
-    drivers[did].constructorId   = c.constructorId;
-    drivers[did].constructorName = c.name;
-  };
-
-  for (const [rnd, results] of Object.entries(byRound))
-    for (const r of results) { addD(r.Driver.driverId, r.Driver, r.Constructor); drivers[r.Driver.driverId].rp[+rnd] = +r.points||0; }
-
-  for (const [rnd, results] of Object.entries(sprintByRnd))
-    for (const r of results) { addD(r.Driver.driverId, r.Driver, r.Constructor); drivers[r.Driver.driverId].sp[+rnd] = +r.points||0; }
-
-  const today = new Date();
-  const completedR  = new Set(Object.keys(byRound).map(Number).filter(r => byRound[r].length > 0));
-  const completedSR = new Set(Object.keys(sprintByRnd).map(Number).filter(r => sprintByRnd[r].length > 0));
-
-  // Cancelled = date passed 3+ days ago, no results
-  const cancelled = new Set();
-  const cutoff = new Date(today - 3*864e5);
-  for (const race of races) {
-    const rnd = +race.round;
-    if (new Date(race.date) < cutoff && !completedR.has(rnd)) cancelled.add(rnd);
-  }
-
-  const futureR  = races.filter(r => !completedR.has(+r.round)  && !cancelled.has(+r.round)).length;
-  const futureSR = [...sprintRoundSet].filter(r => !completedSR.has(r) && !cancelled.has(r)).length;
-
-  for (const d of Object.values(drivers)) {
-    d.total = Object.values(d.rp).reduce((a,b)=>a+b,0)
-            + Object.values(d.sp).reduce((a,b)=>a+b,0);
-    d.possible = d.total + futureR * 25 + futureSR * 8;
-  }
-
-  return { races, drivers, completedR, completedSR, sprintRoundSet, cancelled, year };
-}
-
-function buildDrivers(data) {
-  const { races, drivers, completedR, completedSR, sprintRoundSet, cancelled, year } = data;
-  const statusMap = DRIVER_STATUS[year] || {};
-  const sorted = Object.values(drivers).sort((a,b) => b.total - a.total);
-  const sprRounds = [...sprintRoundSet].sort((a,b)=>a-b);
-
-  const tbl = document.getElementById('driversTbl');
-  tbl.innerHTML = '';
-  const thead = tbl.createTHead();
-  const tbody = tbl.createTBody();
-
-  // Row 1: group headers
-  const gr = thead.insertRow(); gr.className = 'gh';
-  const gth = (txt, cls, cs=1) => { const t=document.createElement('th'); t.textContent=txt; t.className=cls; if(cs>1)t.colSpan=cs; gr.appendChild(t); };
-  gth('','blank'); gth('','blank'); gth('','blank');
-  if (sprRounds.length) gth(`Sprint ×${sprRounds.length}`, 'sgrp', sprRounds.length);
-  gth(`Races ×${races.length}`, 'rgrp', races.length);
-  gth('', 'tgrp'); gth('', 'blank');
-
-  // Row 2: col headers
-  const cr = thead.insertRow(); cr.className = 'ch';
-  const cth = (html, cls) => { const t=document.createElement('th'); t.innerHTML=html; t.className=cls; cr.appendChild(t); };
-  cth('#',''); cth('Team',''); cth('Name','');
-  sprRounds.forEach((r,i) => {
-    const race = races.find(rc=>+rc.round===r);
-    cth(`s${String(i+1).padStart(2,'0')}<br><small>${race?raceCode(race):'?'}</small>`, 'sh');
-  });
-  races.forEach((race,i) => {
-    cth(`r${String(i+1).padStart(2,'0')}<br><small>${raceCode(race)}</small>`, 'rh');
-  });
-  cth('total','th'); cth('possible','ph');
-
-  // Data rows
-  for (const d of sorted) {
-    const tr = tbody.insertRow();
-    const tk = teamKey(d.constructorId);
-    const color = TEAM_COLORS[tk] || '#ccc';
-    const st = statusMap[d.id] || '';
-
-    const cell = (cls, text='') => { const td=tr.insertCell(); td.className=cls; td.textContent=text; return td; };
-
-    const sc = cell(`sc${st?' s'+st:''}`); sc.textContent = st;
-    const tc = cell('tc', d.constructorName); tc.style.borderLeft=`4px solid ${color}`;
-    cell('nc', d.familyName);
-
-    for (const r of sprRounds) {
-      const td = tr.insertCell();
-      if (completedSR.has(r)) {
-        const pts = d.sp[r] ?? 0;
-        if (pts > 0) { td.textContent = pts; td.className = sprintClass(pts); }
-      } else if (cancelled.has(r)) {
-        td.className = 'cancelled'; td.textContent = 'cnc';
-      } else {
-        td.className = 'future';
-      }
-    }
-
-    for (const race of races) {
-      const rnd = +race.round;
-      const td = tr.insertCell();
-      if (completedR.has(rnd)) {
-        const pts = d.rp[rnd] ?? 0;
-        if (pts > 0) { td.textContent = pts; td.className = raceClass(pts); }
-      } else if (cancelled.has(rnd)) {
-        td.className = 'cancelled'; td.textContent = 'cnc';
-      } else {
-        td.className = 'future';
-      }
-    }
-
-    cell('totcell', d.total);
-    cell('poscell', d.possible);
-  }
-}
-
-function buildConstructors(data) {
-  const { drivers } = data;
-  const cons = {};
-  for (const d of Object.values(drivers)) {
-    const k = teamKey(d.constructorId);
-    if (!cons[k]) cons[k] = { name: d.constructorName, total: 0, possible: 0, color: TEAM_COLORS[k]||'#ccc' };
-    cons[k].total    += d.total;
-    cons[k].possible += d.possible;
-  }
-
-  const sorted = Object.values(cons).sort((a,b) => b.total - a.total);
-  const tbl = document.getElementById('consTbl');
-  tbl.innerHTML = '';
-  const thead = tbl.createTHead();
-  const tbody = tbl.createTBody();
-
-  const hr = thead.insertRow();
-  ['Team','Total','Possible'].forEach(h => { const t=document.createElement('th'); t.textContent=h; hr.appendChild(t); });
-
-  for (const c of sorted) {
-    const tr = tbody.insertRow();
-    const nt = tr.insertCell(); nt.textContent=c.name; nt.className='cn'; nt.style.borderLeft=`4px solid ${c.color}`;
-    const tt = tr.insertCell(); tt.textContent=c.total;    tt.className='totcell';
-    const pt = tr.insertCell(); pt.textContent=c.possible; pt.className='poscell';
-  }
-}
-
-async function init() {
-  const year = +document.getElementById('yearSel').value;
-  const st = document.getElementById('status');
-  st.textContent = `Loading ${year}…`; st.className = ''; st.style.display = 'block';
-  document.getElementById('main').style.display = 'none';
-  document.getElementById('driversTbl').innerHTML = '';
-  document.getElementById('consTbl').innerHTML = '';
-
-  try {
-    const data = await loadSeason(year);
-    buildDrivers(data);
-    buildConstructors(data);
-    st.style.display = 'none';
-    document.getElementById('main').style.display = 'flex';
-    document.getElementById('lastUpdated').textContent =
-      `Data from Jolpica/Ergast API · fetched ${new Date().toLocaleString()}`;
-  } catch(e) {
-    st.textContent = `Failed to load: ${e.message}. The API may not have data for ${year} yet.`;
-    st.className = 'error';
-    console.error(e);
-  }
-}
-
-// Year selector
-const sel = document.getElementById('yearSel');
-const cy = new Date().getFullYear();
-for (let y = cy; y >= 2018; y--) {
-  const o = document.createElement('option');
-  o.value = y; o.textContent = `${y} Season`;
-  if (y === cy) o.selected = true;
-  sel.appendChild(o);
-}
-sel.addEventListener('change', init);
-init();
-</script>
+<script src="app.js"></script>
 </body>
 </html>
