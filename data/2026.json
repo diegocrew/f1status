@@ -1,0 +1,643 @@
+{
+  "year": 2026,
+  "fetched_at": "2026-05-15T21:04:42.421693+00:00",
+  "races": [
+    {
+      "round": 1,
+      "name": "Australian Grand Prix",
+      "code": "AUS",
+      "date": "2026-03-08",
+      "is_sprint_weekend": false,
+      "completed": true,
+      "cancelled": false
+    },
+    {
+      "round": 2,
+      "name": "Chinese Grand Prix",
+      "code": "CHN",
+      "date": "2026-03-15",
+      "is_sprint_weekend": true,
+      "completed": true,
+      "cancelled": false
+    },
+    {
+      "round": 3,
+      "name": "Japanese Grand Prix",
+      "code": "JPN",
+      "date": "2026-03-29",
+      "is_sprint_weekend": false,
+      "completed": true,
+      "cancelled": false
+    },
+    {
+      "round": 4,
+      "name": "Miami Grand Prix",
+      "code": "MIA",
+      "date": "2026-05-03",
+      "is_sprint_weekend": true,
+      "completed": true,
+      "cancelled": false
+    },
+    {
+      "round": 5,
+      "name": "Canadian Grand Prix",
+      "code": "CAN",
+      "date": "2026-05-24",
+      "is_sprint_weekend": true,
+      "completed": false,
+      "cancelled": false
+    },
+    {
+      "round": 6,
+      "name": "Monaco Grand Prix",
+      "code": "MON",
+      "date": "2026-06-07",
+      "is_sprint_weekend": false,
+      "completed": false,
+      "cancelled": false
+    },
+    {
+      "round": 7,
+      "name": "Barcelona Grand Prix",
+      "code": "SPA",
+      "date": "2026-06-14",
+      "is_sprint_weekend": false,
+      "completed": false,
+      "cancelled": false
+    },
+    {
+      "round": 8,
+      "name": "Austrian Grand Prix",
+      "code": "AUT",
+      "date": "2026-06-28",
+      "is_sprint_weekend": false,
+      "completed": false,
+      "cancelled": false
+    },
+    {
+      "round": 9,
+      "name": "British Grand Prix",
+      "code": "GBR",
+      "date": "2026-07-05",
+      "is_sprint_weekend": true,
+      "completed": false,
+      "cancelled": false
+    },
+    {
+      "round": 10,
+      "name": "Belgian Grand Prix",
+      "code": "BEL",
+      "date": "2026-07-19",
+      "is_sprint_weekend": false,
+      "completed": false,
+      "cancelled": false
+    },
+    {
+      "round": 11,
+      "name": "Hungarian Grand Prix",
+      "code": "HUN",
+      "date": "2026-07-26",
+      "is_sprint_weekend": false,
+      "completed": false,
+      "cancelled": false
+    },
+    {
+      "round": 12,
+      "name": "Dutch Grand Prix",
+      "code": "NTL",
+      "date": "2026-08-23",
+      "is_sprint_weekend": true,
+      "completed": false,
+      "cancelled": false
+    },
+    {
+      "round": 13,
+      "name": "Italian Grand Prix",
+      "code": "ITA",
+      "date": "2026-09-06",
+      "is_sprint_weekend": false,
+      "completed": false,
+      "cancelled": false
+    },
+    {
+      "round": 14,
+      "name": "Spanish Grand Prix",
+      "code": "ESP",
+      "date": "2026-09-13",
+      "is_sprint_weekend": false,
+      "completed": false,
+      "cancelled": false
+    },
+    {
+      "round": 15,
+      "name": "Azerbaijan Grand Prix",
+      "code": "AZB",
+      "date": "2026-09-26",
+      "is_sprint_weekend": false,
+      "completed": false,
+      "cancelled": false
+    },
+    {
+      "round": 16,
+      "name": "Singapore Grand Prix",
+      "code": "SIN",
+      "date": "2026-10-11",
+      "is_sprint_weekend": true,
+      "completed": false,
+      "cancelled": false
+    },
+    {
+      "round": 17,
+      "name": "United States Grand Prix",
+      "code": "USA",
+      "date": "2026-10-25",
+      "is_sprint_weekend": false,
+      "completed": false,
+      "cancelled": false
+    },
+    {
+      "round": 18,
+      "name": "Mexico City Grand Prix",
+      "code": "MEX",
+      "date": "2026-11-01",
+      "is_sprint_weekend": false,
+      "completed": false,
+      "cancelled": false
+    },
+    {
+      "round": 19,
+      "name": "Brazilian Grand Prix",
+      "code": "BRA",
+      "date": "2026-11-08",
+      "is_sprint_weekend": false,
+      "completed": false,
+      "cancelled": false
+    },
+    {
+      "round": 20,
+      "name": "Las Vegas Grand Prix",
+      "code": "LV",
+      "date": "2026-11-22",
+      "is_sprint_weekend": false,
+      "completed": false,
+      "cancelled": false
+    },
+    {
+      "round": 21,
+      "name": "Qatar Grand Prix",
+      "code": "QAT",
+      "date": "2026-11-29",
+      "is_sprint_weekend": false,
+      "completed": false,
+      "cancelled": false
+    },
+    {
+      "round": 22,
+      "name": "Abu Dhabi Grand Prix",
+      "code": "ABU",
+      "date": "2026-12-06",
+      "is_sprint_weekend": false,
+      "completed": false,
+      "cancelled": false
+    }
+  ],
+  "sprint_rounds": [
+    2,
+    4,
+    5,
+    9,
+    12,
+    16
+  ],
+  "completed_rounds": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "completed_sprint_rounds": [
+    2,
+    4
+  ],
+  "cancelled_rounds": [],
+  "drivers": [
+    {
+      "id": "antonelli",
+      "family_name": "Antonelli",
+      "given_name": "Andrea Kimi",
+      "constructor_id": "mercedes",
+      "constructor_name": "Mercedes",
+      "race_points": {
+        "1": 18.0,
+        "2": 25.0,
+        "3": 25.0,
+        "4": 25.0
+      },
+      "sprint_points": {
+        "2": 4.0,
+        "4": 3.0
+      },
+      "total": 100.0,
+      "possible": 582.0
+    },
+    {
+      "id": "russell",
+      "family_name": "Russell",
+      "given_name": "George",
+      "constructor_id": "mercedes",
+      "constructor_name": "Mercedes",
+      "race_points": {
+        "1": 25.0,
+        "2": 18.0,
+        "3": 12.0,
+        "4": 12.0
+      },
+      "sprint_points": {
+        "2": 8.0,
+        "4": 5.0
+      },
+      "total": 80.0,
+      "possible": 562.0
+    },
+    {
+      "id": "leclerc",
+      "family_name": "Leclerc",
+      "given_name": "Charles",
+      "constructor_id": "ferrari",
+      "constructor_name": "Ferrari",
+      "race_points": {
+        "1": 15.0,
+        "2": 12.0,
+        "3": 15.0,
+        "4": 4.0
+      },
+      "sprint_points": {
+        "2": 7.0,
+        "4": 6.0
+      },
+      "total": 59.0,
+      "possible": 541.0
+    },
+    {
+      "id": "hamilton",
+      "family_name": "Hamilton",
+      "given_name": "Lewis",
+      "constructor_id": "ferrari",
+      "constructor_name": "Ferrari",
+      "race_points": {
+        "1": 12.0,
+        "2": 15.0,
+        "3": 8.0,
+        "4": 8.0
+      },
+      "sprint_points": {
+        "2": 6.0,
+        "4": 2.0
+      },
+      "total": 51.0,
+      "possible": 533.0
+    },
+    {
+      "id": "norris",
+      "family_name": "Norris",
+      "given_name": "Lando",
+      "constructor_id": "mclaren",
+      "constructor_name": "McLaren",
+      "race_points": {
+        "1": 10.0,
+        "2": 0.0,
+        "3": 10.0,
+        "4": 18.0
+      },
+      "sprint_points": {
+        "2": 5.0,
+        "4": 8.0
+      },
+      "total": 51.0,
+      "possible": 533.0
+    },
+    {
+      "id": "piastri",
+      "family_name": "Piastri",
+      "given_name": "Oscar",
+      "constructor_id": "mclaren",
+      "constructor_name": "McLaren",
+      "race_points": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 18.0,
+        "4": 15.0
+      },
+      "sprint_points": {
+        "2": 3.0,
+        "4": 7.0
+      },
+      "total": 43.0,
+      "possible": 525.0
+    },
+    {
+      "id": "max_verstappen",
+      "family_name": "Verstappen",
+      "given_name": "Max",
+      "constructor_id": "red_bull",
+      "constructor_name": "Red Bull",
+      "race_points": {
+        "1": 8.0,
+        "2": 0.0,
+        "3": 4.0,
+        "4": 10.0
+      },
+      "sprint_points": {
+        "2": 0.0,
+        "4": 4.0
+      },
+      "total": 26.0,
+      "possible": 508.0
+    },
+    {
+      "id": "bearman",
+      "family_name": "Bearman",
+      "given_name": "Oliver",
+      "constructor_id": "haas",
+      "constructor_name": "Haas F1 Team",
+      "race_points": {
+        "1": 6.0,
+        "2": 10.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "sprint_points": {
+        "2": 1.0,
+        "4": 0.0
+      },
+      "total": 17.0,
+      "possible": 499.0
+    },
+    {
+      "id": "gasly",
+      "family_name": "Gasly",
+      "given_name": "Pierre",
+      "constructor_id": "alpine",
+      "constructor_name": "Alpine F1 Team",
+      "race_points": {
+        "1": 1.0,
+        "2": 8.0,
+        "3": 6.0,
+        "4": 0.0
+      },
+      "sprint_points": {
+        "2": 0.0,
+        "4": 1.0
+      },
+      "total": 16.0,
+      "possible": 498.0
+    },
+    {
+      "id": "lawson",
+      "family_name": "Lawson",
+      "given_name": "Liam",
+      "constructor_id": "rb",
+      "constructor_name": "RB F1 Team",
+      "race_points": {
+        "1": 0.0,
+        "2": 6.0,
+        "3": 2.0,
+        "4": 0.0
+      },
+      "sprint_points": {
+        "2": 2.0,
+        "4": 0.0
+      },
+      "total": 10.0,
+      "possible": 492.0
+    },
+    {
+      "id": "colapinto",
+      "family_name": "Colapinto",
+      "given_name": "Franco",
+      "constructor_id": "alpine",
+      "constructor_name": "Alpine F1 Team",
+      "race_points": {
+        "1": 0.0,
+        "2": 1.0,
+        "3": 0.0,
+        "4": 6.0
+      },
+      "sprint_points": {
+        "2": 0.0,
+        "4": 0.0
+      },
+      "total": 7.0,
+      "possible": 489.0
+    },
+    {
+      "id": "arvid_lindblad",
+      "family_name": "Lindblad",
+      "given_name": "Arvid",
+      "constructor_id": "rb",
+      "constructor_name": "RB F1 Team",
+      "race_points": {
+        "1": 4.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "sprint_points": {
+        "2": 0.0,
+        "4": 0.0
+      },
+      "total": 4.0,
+      "possible": 486.0
+    },
+    {
+      "id": "sainz",
+      "family_name": "Sainz",
+      "given_name": "Carlos",
+      "constructor_id": "williams",
+      "constructor_name": "Williams",
+      "race_points": {
+        "1": 0.0,
+        "2": 2.0,
+        "3": 0.0,
+        "4": 2.0
+      },
+      "sprint_points": {
+        "2": 0.0,
+        "4": 0.0
+      },
+      "total": 4.0,
+      "possible": 486.0
+    },
+    {
+      "id": "hadjar",
+      "family_name": "Hadjar",
+      "given_name": "Isack",
+      "constructor_id": "red_bull",
+      "constructor_name": "Red Bull",
+      "race_points": {
+        "1": 0.0,
+        "2": 4.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "sprint_points": {
+        "2": 0.0,
+        "4": 0.0
+      },
+      "total": 4.0,
+      "possible": 486.0
+    },
+    {
+      "id": "bortoleto",
+      "family_name": "Bortoleto",
+      "given_name": "Gabriel",
+      "constructor_id": "audi",
+      "constructor_name": "Audi",
+      "race_points": {
+        "1": 2.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "sprint_points": {
+        "2": 0.0,
+        "4": 0.0
+      },
+      "total": 2.0,
+      "possible": 484.0
+    },
+    {
+      "id": "ocon",
+      "family_name": "Ocon",
+      "given_name": "Esteban",
+      "constructor_id": "haas",
+      "constructor_name": "Haas F1 Team",
+      "race_points": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 1.0,
+        "4": 0.0
+      },
+      "sprint_points": {
+        "2": 0.0,
+        "4": 0.0
+      },
+      "total": 1.0,
+      "possible": 483.0
+    },
+    {
+      "id": "albon",
+      "family_name": "Albon",
+      "given_name": "Alexander",
+      "constructor_id": "williams",
+      "constructor_name": "Williams",
+      "race_points": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 1.0
+      },
+      "sprint_points": {
+        "2": 0.0,
+        "4": 0.0
+      },
+      "total": 1.0,
+      "possible": 483.0
+    },
+    {
+      "id": "perez",
+      "family_name": "Pérez",
+      "given_name": "Sergio",
+      "constructor_id": "cadillac",
+      "constructor_name": "Cadillac F1 Team",
+      "race_points": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "sprint_points": {
+        "2": 0.0,
+        "4": 0.0
+      },
+      "total": 0.0,
+      "possible": 482.0
+    },
+    {
+      "id": "stroll",
+      "family_name": "Stroll",
+      "given_name": "Lance",
+      "constructor_id": "aston_martin",
+      "constructor_name": "Aston Martin",
+      "race_points": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "sprint_points": {
+        "2": 0.0,
+        "4": 0.0
+      },
+      "total": 0.0,
+      "possible": 482.0
+    },
+    {
+      "id": "alonso",
+      "family_name": "Alonso",
+      "given_name": "Fernando",
+      "constructor_id": "aston_martin",
+      "constructor_name": "Aston Martin",
+      "race_points": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "sprint_points": {
+        "2": 0.0,
+        "4": 0.0
+      },
+      "total": 0.0,
+      "possible": 482.0
+    },
+    {
+      "id": "bottas",
+      "family_name": "Bottas",
+      "given_name": "Valtteri",
+      "constructor_id": "cadillac",
+      "constructor_name": "Cadillac F1 Team",
+      "race_points": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "sprint_points": {
+        "2": 0.0,
+        "4": 0.0
+      },
+      "total": 0.0,
+      "possible": 482.0
+    },
+    {
+      "id": "hulkenberg",
+      "family_name": "Hülkenberg",
+      "given_name": "Nico",
+      "constructor_id": "audi",
+      "constructor_name": "Audi",
+      "race_points": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "sprint_points": {
+        "2": 0.0,
+        "4": 0.0
+      },
+      "total": 0.0,
+      "possible": 482.0
+    }
+  ]
+}
