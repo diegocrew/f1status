@@ -2,8 +2,7 @@ name: Update F1 Data
 
 on:
   schedule:
-    # Run every 4 hours — covers post-race result uploads
-    - cron: "0 */4 * * *"
+    - cron: "0 3 * * 1"  # every Monday at 03:00 UTC
   push:
     paths:
       - "scripts/fetch_data.py"
@@ -16,9 +15,9 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: pip
@@ -30,7 +29,7 @@ jobs:
         run: python scripts/fetch_data.py
 
       - name: Commit updated data
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "chore: update F1 data [skip ci]"
           file_pattern: "data/*.json"
