@@ -1,21 +1,5 @@
-// Lead (1) / support (2) driver per season — keyed by driverId.
-// Lead driver max: 25 pts/race + 8 pts/sprint
-// Support driver max: 18 pts/race + 7 pts/sprint
-const DRIVER_STATUS = {
-  2026: {
-    russell: 1, antonelli: 2,
-    hamilton: 1, leclerc: 2,
-    norris: 1,   piastri: 2,
-    verstappen: 1, hadjar: 2,
-    sainz: 1,    albon: 2,
-    gasly: 1,    colapinto: 2,
-    ocon: 1,     bearman: 2,
-    lawson: 1,   lindblad: 2,
-    hulkenberg: 1, bortileto: 2,
-    alonso: 1,   stroll: 2,
-    perez: 1,    bottas: 2,
-  },
-};
+// Add years here as seasons begin. No historical data before 2026.
+const AVAILABLE_YEARS = [2026]; // add 2027 here next year
 
 const TEAM_COLORS = {
   mercedes:     '#00D2BE',
@@ -59,37 +43,30 @@ function raceClass(pts) {
 
 // ── data processing ──────────────────────────────────────────────────────────
 
-function processData(raw, year) {
-  const statusMap = DRIVER_STATUS[year] || {};
-
-  // Future race / sprint counts (for possible calculation)
+function processData(raw) {
   const completedR  = new Set(raw.completed_rounds);
   const completedSR = new Set(raw.completed_sprint_rounds);
   const cancelledR  = new Set(raw.cancelled_rounds);
-  const sprintRndSet = new Set(raw.sprint_rounds);
 
+  // Theoretical max: every driver can win everything
   const futureRaces   = raw.races.filter(r => !r.completed && !r.cancelled).length;
   const futureSprints = raw.sprint_rounds.filter(r => !completedSR.has(r) && !cancelledR.has(r)).length;
+  const maxPerDriver  = futureRaces * 25 + futureSprints * 8;
 
-  // Attach status and recalculate possible per driver
-  const drivers = raw.drivers.map(d => {
-    const status    = statusMap[d.id] || 1;
-    const maxRacePt = status === 2 ? 18 : 25;
-    const maxSprPt  = status === 2 ? 7  : 8;
-    return {
-      ...d,
-      status,
-      possible: d.total + futureRaces * maxRacePt + futureSprints * maxSprPt,
-    };
-  }).sort((a, b) => b.total - a.total);
+  const drivers = raw.drivers.map(d => ({
+    ...d,
+    possible: d.total + maxPerDriver,
+  })).sort((a, b) => b.total - a.total);
 
-  // Aggregate constructors (sums reflect status-aware possible)
+  // Constructors: sum both drivers' theoretical max
   const consMap = {};
   for (const d of drivers) {
     const k = teamKey(d.constructor_id);
-    if (!consMap[k]) {
-      consMap[k] = { name: d.constructor_name, total: 0, possible: 0, color: TEAM_COLORS[k] || '#ccc' };
-    }
+    if (!consMap[k]) consMap[k] = {
+      name: d.constructor_name,
+      total: 0, possible: 0,
+      color: TEAM_COLORS[k] || '#ccc',
+    };
     consMap[k].total    += d.total;
     consMap[k].possible += d.possible;
   }
@@ -122,13 +99,13 @@ function buildDriverTable(data) {
     if (cs > 1) t.colSpan = cs;
     gr.appendChild(t);
   };
-  gth('', 'blank'); gth('', 'blank'); gth('', 'blank');
+  gth('', 'blank'); gth('', 'blank');
   if (sprintRounds.length) gth(`Sprint ×${sprintRounds.length}`, 'sgrp', sprintRounds.length);
   gth(`Races ×${races.length}`, 'rgrp', races.length);
   gth('', 'tgrp');
   gth('', 'blank');
 
-  // Row 2 – column headers
+  // Row 2 – column labels
   const cr = thead.insertRow();
   cr.className = 'ch';
   const cth = (html, cls) => {
@@ -136,7 +113,8 @@ function buildDriverTable(data) {
     t.innerHTML = html; t.className = cls;
     cr.appendChild(t);
   };
-  cth('#', ''); cth('Team', ''); cth('Driver', '');
+  cth('Team', ''); cth('Driver', '');
+
   sprintRounds.forEach((rnd, i) => {
     const race = races.find(r => r.round === rnd);
     cth(`s${String(i + 1).padStart(2, '0')}<br><small>${race ? race.code : '?'}</small>`, 'sh');
@@ -157,8 +135,6 @@ function buildDriverTable(data) {
       const td = tr.insertCell(); td.className = cls; td.textContent = text; return td;
     };
 
-    cell(`sc${d.status ? ' s' + d.status : ''}`, d.status || '');
-
     const tc = cell('tc', d.constructor_name);
     tc.style.borderLeft = `4px solid ${color}`;
 
@@ -166,6 +142,7 @@ function buildDriverTable(data) {
 
     for (const rnd of sprintRounds) {
       const td = tr.insertCell();
+      td.className = 'sprint-td';
       if (completedSR.has(rnd)) {
         const pts = d.sprint_points[String(rnd)] ?? 0;
         if (pts > 0) { td.textContent = pts; td.className = sprintClass(pts); }
@@ -178,6 +155,7 @@ function buildDriverTable(data) {
 
     for (const race of races) {
       const td = tr.insertCell();
+      td.className = 'race-td';
       if (completedR.has(race.round)) {
         const pts = d.race_points[String(race.round)] ?? 0;
         if (pts > 0) { td.textContent = pts; td.className = raceClass(pts); }
@@ -193,34 +171,37 @@ function buildDriverTable(data) {
   }
 }
 
-// ── constructors panel ───────────────────────────────────────────────────────
+// ── constructors sidebar ─────────────────────────────────────────────────────
 
 function buildConstructors(constructors) {
   const list = document.getElementById('consList');
   list.innerHTML = '';
 
-  constructors.forEach((c, i) => {
-    const row = document.createElement('div');
-    row.className = 'con-row';
-    row.style.setProperty('--tc', c.color);
-
-    row.innerHTML = `
+  for (let i = 0; i < constructors.length; i++) {
+    const c   = constructors[i];
+    const div = document.createElement('div');
+    div.className = 'con-card';
+    div.style.setProperty('--tc', c.color);
+    div.innerHTML = `
       <span class="con-rank">${i + 1}</span>
       <div class="con-info">
         <div class="con-name">${c.name}</div>
-        <div class="con-possible">max ${c.possible.toLocaleString()} pts</div>
+        <div class="con-max">theoretical max ${c.possible.toLocaleString()} pts</div>
       </div>
-      <div class="con-pts">${c.total}</div>`;
-
-    list.appendChild(row);
-  });
+      <div class="con-pts-wrap">
+        <div class="con-pts">${c.total}</div>
+        <div class="con-label">pts</div>
+      </div>`;
+    list.appendChild(div);
+  }
 }
 
-// ── loading ──────────────────────────────────────────────────────────────────
+// ── load & render ─────────────────────────────────────────────────────────────
 
 async function init() {
   const year = +document.getElementById('yearSel').value;
   const st   = document.getElementById('status');
+
   st.textContent = `Loading ${year}…`;
   st.className   = '';
   document.getElementById('driversTbl').innerHTML = '';
@@ -229,9 +210,9 @@ async function init() {
 
   try {
     const res = await fetch(`data/${year}.json`);
-    if (!res.ok) throw new Error(`No data file for ${year} — run fetch_data.py first (HTTP ${res.status})`);
+    if (!res.ok) throw new Error(`No data for ${year} — run fetch_data.py first (HTTP ${res.status})`);
     const raw  = await res.json();
-    const data = processData(raw, year);
+    const data = processData(raw);
 
     buildDriverTable(data);
     buildConstructors(data.constructors);
@@ -239,6 +220,7 @@ async function init() {
     st.textContent = '';
     document.getElementById('lastUpdated').textContent =
       `Data fetched ${new Date(raw.fetched_at).toLocaleString()}`;
+    document.getElementById('seasonLabel').textContent = `${year} Season`;
   } catch (e) {
     st.textContent = e.message;
     st.className   = 'error';
@@ -249,12 +231,14 @@ async function init() {
 // ── boot ─────────────────────────────────────────────────────────────────────
 
 const sel = document.getElementById('yearSel');
-const cy  = new Date().getFullYear();
-for (let y = cy; y >= 2018; y--) {
+AVAILABLE_YEARS.forEach(y => {
   const o = document.createElement('option');
   o.value = y; o.textContent = `${y} Season`;
-  if (y === cy) o.selected = true;
   sel.appendChild(o);
-}
+});
+
+// Hide the dropdown when only one year is available
+if (AVAILABLE_YEARS.length === 1) sel.style.display = 'none';
+
 sel.addEventListener('change', init);
 init();
