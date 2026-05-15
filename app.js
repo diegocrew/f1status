@@ -3,16 +3,16 @@ const AVAILABLE_YEARS = [2026]; // add 2027 here next year
 
 const TEAM_COLORS = {
   mercedes:     '#00D2BE',
-  ferrari:      '#DC0000',
+  ferrari:      '#E8002D',
   mclaren:      '#FF8000',
   red_bull:     '#3671C6',
-  williams:     '#005AFF',
+  williams:     '#64C4FF',
   alpine:       '#FF87BC',
   haas:         '#B6BABD',
   rb:           '#6692FF',
-  aston_martin: '#358C75',
-  audi:         '#52E252',
-  cadillac:     '#8B5E3C',
+  aston_martin: '#229971',
+  audi:         '#C9B84C',
+  cadillac:     '#888888',
 };
 
 function teamKey(id) {
@@ -130,6 +130,7 @@ function buildDriverTable(data) {
     const tr    = tbody.insertRow();
     const tk    = teamKey(d.constructor_id);
     const color = TEAM_COLORS[tk] || '#ccc';
+    if (d.total === 0) tr.classList.add('zero-row');
 
     const cell = (cls, text = '') => {
       const td = tr.insertCell(); td.className = cls; td.textContent = text; return td;
@@ -145,7 +146,7 @@ function buildDriverTable(data) {
       td.className = 'sprint-td';
       if (completedSR.has(rnd)) {
         const pts = d.sprint_points[String(rnd)] ?? 0;
-        if (pts > 0) { td.textContent = pts; td.className = sprintClass(pts); }
+        if (pts > 0) { td.textContent = pts; td.className = sprintClass(pts); td.style.color = color; }
       } else if (cancelledR.has(rnd)) {
         td.className = 'cancelled'; td.textContent = 'cnc';
       } else {
@@ -158,7 +159,7 @@ function buildDriverTable(data) {
       td.className = 'race-td';
       if (completedR.has(race.round)) {
         const pts = d.race_points[String(race.round)] ?? 0;
-        if (pts > 0) { td.textContent = pts; td.className = raceClass(pts); }
+        if (pts > 0) { td.textContent = pts; td.className = raceClass(pts); td.style.color = color; }
       } else if (cancelledR.has(race.round)) {
         td.className = 'cancelled'; td.textContent = 'cnc';
       } else {
