@@ -61,13 +61,27 @@ def is_sprint_weekend(race: dict) -> bool:
     return "SprintRace" in race or "SprintQualifying" in race or "Sprint" in race
 
 
+_DNF_KEYWORDS = (
+    "retired", "accident", "collision", "engine", "gearbox", "hydraulics",
+    "suspension", "brakes", "electrical", "power unit", "mechanical",
+    "overheating", "oil", "fire", "damage", "tyre", "driveshaft",
+    "throttle", "fuel", "disqualified",
+)
+
 def normalize_status(status: str) -> str:
     s = status.strip()
-    if s == "Finished" or s.startswith("+"):
+    # Blank / finished normally / lapped / not classified (started but lapped heavily)
+    if not s or s == "Finished" or s.startswith("+") or "not classified" in s.lower():
         return ""
-    if "not start" in s.lower() or "not qualif" in s.lower() or "not classified" in s.lower():
+    sl = s.lower()
+    # Did not start
+    if sl == "dns" or any(x in sl for x in ("not start", "not qualif", "withdrew")):
         return "DNS"
-    return "DNF"
+    # Explicit retirement reasons → DNF
+    if sl in ("dnf", "retired") or any(x in sl for x in _DNF_KEYWORDS):
+        return "DNF"
+    # Unknown / ambiguous status → show blank, don't assume DNF
+    return ""
 
 
 def fetch_season(year: int) -> dict:
@@ -152,8 +166,11 @@ def fetch_season(year: int) -> dict:
         for r in results:
             did = r["Driver"]["driverId"]
             upsert(did, r["Driver"], r["Constructor"])
-            drivers[did]["race_points"][rnd] = float(r.get("points", 0))
-            drivers[did]["race_status"][rnd] = normalize_status(r.get("status", ""))
+            pts = float(r.get("points", 0))
+            drivers[did]["race_points"][rnd] = pts
+            st = normalize_status(r.get("status", ""))
+            # Can't score points and also DNF/DNS — API data sometimes inconsistent
+            drivers[did]["race_status"][rnd] = "" if (pts > 0 and st) else st
 
     for rnd, results in sprint_results.items():
         for r in results:
