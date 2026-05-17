@@ -41,6 +41,25 @@ function raceClass(pts) {
   return map[pts] || (pts >= 1 ? 'p1' : '');
 }
 
+function sparkline(pts, isDNF) {
+  const n = pts.length;
+  if (n === 0) return '';
+  const bw = 6, gap = 2, h = 16, maxPts = 33; // max per round = 25 race + 8 sprint
+  const w = n * bw + (n - 1) * gap;
+  const bars = pts.map((p, i) => {
+    const barH = isDNF[i] ? 3 : Math.max(2, Math.round(p / maxPts * h));
+    const x = i * (bw + gap);
+    const y = h - barH;
+    const fill = isDNF[i] ? '#FFAAAA'
+               : p >= 20  ? '#B8860B'
+               : p >= 6   ? '#229971'
+               : p > 0    ? '#64B5F6'
+               :             '#DDDDDD';
+    return `<rect x="${x}" y="${y}" width="${bw}" height="${barH}" fill="${fill}" rx="1"/>`;
+  }).join('');
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="vertical-align:middle">${bars}</svg>`;
+}
+
 function fmtDate(dateStr) {
   const [, m, d] = dateStr.split('-');
   return `${+d}.${+m}`;
@@ -119,6 +138,8 @@ function buildDriverTable(data) {
   });
   gth('', 'tgrp');
   gth('', 'blank');
+  gth('', 'blank');
+  gth('', 'blank');
 
   // Row 2 – column labels
   const cr = thead.insertRow();
@@ -139,6 +160,8 @@ function buildDriverTable(data) {
   });
   cth('total', 'th');
   cth('max', 'ph');
+  cth('form', 'fh');
+  cth('proj', 'xh');
 
   // Data rows
   for (const d of drivers) {
@@ -173,8 +196,15 @@ function buildDriverTable(data) {
       const td = tr.insertCell();
       td.className = 'race-td';
       if (completedR.has(race.round)) {
-        const pts = d.race_points[String(race.round)] ?? 0;
-        if (pts > 0) { td.textContent = pts; td.className = raceClass(pts); }
+        const pts    = d.race_points[String(race.round)] ?? 0;
+        const status = d.race_status?.[String(race.round)] ?? '';
+        if (pts > 0) {
+          td.textContent = pts; td.className = raceClass(pts);
+        } else if (status === 'DNF') {
+          td.className = 'dnf'; td.textContent = 'DNF';
+        } else if (status === 'DNS') {
+          td.className = 'dns'; td.textContent = 'DNS';
+        }
       } else if (cancelledR.has(race.round)) {
         td.className = 'cancelled'; td.textContent = 'cnc';
       } else {
@@ -184,6 +214,27 @@ function buildDriverTable(data) {
 
     cell('totcell', d.total);
     cell('poscell', d.possible);
+
+    // ── form sparkline (last 5 completed race weekends) ──
+    const completedRaceList = races.filter(r => completedR.has(r.round));
+    const last5 = completedRaceList.slice(-5);
+    const formPts  = last5.map(r => (d.race_points[String(r.round)] ?? 0) +
+                                    (completedSR.has(r.round) ? (d.sprint_points[String(r.round)] ?? 0) : 0));
+    const formDNF  = last5.map(r => {
+      const st = d.race_status?.[String(r.round)] ?? '';
+      return st === 'DNF' || st === 'DNS';
+    });
+    const formTd = tr.insertCell();
+    formTd.className = 'formcell';
+    formTd.innerHTML = sparkline(formPts, formDNF);
+
+    // ── season projection (last 3 race avg × remaining races) ──
+    const last3 = completedRaceList.slice(-3);
+    const avg3  = last3.length === 0 ? 0
+                : last3.reduce((s, r) => s + (d.race_points[String(r.round)] ?? 0), 0) / last3.length;
+    const futureRaceCount = races.filter(r => !r.completed && !r.cancelled).length;
+    const projected = Math.round(d.total + avg3 * futureRaceCount);
+    cell('projcell', projected);
   }
 }
 

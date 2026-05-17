@@ -61,6 +61,15 @@ def is_sprint_weekend(race: dict) -> bool:
     return "SprintRace" in race or "SprintQualifying" in race or "Sprint" in race
 
 
+def normalize_status(status: str) -> str:
+    s = status.strip()
+    if s == "Finished" or s.startswith("+"):
+        return ""
+    if "not start" in s.lower() or "not qualif" in s.lower() or "not classified" in s.lower():
+        return "DNS"
+    return "DNF"
+
+
 def fetch_season(year: int) -> dict:
     print(f"  fetching schedule …")
     sched = get(f"{year}.json")["RaceTable"]["Races"]
@@ -132,6 +141,7 @@ def fetch_season(year: int) -> dict:
                 "constructor_id": constructor_obj["constructorId"],
                 "constructor_name": constructor_obj["name"],
                 "race_points": {},
+                "race_status": {},
                 "sprint_points": {},
             }
         # update constructor (handles mid-season swaps)
@@ -143,6 +153,7 @@ def fetch_season(year: int) -> dict:
             did = r["Driver"]["driverId"]
             upsert(did, r["Driver"], r["Constructor"])
             drivers[did]["race_points"][rnd] = float(r.get("points", 0))
+            drivers[did]["race_status"][rnd] = normalize_status(r.get("status", ""))
 
     for rnd, results in sprint_results.items():
         for r in results:
@@ -162,6 +173,7 @@ def fetch_season(year: int) -> dict:
         d["possible"] = d["total"] + future_race_pts + future_sprint_pts
         # convert keys to strings for JSON
         d["race_points"]   = {str(k): v for k, v in d["race_points"].items()}
+        d["race_status"]   = {str(k): v for k, v in d["race_status"].items()}
         d["sprint_points"] = {str(k): v for k, v in d["sprint_points"].items()}
 
     # ── races list for frontend ─────────────────────────────────────────────
