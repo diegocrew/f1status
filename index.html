@@ -219,11 +219,9 @@ th, td {
 tbody td { height: 38px; border-bottom: 1px solid #EEEBE5; }
 
 thead th {
-  position: sticky; top: 0; z-index: 12;
   background: var(--surface);
-  border-bottom: 2px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
-thead tr:nth-child(2) th { top: 22px; border-bottom: 1px solid var(--border); }
 
 /* sticky left 2 cols: team + driver */
 td:nth-child(1), th:nth-child(1) { position: sticky; left: 0;     z-index: 8; background: inherit; min-width: 100px; text-align: left; }
@@ -242,10 +240,12 @@ thead th:nth-child(1), thead th:nth-child(2) { z-index: 22; background: var(--su
 .gh .rgrp  { background: var(--race-bg)   !important; color: var(--race-hdr)   !important; border-bottom: 1px solid var(--race-hdr)   !important; }
 .gh .tgrp  { background: var(--total-bg)  !important; color: var(--total-hdr)  !important; }
 
-/* col header row */
+/* col header row — only this row is sticky vertically */
 .ch th {
+  position: sticky; top: 0; z-index: 12; background: var(--surface);
   height: 28px; font-size: 11px; font-weight: 600; line-height: 1.25; padding: 3px 5px;
   font-variant: small-caps; letter-spacing: 0.08em; color: #888; overflow: hidden;
+  border-bottom: 2px solid var(--border);
 }
 .ch .sh { background: var(--sprint-bg) !important; color: var(--sprint-hdr) !important; }
 .ch .rh { background: var(--race-bg)   !important; color: var(--race-hdr)   !important; }
