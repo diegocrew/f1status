@@ -41,23 +41,31 @@ function raceClass(pts) {
   return map[pts] || (pts >= 1 ? 'p1' : '');
 }
 
-function sparkline(pts, isDNF) {
-  const n = pts.length;
-  if (n === 0) return '';
-  const bw = 6, gap = 2, h = 16, maxPts = 33; // max per round = 25 race + 8 sprint
-  const w = n * bw + (n - 1) * gap;
-  const bars = pts.map((p, i) => {
-    const barH = isDNF[i] ? 3 : Math.max(2, Math.round(p / maxPts * h));
-    const x = i * (bw + gap);
-    const y = h - barH;
-    const fill = isDNF[i] ? '#FFAAAA'
-               : p >= 20  ? '#B8860B'
-               : p >= 6   ? '#229971'
-               : p > 0    ? '#64B5F6'
-               :             '#DDDDDD';
-    return `<rect x="${x}" y="${y}" width="${bw}" height="${barH}" fill="${fill}" rx="1"/>`;
-  }).join('');
-  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="vertical-align:middle">${bars}</svg>`;
+const RACE_FORM_SCORE = { 25: 20, 18: 16, 15: 13, 12: 10, 10: 8, 8: 6, 6: 5, 4: 4, 2: 3, 1: 2 };
+
+function raceScore(pts, status) {
+  if (status === 'DNF' || status === 'DNS') return -7;
+  if (pts > 0) return RACE_FORM_SCORE[pts] ?? 2; // known pts values; fallback 2
+  return 1; // finished outside points
+}
+
+function formColor(f) {
+  if (f >= 76) return '#C8E6C9'; // green
+  if (f >= 51) return '#B3E5FC'; // blue
+  if (f >= 26) return '#FFE0B2'; // amber
+  return '#FFCDD2';              // red
+}
+
+function computeForm(d, last5Races) {
+  if (last5Races.length === 0) return null;
+  const n = last5Races.length;
+  const raw = last5Races.reduce((sum, r) => {
+    const pts    = d.race_points[String(r.round)] ?? 0;
+    const status = d.race_status?.[String(r.round)] ?? '';
+    return sum + raceScore(pts, status);
+  }, 0);
+  const minRaw = n * -7, maxRaw = n * 20;
+  return Math.max(0, Math.min(100, Math.round((raw - minRaw) / (maxRaw - minRaw) * 100)));
 }
 
 function fmtDate(dateStr) {
@@ -215,18 +223,16 @@ function buildDriverTable(data) {
     cell('totcell', d.total);
     cell('poscell', d.possible);
 
-    // ── form sparkline (last 5 completed race weekends) ──
+    // ── form rating 0–100 (last 5 completed races) ──
     const completedRaceList = races.filter(r => completedR.has(r.round));
     const last5 = completedRaceList.slice(-5);
-    const formPts  = last5.map(r => (d.race_points[String(r.round)] ?? 0) +
-                                    (completedSR.has(r.round) ? (d.sprint_points[String(r.round)] ?? 0) : 0));
-    const formDNF  = last5.map(r => {
-      const st = d.race_status?.[String(r.round)] ?? '';
-      return st === 'DNF' || st === 'DNS';
-    });
+    const form   = computeForm(d, last5);
     const formTd = tr.insertCell();
     formTd.className = 'formcell';
-    formTd.innerHTML = sparkline(formPts, formDNF);
+    if (form !== null) {
+      formTd.textContent = form;
+      formTd.style.background = formColor(form);
+    }
 
     // ── season projection (last 3 race avg × remaining races) ──
     const last3 = completedRaceList.slice(-3);
