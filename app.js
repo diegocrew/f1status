@@ -161,7 +161,7 @@ function buildDriverTable(data) {
       td.className = 'sprint-td';
       if (completedSR.has(rnd)) {
         const pts = d.sprint_points[String(rnd)] ?? 0;
-        if (pts > 0) { td.textContent = pts; td.className = sprintClass(pts); td.style.color = color; }
+        if (pts > 0) { td.textContent = pts; td.className = sprintClass(pts); }
       } else if (cancelledR.has(rnd)) {
         td.className = 'cancelled'; td.textContent = 'cnc';
       } else {
@@ -174,7 +174,7 @@ function buildDriverTable(data) {
       td.className = 'race-td';
       if (completedR.has(race.round)) {
         const pts = d.race_points[String(race.round)] ?? 0;
-        if (pts > 0) { td.textContent = pts; td.className = raceClass(pts); td.style.color = color; }
+        if (pts > 0) { td.textContent = pts; td.className = raceClass(pts); }
       } else if (cancelledR.has(race.round)) {
         td.className = 'cancelled'; td.textContent = 'cnc';
       } else {
