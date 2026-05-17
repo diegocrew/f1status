@@ -41,6 +41,16 @@ function raceClass(pts) {
   return map[pts] || (pts >= 1 ? 'p1' : '');
 }
 
+function fmtDate(dateStr) {
+  const [, m, d] = dateStr.split('-');
+  return `${+d}.${+m}`;
+}
+function sprintDate(raceDateStr) {
+  const [y, m, d] = raceDateStr.split('-').map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d - 1));
+  return `${dt.getUTCDate()}.${dt.getUTCMonth() + 1}`;
+}
+
 // ── data processing ──────────────────────────────────────────────────────────
 
 function processData(raw) {
@@ -100,8 +110,13 @@ function buildDriverTable(data) {
     gr.appendChild(t);
   };
   gth('', 'blank'); gth('', 'blank');
-  if (sprintRounds.length) gth(`Sprint ×${sprintRounds.length}`, 'sgrp', sprintRounds.length);
-  gth(`Races ×${races.length}`, 'rgrp', races.length);
+  sprintRounds.forEach(rnd => {
+    const race = races.find(r => r.round === rnd);
+    gth(race ? sprintDate(race.date) : '', 'sgrp');
+  });
+  races.forEach(race => {
+    gth(fmtDate(race.date), 'rgrp');
+  });
   gth('', 'tgrp');
   gth('', 'blank');
 
@@ -207,7 +222,6 @@ async function init() {
   st.className   = '';
   document.getElementById('driversTbl').innerHTML = '';
   document.getElementById('consList').innerHTML   = '';
-  document.getElementById('lastUpdated').textContent = '';
 
   try {
     const res = await fetch(`data/${year}.json`);
@@ -219,8 +233,6 @@ async function init() {
     buildConstructors(data.constructors);
 
     st.textContent = '';
-    document.getElementById('lastUpdated').textContent =
-      `Data fetched ${new Date(raw.fetched_at).toLocaleString()}`;
     document.getElementById('seasonLabel').textContent = `${year} Season`;
   } catch (e) {
     st.textContent = e.message;
