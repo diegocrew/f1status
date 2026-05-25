@@ -1,6 +1,6 @@
 {
   "year": 2026,
-  "fetched_at": "2026-05-18T07:00:33.897548+00:00",
+  "fetched_at": "2026-05-25T07:19:07.375792+00:00",
   "races": [
     {
       "round": 1,
@@ -44,7 +44,7 @@
       "code": "CAN",
       "date": "2026-05-24",
       "is_sprint_weekend": true,
-      "completed": false,
+      "completed": true,
       "cancelled": false
     },
     {
@@ -213,11 +213,13 @@
     1,
     2,
     3,
-    4
+    4,
+    5
   ],
   "completed_sprint_rounds": [
     2,
-    4
+    4,
+    5
   ],
   "cancelled_rounds": [],
   "drivers": [
@@ -231,20 +233,23 @@
         "1": 18.0,
         "2": 25.0,
         "3": 25.0,
-        "4": 25.0
+        "4": 25.0,
+        "5": 25.0
       },
       "race_status": {
         "1": "",
         "2": "",
         "3": "",
-        "4": ""
+        "4": "",
+        "5": ""
       },
       "sprint_points": {
         "2": 4.0,
-        "4": 3.0
+        "4": 3.0,
+        "5": 6.0
       },
-      "total": 100.0,
-      "possible": 582.0
+      "total": 131.0,
+      "possible": 580.0
     },
     {
       "id": "russell",
@@ -266,10 +271,11 @@
       },
       "sprint_points": {
         "2": 8.0,
-        "4": 5.0
+        "4": 5.0,
+        "5": 8.0
       },
-      "total": 80.0,
-      "possible": 562.0
+      "total": 88.0,
+      "possible": 537.0
     },
     {
       "id": "leclerc",
@@ -281,20 +287,23 @@
         "1": 15.0,
         "2": 12.0,
         "3": 15.0,
-        "4": 4.0
+        "4": 4.0,
+        "5": 12.0
       },
       "race_status": {
         "1": "",
         "2": "",
         "3": "",
-        "4": ""
+        "4": "",
+        "5": ""
       },
       "sprint_points": {
         "2": 7.0,
-        "4": 6.0
+        "4": 6.0,
+        "5": 4.0
       },
-      "total": 59.0,
-      "possible": 541.0
+      "total": 75.0,
+      "possible": 524.0
     },
     {
       "id": "hamilton",
@@ -306,20 +315,23 @@
         "1": 12.0,
         "2": 15.0,
         "3": 8.0,
-        "4": 8.0
+        "4": 8.0,
+        "5": 18.0
       },
       "race_status": {
         "1": "",
         "2": "",
         "3": "",
-        "4": ""
+        "4": "",
+        "5": ""
       },
       "sprint_points": {
         "2": 6.0,
-        "4": 2.0
+        "4": 2.0,
+        "5": 3.0
       },
-      "total": 51.0,
-      "possible": 533.0
+      "total": 72.0,
+      "possible": 521.0
     },
     {
       "id": "norris",
@@ -341,10 +353,11 @@
       },
       "sprint_points": {
         "2": 5.0,
-        "4": 8.0
+        "4": 8.0,
+        "5": 7.0
       },
-      "total": 51.0,
-      "possible": 533.0
+      "total": 58.0,
+      "possible": 507.0
     },
     {
       "id": "piastri",
@@ -356,20 +369,23 @@
         "1": 0.0,
         "2": 0.0,
         "3": 18.0,
-        "4": 15.0
+        "4": 15.0,
+        "5": 0.0
       },
       "race_status": {
         "1": "DNS",
         "2": "DNS",
         "3": "",
-        "4": ""
+        "4": "",
+        "5": ""
       },
       "sprint_points": {
         "2": 3.0,
-        "4": 7.0
+        "4": 7.0,
+        "5": 5.0
       },
-      "total": 43.0,
-      "possible": 525.0
+      "total": 48.0,
+      "possible": 497.0
     },
     {
       "id": "max_verstappen",
@@ -381,45 +397,23 @@
         "1": 8.0,
         "2": 0.0,
         "3": 4.0,
-        "4": 10.0
+        "4": 10.0,
+        "5": 15.0
       },
       "race_status": {
         "1": "",
         "2": "DNF",
         "3": "",
-        "4": ""
+        "4": "",
+        "5": ""
       },
       "sprint_points": {
         "2": 0.0,
-        "4": 4.0
+        "4": 4.0,
+        "5": 2.0
       },
-      "total": 26.0,
-      "possible": 508.0
-    },
-    {
-      "id": "bearman",
-      "family_name": "Bearman",
-      "given_name": "Oliver",
-      "constructor_id": "haas",
-      "constructor_name": "Haas F1 Team",
-      "race_points": {
-        "1": 6.0,
-        "2": 10.0,
-        "3": 0.0,
-        "4": 0.0
-      },
-      "race_status": {
-        "1": "",
-        "2": "",
-        "3": "DNF",
-        "4": ""
-      },
-      "sprint_points": {
-        "2": 1.0,
-        "4": 0.0
-      },
-      "total": 17.0,
-      "possible": 499.0
+      "total": 43.0,
+      "possible": 492.0
     },
     {
       "id": "gasly",
@@ -431,20 +425,51 @@
         "1": 1.0,
         "2": 8.0,
         "3": 6.0,
-        "4": 0.0
+        "4": 0.0,
+        "5": 4.0
       },
       "race_status": {
         "1": "",
         "2": "",
         "3": "",
-        "4": "DNF"
+        "4": "DNF",
+        "5": ""
       },
       "sprint_points": {
         "2": 0.0,
-        "4": 1.0
+        "4": 1.0,
+        "5": 0.0
       },
-      "total": 16.0,
-      "possible": 498.0
+      "total": 20.0,
+      "possible": 469.0
+    },
+    {
+      "id": "bearman",
+      "family_name": "Bearman",
+      "given_name": "Oliver",
+      "constructor_id": "haas",
+      "constructor_name": "Haas F1 Team",
+      "race_points": {
+        "1": 6.0,
+        "2": 10.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 1.0
+      },
+      "race_status": {
+        "1": "",
+        "2": "",
+        "3": "DNF",
+        "4": "",
+        "5": ""
+      },
+      "sprint_points": {
+        "2": 1.0,
+        "4": 0.0,
+        "5": 0.0
+      },
+      "total": 18.0,
+      "possible": 467.0
     },
     {
       "id": "lawson",
@@ -456,20 +481,23 @@
         "1": 0.0,
         "2": 6.0,
         "3": 2.0,
-        "4": 0.0
+        "4": 0.0,
+        "5": 6.0
       },
       "race_status": {
         "1": "",
         "2": "",
         "3": "",
-        "4": "DNF"
+        "4": "DNF",
+        "5": ""
       },
       "sprint_points": {
         "2": 2.0,
-        "4": 0.0
+        "4": 0.0,
+        "5": 0.0
       },
-      "total": 10.0,
-      "possible": 492.0
+      "total": 16.0,
+      "possible": 465.0
     },
     {
       "id": "colapinto",
@@ -481,20 +509,79 @@
         "1": 0.0,
         "2": 1.0,
         "3": 0.0,
-        "4": 6.0
+        "4": 6.0,
+        "5": 8.0
       },
       "race_status": {
         "1": "",
         "2": "",
         "3": "",
-        "4": ""
+        "4": "",
+        "5": ""
       },
       "sprint_points": {
         "2": 0.0,
-        "4": 0.0
+        "4": 0.0,
+        "5": 0.0
       },
-      "total": 7.0,
-      "possible": 489.0
+      "total": 15.0,
+      "possible": 464.0
+    },
+    {
+      "id": "hadjar",
+      "family_name": "Hadjar",
+      "given_name": "Isack",
+      "constructor_id": "red_bull",
+      "constructor_name": "Red Bull",
+      "race_points": {
+        "1": 0.0,
+        "2": 4.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 10.0
+      },
+      "race_status": {
+        "1": "DNF",
+        "2": "",
+        "3": "",
+        "4": "DNF",
+        "5": ""
+      },
+      "sprint_points": {
+        "2": 0.0,
+        "4": 0.0,
+        "5": 0.0
+      },
+      "total": 14.0,
+      "possible": 463.0
+    },
+    {
+      "id": "sainz",
+      "family_name": "Sainz",
+      "given_name": "Carlos",
+      "constructor_id": "williams",
+      "constructor_name": "Williams",
+      "race_points": {
+        "1": 0.0,
+        "2": 2.0,
+        "3": 0.0,
+        "4": 2.0,
+        "5": 2.0
+      },
+      "race_status": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "sprint_points": {
+        "2": 0.0,
+        "4": 0.0,
+        "5": 0.0
+      },
+      "total": 6.0,
+      "possible": 455.0
     },
     {
       "id": "arvid_lindblad",
@@ -516,60 +603,11 @@
       },
       "sprint_points": {
         "2": 0.0,
-        "4": 0.0
+        "4": 0.0,
+        "5": 1.0
       },
-      "total": 4.0,
-      "possible": 486.0
-    },
-    {
-      "id": "sainz",
-      "family_name": "Sainz",
-      "given_name": "Carlos",
-      "constructor_id": "williams",
-      "constructor_name": "Williams",
-      "race_points": {
-        "1": 0.0,
-        "2": 2.0,
-        "3": 0.0,
-        "4": 2.0
-      },
-      "race_status": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": ""
-      },
-      "sprint_points": {
-        "2": 0.0,
-        "4": 0.0
-      },
-      "total": 4.0,
-      "possible": 486.0
-    },
-    {
-      "id": "hadjar",
-      "family_name": "Hadjar",
-      "given_name": "Isack",
-      "constructor_id": "red_bull",
-      "constructor_name": "Red Bull",
-      "race_points": {
-        "1": 0.0,
-        "2": 4.0,
-        "3": 0.0,
-        "4": 0.0
-      },
-      "race_status": {
-        "1": "DNF",
-        "2": "",
-        "3": "",
-        "4": "DNF"
-      },
-      "sprint_points": {
-        "2": 0.0,
-        "4": 0.0
-      },
-      "total": 4.0,
-      "possible": 486.0
+      "total": 5.0,
+      "possible": 454.0
     },
     {
       "id": "bortoleto",
@@ -591,10 +629,11 @@
       },
       "sprint_points": {
         "2": 0.0,
-        "4": 0.0
+        "4": 0.0,
+        "5": 0.0
       },
       "total": 2.0,
-      "possible": 484.0
+      "possible": 451.0
     },
     {
       "id": "ocon",
@@ -616,10 +655,11 @@
       },
       "sprint_points": {
         "2": 0.0,
-        "4": 0.0
+        "4": 0.0,
+        "5": 0.0
       },
       "total": 1.0,
-      "possible": 483.0
+      "possible": 450.0
     },
     {
       "id": "albon",
@@ -641,10 +681,11 @@
       },
       "sprint_points": {
         "2": 0.0,
-        "4": 0.0
+        "4": 0.0,
+        "5": 0.0
       },
       "total": 1.0,
-      "possible": 483.0
+      "possible": 450.0
     },
     {
       "id": "perez",
@@ -666,10 +707,11 @@
       },
       "sprint_points": {
         "2": 0.0,
-        "4": 0.0
+        "4": 0.0,
+        "5": 0.0
       },
       "total": 0.0,
-      "possible": 482.0
+      "possible": 449.0
     },
     {
       "id": "stroll",
@@ -691,10 +733,11 @@
       },
       "sprint_points": {
         "2": 0.0,
-        "4": 0.0
+        "4": 0.0,
+        "5": 0.0
       },
       "total": 0.0,
-      "possible": 482.0
+      "possible": 449.0
     },
     {
       "id": "alonso",
@@ -716,10 +759,11 @@
       },
       "sprint_points": {
         "2": 0.0,
-        "4": 0.0
+        "4": 0.0,
+        "5": 0.0
       },
       "total": 0.0,
-      "possible": 482.0
+      "possible": 449.0
     },
     {
       "id": "bottas",
@@ -741,10 +785,11 @@
       },
       "sprint_points": {
         "2": 0.0,
-        "4": 0.0
+        "4": 0.0,
+        "5": 0.0
       },
       "total": 0.0,
-      "possible": 482.0
+      "possible": 449.0
     },
     {
       "id": "hulkenberg",
@@ -756,20 +801,23 @@
         "1": 0.0,
         "2": 0.0,
         "3": 0.0,
-        "4": 0.0
+        "4": 0.0,
+        "5": 0.0
       },
       "race_status": {
         "1": "DNS",
         "2": "",
         "3": "",
-        "4": "DNF"
+        "4": "DNF",
+        "5": ""
       },
       "sprint_points": {
         "2": 0.0,
-        "4": 0.0
+        "4": 0.0,
+        "5": 0.0
       },
       "total": 0.0,
-      "possible": 482.0
+      "possible": 449.0
     }
   ]
 }
