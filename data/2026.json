@@ -1,6 +1,7 @@
 {
   "year": 2026,
-  "fetched_at": "2026-06-01T08:39:20.955756+00:00",
+  "fetched_at": "2026-06-01T20:19:39.945854+00:00",
+  "source": "openf1",
   "races": [
     {
       "round": 1,
@@ -184,7 +185,7 @@
     },
     {
       "round": 21,
-      "name": "Brazilian Grand Prix",
+      "name": "São Paulo Grand Prix",
       "code": "BRA",
       "date": "2026-11-08",
       "is_sprint_weekend": false,
@@ -245,9 +246,9 @@
   ],
   "drivers": [
     {
-      "id": "antonelli",
+      "id": "ant",
       "family_name": "Antonelli",
-      "given_name": "Andrea Kimi",
+      "given_name": "Kimi",
       "constructor_id": "mercedes",
       "constructor_name": "Mercedes",
       "race_points": {
@@ -273,7 +274,7 @@
       "possible": 580.0
     },
     {
-      "id": "russell",
+      "id": "rus",
       "family_name": "Russell",
       "given_name": "George",
       "constructor_id": "mercedes",
@@ -301,7 +302,7 @@
       "possible": 537.0
     },
     {
-      "id": "leclerc",
+      "id": "lec",
       "family_name": "Leclerc",
       "given_name": "Charles",
       "constructor_id": "ferrari",
@@ -329,7 +330,7 @@
       "possible": 524.0
     },
     {
-      "id": "hamilton",
+      "id": "ham",
       "family_name": "Hamilton",
       "given_name": "Lewis",
       "constructor_id": "ferrari",
@@ -357,7 +358,7 @@
       "possible": 521.0
     },
     {
-      "id": "norris",
+      "id": "nor",
       "family_name": "Norris",
       "given_name": "Lando",
       "constructor_id": "mclaren",
@@ -385,7 +386,7 @@
       "possible": 507.0
     },
     {
-      "id": "piastri",
+      "id": "pia",
       "family_name": "Piastri",
       "given_name": "Oscar",
       "constructor_id": "mclaren",
@@ -413,11 +414,11 @@
       "possible": 497.0
     },
     {
-      "id": "max_verstappen",
+      "id": "ver",
       "family_name": "Verstappen",
       "given_name": "Max",
-      "constructor_id": "red_bull",
-      "constructor_name": "Red Bull",
+      "constructor_id": "red_bull_racing",
+      "constructor_name": "Red Bull Racing",
       "race_points": {
         "1": 8.0,
         "2": 0.0,
@@ -441,11 +442,11 @@
       "possible": 492.0
     },
     {
-      "id": "gasly",
+      "id": "gas",
       "family_name": "Gasly",
       "given_name": "Pierre",
       "constructor_id": "alpine",
-      "constructor_name": "Alpine F1 Team",
+      "constructor_name": "Alpine",
       "race_points": {
         "1": 1.0,
         "2": 8.0,
@@ -469,10 +470,10 @@
       "possible": 469.0
     },
     {
-      "id": "bearman",
+      "id": "bea",
       "family_name": "Bearman",
       "given_name": "Oliver",
-      "constructor_id": "haas",
+      "constructor_id": "haas_f1_team",
       "constructor_name": "Haas F1 Team",
       "race_points": {
         "1": 6.0,
@@ -497,11 +498,11 @@
       "possible": 467.0
     },
     {
-      "id": "lawson",
+      "id": "law",
       "family_name": "Lawson",
       "given_name": "Liam",
-      "constructor_id": "rb",
-      "constructor_name": "RB F1 Team",
+      "constructor_id": "racing_bulls",
+      "constructor_name": "Racing Bulls",
       "race_points": {
         "1": 0.0,
         "2": 6.0,
@@ -525,11 +526,11 @@
       "possible": 465.0
     },
     {
-      "id": "colapinto",
+      "id": "col",
       "family_name": "Colapinto",
       "given_name": "Franco",
       "constructor_id": "alpine",
-      "constructor_name": "Alpine F1 Team",
+      "constructor_name": "Alpine",
       "race_points": {
         "1": 0.0,
         "2": 1.0,
@@ -553,11 +554,11 @@
       "possible": 464.0
     },
     {
-      "id": "hadjar",
+      "id": "had",
       "family_name": "Hadjar",
       "given_name": "Isack",
-      "constructor_id": "red_bull",
-      "constructor_name": "Red Bull",
+      "constructor_id": "red_bull_racing",
+      "constructor_name": "Red Bull Racing",
       "race_points": {
         "1": 0.0,
         "2": 4.0,
@@ -581,7 +582,7 @@
       "possible": 463.0
     },
     {
-      "id": "sainz",
+      "id": "sai",
       "family_name": "Sainz",
       "given_name": "Carlos",
       "constructor_id": "williams",
@@ -609,11 +610,11 @@
       "possible": 455.0
     },
     {
-      "id": "arvid_lindblad",
+      "id": "lin",
       "family_name": "Lindblad",
       "given_name": "Arvid",
-      "constructor_id": "rb",
-      "constructor_name": "RB F1 Team",
+      "constructor_id": "racing_bulls",
+      "constructor_name": "Racing Bulls",
       "race_points": {
         "1": 4.0,
         "2": 0.0,
@@ -637,7 +638,7 @@
       "possible": 454.0
     },
     {
-      "id": "bortoleto",
+      "id": "bor",
       "family_name": "Bortoleto",
       "given_name": "Gabriel",
       "constructor_id": "audi",
@@ -665,10 +666,10 @@
       "possible": 451.0
     },
     {
-      "id": "ocon",
+      "id": "oco",
       "family_name": "Ocon",
       "given_name": "Esteban",
-      "constructor_id": "haas",
+      "constructor_id": "haas_f1_team",
       "constructor_name": "Haas F1 Team",
       "race_points": {
         "1": 0.0,
@@ -693,7 +694,7 @@
       "possible": 450.0
     },
     {
-      "id": "albon",
+      "id": "alb",
       "family_name": "Albon",
       "given_name": "Alexander",
       "constructor_id": "williams",
@@ -721,11 +722,11 @@
       "possible": 450.0
     },
     {
-      "id": "perez",
-      "family_name": "Pérez",
+      "id": "per",
+      "family_name": "Perez",
       "given_name": "Sergio",
       "constructor_id": "cadillac",
-      "constructor_name": "Cadillac F1 Team",
+      "constructor_name": "Cadillac",
       "race_points": {
         "1": 0.0,
         "2": 0.0,
@@ -749,7 +750,7 @@
       "possible": 449.0
     },
     {
-      "id": "stroll",
+      "id": "str",
       "family_name": "Stroll",
       "given_name": "Lance",
       "constructor_id": "aston_martin",
@@ -777,7 +778,7 @@
       "possible": 449.0
     },
     {
-      "id": "alonso",
+      "id": "alo",
       "family_name": "Alonso",
       "given_name": "Fernando",
       "constructor_id": "aston_martin",
@@ -805,11 +806,11 @@
       "possible": 449.0
     },
     {
-      "id": "bottas",
+      "id": "bot",
       "family_name": "Bottas",
       "given_name": "Valtteri",
       "constructor_id": "cadillac",
-      "constructor_name": "Cadillac F1 Team",
+      "constructor_name": "Cadillac",
       "race_points": {
         "1": 0.0,
         "2": 0.0,
@@ -833,8 +834,8 @@
       "possible": 449.0
     },
     {
-      "id": "hulkenberg",
-      "family_name": "Hülkenberg",
+      "id": "hul",
+      "family_name": "Hulkenberg",
       "given_name": "Nico",
       "constructor_id": "audi",
       "constructor_name": "Audi",
@@ -860,6 +861,5 @@
       "total": 0.0,
       "possible": 449.0
     }
-  ],
-  "source": "openf1-calendar (manual cancelled-round patch); results verified vs OpenF1"
+  ]
 }
