@@ -1,6 +1,6 @@
 # f1status
 
-A real-time Formula 1 season tracker that displays driver and constructor championship standings with live updates from the Ergast API.
+A real-time Formula 1 season tracker that displays driver and constructor championship standings, sourced from OpenF1 and cross-checked against the Jolpica/Ergast API.
 
 ## Features
 
@@ -15,12 +15,23 @@ A real-time Formula 1 season tracker that displays driver and constructor champi
 
 ## Data Source
 
-Data fetched from the **Ergast API** (via Jolpica wrapper) at https://api.jolpi.ca/ergast/f1
+Two independent APIs are used so results can be cross-validated:
 
-- Fetches official F1 race results, sprint results, and schedules
-- Automatically detects sprint weekends
-- Handles mid-season driver transfers
-- Tracks cancelled races with 3-day API lag tolerance
+- **Primary — OpenF1** (https://api.openf1.org/v1): exposes per-driver `points` plus explicit
+  `dnf` / `dns` / `dsq` booleans, so retirements and non-starts can never silently render as
+  blank cells.
+- **Cross-check — Jolpica/Ergast** (https://api.jolpi.ca/ergast/f1): the fetcher compares its
+  OpenF1-derived results against Jolpica and prints any discrepancy. It is **reporting only** —
+  it never overwrites the data.
+
+The fetcher also:
+- Detects sprint weekends (meeting has a `Sprint` session)
+- Handles mid-season driver transfers (team refreshed each round)
+- Marks cancelled races — a past Grand Prix with no race classification (e.g. the 2026 Bahrain
+  and Saudi Arabian GPs) is flagged `cancelled` and shown as a `cnc` column
+
+Run `python scripts/fetch_data.py 2026` to regenerate; add `--no-check` to skip the Jolpica
+cross-check.
 
 ## Project Structure
 
@@ -32,7 +43,7 @@ f1status/
 │   ├── 2026.json       # Season data (auto-generated)
 │   └── .gitkeep
 ├── scripts/
-│   └── fetch_data.py    # Fetches season data from Ergast API
+│   └── fetch_data.py    # Fetches from OpenF1 (primary) + cross-checks vs Jolpica
 ├── .github/            # GitHub Pages deployment config
 └── README.md           # This file
 ```
@@ -60,11 +71,11 @@ f1status/
 
 ## Data Accuracy
 
-The app relies on official Ergast API data. Note:
-- DNF/DNS statuses are normalized from various race status descriptions
-- Blank/finished normally statuses are treated as completed without points
+Results come from OpenF1 and are cross-checked against Jolpica/Ergast. Note:
+- DNF/DNS come straight from OpenF1's `dnf`/`dns` flags; `dsq` is treated as a non-finish
+- Blank/finished-without-points cells mean the driver completed the race outside the points
 - Constructor standings are calculated by summing both drivers' points
-- Cancelled races are detected via 3-day API lag (races that should have data but don't get marked as cancelled after 3 days)
+- A cancelled race is a past Grand Prix that has no race classification in OpenF1
 
 ## Technical Details
 
@@ -73,7 +84,7 @@ The app relies on official Ergast API data. Note:
 - `buildDriverTable()`: Creates the main standings table with all race results
 - `buildConstructors()`: Generates constructor championship sidebar
 - `computeForm()`: Calculates form rating (0-100) for last 5 races
-- `normalize_status()`: Python function that standardizes race status descriptions
+- `fetch_season()` / `cross_check()`: Python functions that build the dataset from OpenF1 and validate it against Jolpica
 
 ### Performance
 - Sticky headers for navigation (first 2 columns and top 2 rows)
