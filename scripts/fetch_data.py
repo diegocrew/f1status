@@ -58,11 +58,12 @@ RACE_CODES = {
 
 # ── HTTP ───────────────────────────────────────────────────────────────────────
 
-def _get(url: str, params: dict | None = None, *, retries: int = 4) -> list | dict | None:
+def _get(url: str, params: dict | None = None, *, retries: int = 4,
+         timeout: int = 20) -> list | dict | None:
     """GET JSON with simple backoff. Returns None on a 404 (e.g. no result yet)."""
     for attempt in range(retries):
         try:
-            r = requests.get(url, params=params or {}, timeout=30)
+            r = requests.get(url, params=params or {}, timeout=timeout)
             if r.status_code == 404:
                 return None
             if r.status_code == 429 or r.status_code >= 500:
@@ -70,7 +71,7 @@ def _get(url: str, params: dict | None = None, *, retries: int = 4) -> list | di
                 continue
             r.raise_for_status()
             return r.json()
-        except requests.RequestException as e:
+        except requests.RequestException:
             if attempt == retries - 1:
                 raise
             time.sleep(1.5 * (attempt + 1))
@@ -154,22 +155,30 @@ def fetch_season(year: int) -> dict:
         drivers[num]["constructor_id"] = constructor_id(info.get("team_name", ""))
         drivers[num]["constructor_name"] = info.get("team_name", "")
 
+    today = now.date().isoformat()
     for rnd, m in enumerate(gp, start=1):
         mk = m["meeting_key"]
         msessions = sess_by_meeting.get(mk, {})
         race_sess = msessions.get("Race")
         sprint_sess = msessions.get("Sprint")
         is_sprint = sprint_sess is not None
-
-        # Roster + team for this weekend
-        roster = {d["driver_number"]: d for d in of1("drivers", meeting_key=mk)}
-
-        race_results = of1("session_result", session_key=race_sess["session_key"]) if race_sess else []
         race_date = (race_sess or m)["date_start"][:10]
 
+        # Future weekends have no results yet — skip their per-session API calls
+        # entirely (this is most of the calendar, and the bulk of the runtime).
+        # Fetch today's race too, so same-day results are picked up immediately.
+        should_fetch = race_date <= today
+        roster, race_results = {}, []
+        if should_fetch:
+            roster = {d["driver_number"]: d for d in of1("drivers", meeting_key=mk)}
+            if race_sess:
+                race_results = of1("session_result", session_key=race_sess["session_key"])
+
         completed = bool(race_results)
-        # Past weekend with no race classification ⇒ cancelled (e.g. Bahrain/Saudi 2026).
-        cancelled = (not completed) and race_date < now.date().isoformat()
+        # A *strictly past* weekend with no race classification ⇒ cancelled
+        # (e.g. Bahrain/Saudi 2026). A race happening today with no results yet
+        # is simply not-yet-completed, not cancelled.
+        cancelled = (race_date < today) and not completed
 
         if completed:
             completed_rounds.append(rnd)
@@ -186,7 +195,8 @@ def fetch_season(year: int) -> dict:
 
         if is_sprint:
             sprint_rounds.append(rnd)
-            sprint_results = of1("session_result", session_key=sprint_sess["session_key"])
+            sprint_results = (of1("session_result", session_key=sprint_sess["session_key"])
+                              if should_fetch else [])
             if sprint_results:
                 completed_sprint_rounds.append(rnd)
                 for row in sprint_results:
@@ -238,7 +248,10 @@ def cross_check(year: int, data: dict) -> None:
     """Compare OpenF1-derived results against Jolpica. Reports only; never mutates."""
     print("  cross-checking against Jolpica …")
     try:
-        mr = _get(f"{JOLPICA}/{year}/results.json", {"limit": 2000})
+        # Fail fast: Jolpica is only an optional validator, so don't let a dead
+        # host stall the run (one short attempt, not 4×20s of retries).
+        mr = _get(f"{JOLPICA}/{year}/results.json", {"limit": 2000},
+                  retries=1, timeout=12)
         if not mr:
             print("  ! Jolpica returned no data — skipping cross-check")
             return
