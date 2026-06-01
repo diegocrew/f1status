@@ -245,10 +245,9 @@ thead th:nth-child(1), thead th:nth-child(2) { z-index: 22; background: var(--su
 .ch .fh { background: #F0F4FF !important; color: #4455BB !important; }
 .ch .xh { background: #EDE9FF !important; color: #5533CC !important; font-weight: 700; }
 
-/* data rows */
-tbody tr { background: #FFFFFF; transition: background 0.15s; }
-tbody tr:nth-child(even) { background: #FAF8F5; }
-tbody tr:hover { background: #EFF5FF !important; }
+/* data rows — uniform surface, no zebra striping; rows separated by a thin divider only */
+tbody tr { background: var(--surface); transition: background 0.12s; }
+tbody tr:hover { background: #F3F7FE !important; }
 
 /* de-emphasize zero-point rows */
 tbody tr.zero-row .tc { color: #AAAAAA !important; }
@@ -262,16 +261,16 @@ tbody tr.zero-row .nc { color: #AAAAAA !important; font-weight: 400; }
 .p18 { background: #F5F5F5 !important; color: #708090 !important; font-weight: 700; font-size: 13px; }
 .p15 { background: #FFF3E0 !important; color: #CD7F32 !important; font-weight: 700; font-size: 13px; }
 
-/* other race cells — white bg, team color applied via inline style */
-.p12, .p10, .p8, .p6, .p4, .p2, .p1 { background: #FFFFFF !important; font-weight: 600; font-size: 13px; }
+/* other race cells — transparent so they blend with the uniform row */
+.p12, .p10, .p8, .p6, .p4, .p2, .p1 { background: transparent !important; font-weight: 600; font-size: 13px; }
 
 /* sprint cells — top 3 get podium colors, rest plain */
 .s8  { background: #C8E6C9 !important; color: #1A1A1A !important; font-weight: 700; font-size: 13px; }
 .s7  { background: #F5F5F5 !important; color: #708090 !important; font-weight: 700; font-size: 13px; }
 .s6  { background: #FFF3E0 !important; color: #CD7F32 !important; font-weight: 700; font-size: 13px; }
-.s5, .s4, .s3, .s2c, .s1c { background: #FFFFFF !important; font-weight: 600; font-size: 13px; }
+.s5, .s4, .s3, .s2c, .s1c { background: transparent !important; font-weight: 600; font-size: 13px; }
 
-.future    { background: var(--bg) !important; color: transparent; }
+.future    { background: #F7F6F4 !important; color: transparent; }
 .cancelled { background: #F0F0F0 !important; color: #bbb; font-size: 9px; font-style: italic; }
 .totcell   { background: var(--total-bg) !important; font-weight: 700; color: var(--total-hdr); min-width: 52px; font-size: 13px; }
 .poscell   { background: #F8F8F8 !important; color: var(--muted); font-size: 11px; min-width: 52px; }
@@ -279,8 +278,9 @@ tbody tr.zero-row .nc { color: #AAAAAA !important; font-weight: 400; }
 .sprint-td { min-width: 46px; }
 .race-td   { min-width: 46px; }
 
-.dnf      { background: #FFE5E5 !important; color: #CC4444 !important; font-size: 9px; font-style: italic; font-weight: 600; }
-.dns      { background: #F5F5F5 !important; color: #666666 !important; font-size: 9px; font-style: italic; font-weight: 600; }
+/* status cells — transparent, distinguished by a small colored label only */
+.dnf      { background: transparent !important; color: #D85C5C !important; font-size: 9px; font-weight: 700; letter-spacing: 0.06em; }
+.dns      { background: transparent !important; color: #B0AAA2 !important; font-size: 9px; font-weight: 700; letter-spacing: 0.06em; }
 .formcell { font-weight: 700; font-size: 13px; min-width: 48px; }
 .projcell { background: #EDE9FF !important; font-weight: 700; color: #5533CC; min-width: 52px; font-size: 13px; }
 </style>

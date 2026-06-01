@@ -22,42 +22,6 @@ Data fetched from the **Ergast API** (via Jolpica wrapper) at https://api.jolpi.
 - Handles mid-season driver transfers
 - Tracks cancelled races with 3-day API lag tolerance
 
-## Setup
-
-### Prerequisites
-- Python 3.7+
-- `requests` library: `pip install requests`
-
-### Initial Setup
-
-1. Clone the repository
-2. Run the data fetch script to generate the initial dataset:
-   ```bash
-   python scripts/fetch_data.py
-   ```
-   
-   To fetch multiple years:
-   ```bash
-   python scripts/fetch_data.py 2024 2025 2026
-   ```
-
-3. Serve the project locally (or deploy to GitHub Pages)
-   - Option A: Python's built-in server
-     ```bash
-     cd /path/to/f1status
-     python -m http.server 8000
-     ```
-   - Option B: Use any web server (nginx, Apache, etc.)
-
-4. Open `index.html` in your browser or visit `http://localhost:8000`
-
-### Updating Data
-
-Update data for the current year:
-```bash
-python scripts/fetch_data.py
-```
-
 ## Project Structure
 
 ```
@@ -115,15 +79,3 @@ The app relies on official Ergast API data. Note:
 - Sticky headers for navigation (first 2 columns and top 2 rows)
 - Virtual scrolling-friendly table structure
 - Minimal re-rendering on year selection
-
-## Browser Support
-
-Modern browsers with CSS Grid, CSS Variables, and ES6 support:
-- Chrome 60+
-- Firefox 55+
-- Safari 12.1+
-- Edge 79+
-
-## License
-
-MIT License - feel free to fork and modify for your own use.
