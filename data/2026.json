@@ -1,6 +1,6 @@
 {
   "year": 2026,
-  "fetched_at": "2026-06-01T20:26:32.140026+00:00",
+  "fetched_at": "2026-06-07T21:58:01.532191+00:00",
   "source": "openf1",
   "races": [
     {
@@ -72,7 +72,7 @@
       "code": "MON",
       "date": "2026-06-07",
       "is_sprint_weekend": false,
-      "completed": false,
+      "completed": true,
       "cancelled": false
     },
     {
@@ -233,7 +233,8 @@
     2,
     3,
     6,
-    7
+    7,
+    8
   ],
   "completed_sprint_rounds": [
     2,
@@ -256,78 +257,24 @@
         "2": 25.0,
         "3": 25.0,
         "6": 25.0,
-        "7": 25.0
+        "7": 25.0,
+        "8": 25.0
       },
       "race_status": {
         "1": "",
         "2": "",
         "3": "",
         "6": "",
-        "7": ""
+        "7": "",
+        "8": ""
       },
       "sprint_points": {
         "2": 4.0,
         "6": 3.0,
         "7": 6.0
       },
-      "total": 131.0,
+      "total": 156.0,
       "possible": 580.0
-    },
-    {
-      "id": "rus",
-      "family_name": "Russell",
-      "given_name": "George",
-      "constructor_id": "mercedes",
-      "constructor_name": "Mercedes",
-      "race_points": {
-        "1": 25.0,
-        "2": 18.0,
-        "3": 12.0,
-        "6": 12.0,
-        "7": 0.0
-      },
-      "race_status": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "6": "",
-        "7": "DNF"
-      },
-      "sprint_points": {
-        "2": 8.0,
-        "6": 5.0,
-        "7": 8.0
-      },
-      "total": 88.0,
-      "possible": 537.0
-    },
-    {
-      "id": "lec",
-      "family_name": "Leclerc",
-      "given_name": "Charles",
-      "constructor_id": "ferrari",
-      "constructor_name": "Ferrari",
-      "race_points": {
-        "1": 15.0,
-        "2": 12.0,
-        "3": 15.0,
-        "6": 4.0,
-        "7": 12.0
-      },
-      "race_status": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "6": "",
-        "7": ""
-      },
-      "sprint_points": {
-        "2": 7.0,
-        "6": 6.0,
-        "7": 4.0
-      },
-      "total": 75.0,
-      "possible": 524.0
     },
     {
       "id": "ham",
@@ -340,50 +287,84 @@
         "2": 15.0,
         "3": 8.0,
         "6": 8.0,
-        "7": 18.0
+        "7": 18.0,
+        "8": 18.0
       },
       "race_status": {
         "1": "",
         "2": "",
         "3": "",
         "6": "",
-        "7": ""
+        "7": "",
+        "8": ""
       },
       "sprint_points": {
         "2": 6.0,
         "6": 2.0,
         "7": 3.0
       },
-      "total": 72.0,
-      "possible": 521.0
+      "total": 90.0,
+      "possible": 514.0
     },
     {
-      "id": "nor",
-      "family_name": "Norris",
-      "given_name": "Lando",
-      "constructor_id": "mclaren",
-      "constructor_name": "McLaren",
+      "id": "rus",
+      "family_name": "Russell",
+      "given_name": "George",
+      "constructor_id": "mercedes",
+      "constructor_name": "Mercedes",
       "race_points": {
-        "1": 10.0,
-        "2": 0.0,
-        "3": 10.0,
-        "6": 18.0,
-        "7": 0.0
+        "1": 25.0,
+        "2": 18.0,
+        "3": 12.0,
+        "6": 12.0,
+        "7": 0.0,
+        "8": 0.0
       },
       "race_status": {
         "1": "",
-        "2": "DNS",
+        "2": "",
         "3": "",
         "6": "",
-        "7": "DNF"
+        "7": "DNF",
+        "8": ""
       },
       "sprint_points": {
-        "2": 5.0,
-        "6": 8.0,
-        "7": 7.0
+        "2": 8.0,
+        "6": 5.0,
+        "7": 8.0
       },
-      "total": 58.0,
-      "possible": 507.0
+      "total": 88.0,
+      "possible": 512.0
+    },
+    {
+      "id": "lec",
+      "family_name": "Leclerc",
+      "given_name": "Charles",
+      "constructor_id": "ferrari",
+      "constructor_name": "Ferrari",
+      "race_points": {
+        "1": 15.0,
+        "2": 12.0,
+        "3": 15.0,
+        "6": 4.0,
+        "7": 12.0,
+        "8": 0.0
+      },
+      "race_status": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "6": "",
+        "7": "",
+        "8": "DNF"
+      },
+      "sprint_points": {
+        "2": 7.0,
+        "6": 6.0,
+        "7": 4.0
+      },
+      "total": 75.0,
+      "possible": 499.0
     },
     {
       "id": "pia",
@@ -396,22 +377,54 @@
         "2": 0.0,
         "3": 18.0,
         "6": 15.0,
-        "7": 0.0
+        "7": 0.0,
+        "8": 12.0
       },
       "race_status": {
         "1": "DNS",
         "2": "DNS",
         "3": "",
         "6": "",
-        "7": ""
+        "7": "",
+        "8": ""
       },
       "sprint_points": {
         "2": 3.0,
         "6": 7.0,
         "7": 5.0
       },
-      "total": 48.0,
-      "possible": 497.0
+      "total": 60.0,
+      "possible": 484.0
+    },
+    {
+      "id": "nor",
+      "family_name": "Norris",
+      "given_name": "Lando",
+      "constructor_id": "mclaren",
+      "constructor_name": "McLaren",
+      "race_points": {
+        "1": 10.0,
+        "2": 0.0,
+        "3": 10.0,
+        "6": 18.0,
+        "7": 0.0,
+        "8": 0.0
+      },
+      "race_status": {
+        "1": "",
+        "2": "DNS",
+        "3": "",
+        "6": "",
+        "7": "DNF",
+        "8": "DNF"
+      },
+      "sprint_points": {
+        "2": 5.0,
+        "6": 8.0,
+        "7": 7.0
+      },
+      "total": 58.0,
+      "possible": 482.0
     },
     {
       "id": "ver",
@@ -424,14 +437,16 @@
         "2": 0.0,
         "3": 4.0,
         "6": 10.0,
-        "7": 15.0
+        "7": 15.0,
+        "8": 0.0
       },
       "race_status": {
         "1": "",
         "2": "DNF",
         "3": "",
         "6": "",
-        "7": ""
+        "7": "",
+        "8": "DNF"
       },
       "sprint_points": {
         "2": 0.0,
@@ -439,119 +454,7 @@
         "7": 2.0
       },
       "total": 43.0,
-      "possible": 492.0
-    },
-    {
-      "id": "gas",
-      "family_name": "Gasly",
-      "given_name": "Pierre",
-      "constructor_id": "alpine",
-      "constructor_name": "Alpine",
-      "race_points": {
-        "1": 1.0,
-        "2": 8.0,
-        "3": 6.0,
-        "6": 0.0,
-        "7": 4.0
-      },
-      "race_status": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "6": "DNF",
-        "7": ""
-      },
-      "sprint_points": {
-        "2": 0.0,
-        "6": 1.0,
-        "7": 0.0
-      },
-      "total": 20.0,
-      "possible": 469.0
-    },
-    {
-      "id": "bea",
-      "family_name": "Bearman",
-      "given_name": "Oliver",
-      "constructor_id": "haas_f1_team",
-      "constructor_name": "Haas F1 Team",
-      "race_points": {
-        "1": 6.0,
-        "2": 10.0,
-        "3": 0.0,
-        "6": 0.0,
-        "7": 1.0
-      },
-      "race_status": {
-        "1": "",
-        "2": "",
-        "3": "DNF",
-        "6": "",
-        "7": ""
-      },
-      "sprint_points": {
-        "2": 1.0,
-        "6": 0.0,
-        "7": 0.0
-      },
-      "total": 18.0,
       "possible": 467.0
-    },
-    {
-      "id": "law",
-      "family_name": "Lawson",
-      "given_name": "Liam",
-      "constructor_id": "racing_bulls",
-      "constructor_name": "Racing Bulls",
-      "race_points": {
-        "1": 0.0,
-        "2": 6.0,
-        "3": 2.0,
-        "6": 0.0,
-        "7": 6.0
-      },
-      "race_status": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "6": "DNF",
-        "7": ""
-      },
-      "sprint_points": {
-        "2": 2.0,
-        "6": 0.0,
-        "7": 0.0
-      },
-      "total": 16.0,
-      "possible": 465.0
-    },
-    {
-      "id": "col",
-      "family_name": "Colapinto",
-      "given_name": "Franco",
-      "constructor_id": "alpine",
-      "constructor_name": "Alpine",
-      "race_points": {
-        "1": 0.0,
-        "2": 1.0,
-        "3": 0.0,
-        "6": 6.0,
-        "7": 8.0
-      },
-      "race_status": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "6": "",
-        "7": ""
-      },
-      "sprint_points": {
-        "2": 0.0,
-        "6": 0.0,
-        "7": 0.0
-      },
-      "total": 15.0,
-      "possible": 464.0
     },
     {
       "id": "had",
@@ -564,50 +467,144 @@
         "2": 4.0,
         "3": 0.0,
         "6": 0.0,
-        "7": 10.0
+        "7": 10.0,
+        "8": 15.0
       },
       "race_status": {
         "1": "DNF",
         "2": "",
         "3": "",
         "6": "DNF",
-        "7": ""
+        "7": "",
+        "8": ""
       },
       "sprint_points": {
         "2": 0.0,
         "6": 0.0,
         "7": 0.0
       },
-      "total": 14.0,
-      "possible": 463.0
+      "total": 29.0,
+      "possible": 453.0
     },
     {
-      "id": "sai",
-      "family_name": "Sainz",
-      "given_name": "Carlos",
-      "constructor_id": "williams",
-      "constructor_name": "Williams",
+      "id": "gas",
+      "family_name": "Gasly",
+      "given_name": "Pierre",
+      "constructor_id": "alpine",
+      "constructor_name": "Alpine",
+      "race_points": {
+        "1": 1.0,
+        "2": 8.0,
+        "3": 6.0,
+        "6": 0.0,
+        "7": 4.0,
+        "8": 6.0
+      },
+      "race_status": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "6": "DNF",
+        "7": "",
+        "8": ""
+      },
+      "sprint_points": {
+        "2": 0.0,
+        "6": 1.0,
+        "7": 0.0
+      },
+      "total": 26.0,
+      "possible": 450.0
+    },
+    {
+      "id": "law",
+      "family_name": "Lawson",
+      "given_name": "Liam",
+      "constructor_id": "racing_bulls",
+      "constructor_name": "Racing Bulls",
       "race_points": {
         "1": 0.0,
+        "2": 6.0,
+        "3": 2.0,
+        "6": 0.0,
+        "7": 6.0,
+        "8": 10.0
+      },
+      "race_status": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "6": "DNF",
+        "7": "",
+        "8": ""
+      },
+      "sprint_points": {
         "2": 2.0,
+        "6": 0.0,
+        "7": 0.0
+      },
+      "total": 26.0,
+      "possible": 450.0
+    },
+    {
+      "id": "bea",
+      "family_name": "Bearman",
+      "given_name": "Oliver",
+      "constructor_id": "haas_f1_team",
+      "constructor_name": "Haas F1 Team",
+      "race_points": {
+        "1": 6.0,
+        "2": 10.0,
         "3": 0.0,
-        "6": 2.0,
-        "7": 2.0
+        "6": 0.0,
+        "7": 1.0,
+        "8": 0.0
+      },
+      "race_status": {
+        "1": "",
+        "2": "",
+        "3": "DNF",
+        "6": "",
+        "7": "",
+        "8": "DNF"
+      },
+      "sprint_points": {
+        "2": 1.0,
+        "6": 0.0,
+        "7": 0.0
+      },
+      "total": 18.0,
+      "possible": 442.0
+    },
+    {
+      "id": "col",
+      "family_name": "Colapinto",
+      "given_name": "Franco",
+      "constructor_id": "alpine",
+      "constructor_name": "Alpine",
+      "race_points": {
+        "1": 0.0,
+        "2": 1.0,
+        "3": 0.0,
+        "6": 6.0,
+        "7": 8.0,
+        "8": 0.0
       },
       "race_status": {
         "1": "",
         "2": "",
         "3": "",
         "6": "",
-        "7": ""
+        "7": "",
+        "8": ""
       },
       "sprint_points": {
         "2": 0.0,
         "6": 0.0,
         "7": 0.0
       },
-      "total": 6.0,
-      "possible": 455.0
+      "total": 15.0,
+      "possible": 439.0
     },
     {
       "id": "lin",
@@ -620,78 +617,54 @@
         "2": 0.0,
         "3": 0.0,
         "6": 0.0,
-        "7": 0.0
+        "7": 0.0,
+        "8": 8.0
       },
       "race_status": {
         "1": "",
         "2": "",
         "3": "",
         "6": "",
-        "7": "DNS"
+        "7": "DNS",
+        "8": ""
       },
       "sprint_points": {
         "2": 0.0,
         "6": 0.0,
         "7": 1.0
       },
-      "total": 5.0,
-      "possible": 454.0
+      "total": 13.0,
+      "possible": 437.0
     },
     {
-      "id": "bor",
-      "family_name": "Bortoleto",
-      "given_name": "Gabriel",
-      "constructor_id": "audi",
-      "constructor_name": "Audi",
-      "race_points": {
-        "1": 2.0,
-        "2": 0.0,
-        "3": 0.0,
-        "6": 0.0,
-        "7": 0.0
-      },
-      "race_status": {
-        "1": "",
-        "2": "DNS",
-        "3": "",
-        "6": "",
-        "7": ""
-      },
-      "sprint_points": {
-        "2": 0.0,
-        "6": 0.0,
-        "7": 0.0
-      },
-      "total": 2.0,
-      "possible": 451.0
-    },
-    {
-      "id": "oco",
-      "family_name": "Ocon",
-      "given_name": "Esteban",
-      "constructor_id": "haas_f1_team",
-      "constructor_name": "Haas F1 Team",
+      "id": "sai",
+      "family_name": "Sainz",
+      "given_name": "Carlos",
+      "constructor_id": "williams",
+      "constructor_name": "Williams",
       "race_points": {
         "1": 0.0,
-        "2": 0.0,
-        "3": 1.0,
-        "6": 0.0,
-        "7": 0.0
+        "2": 2.0,
+        "3": 0.0,
+        "6": 2.0,
+        "7": 2.0,
+        "8": 0.0
       },
       "race_status": {
         "1": "",
         "2": "",
         "3": "",
         "6": "",
-        "7": ""
+        "7": "",
+        "8": "DNF"
       },
       "sprint_points": {
         "2": 0.0,
         "6": 0.0,
         "7": 0.0
       },
-      "total": 1.0,
-      "possible": 450.0
+      "total": 6.0,
+      "possible": 430.0
     },
     {
       "id": "alb",
@@ -704,78 +677,84 @@
         "2": 0.0,
         "3": 0.0,
         "6": 1.0,
-        "7": 0.0
+        "7": 0.0,
+        "8": 4.0
       },
       "race_status": {
         "1": "",
         "2": "DNS",
         "3": "",
         "6": "",
-        "7": "DNF"
+        "7": "DNF",
+        "8": ""
       },
       "sprint_points": {
         "2": 0.0,
         "6": 0.0,
         "7": 0.0
       },
-      "total": 1.0,
-      "possible": 450.0
+      "total": 5.0,
+      "possible": 429.0
     },
     {
-      "id": "per",
-      "family_name": "Perez",
-      "given_name": "Sergio",
-      "constructor_id": "cadillac",
-      "constructor_name": "Cadillac",
+      "id": "oco",
+      "family_name": "Ocon",
+      "given_name": "Esteban",
+      "constructor_id": "haas_f1_team",
+      "constructor_name": "Haas F1 Team",
       "race_points": {
         "1": 0.0,
         "2": 0.0,
-        "3": 0.0,
+        "3": 1.0,
         "6": 0.0,
-        "7": 0.0
+        "7": 0.0,
+        "8": 2.0
       },
       "race_status": {
         "1": "",
         "2": "",
         "3": "",
         "6": "",
-        "7": "DNF"
+        "7": "",
+        "8": ""
       },
       "sprint_points": {
         "2": 0.0,
         "6": 0.0,
         "7": 0.0
       },
-      "total": 0.0,
-      "possible": 449.0
+      "total": 3.0,
+      "possible": 427.0
     },
     {
-      "id": "str",
-      "family_name": "Stroll",
-      "given_name": "Lance",
-      "constructor_id": "aston_martin",
-      "constructor_name": "Aston Martin",
+      "id": "bor",
+      "family_name": "Bortoleto",
+      "given_name": "Gabriel",
+      "constructor_id": "audi",
+      "constructor_name": "Audi",
       "race_points": {
-        "1": 0.0,
+        "1": 2.0,
         "2": 0.0,
         "3": 0.0,
         "6": 0.0,
-        "7": 0.0
+        "7": 0.0,
+        "8": 0.0
       },
       "race_status": {
         "1": "",
-        "2": "DNF",
-        "3": "DNF",
+        "2": "DNS",
+        "3": "",
         "6": "",
-        "7": ""
+        "7": "",
+        "8": ""
       },
       "sprint_points": {
         "2": 0.0,
         "6": 0.0,
         "7": 0.0
       },
-      "total": 0.0,
-      "possible": 449.0
+      "total": 2.0,
+      "possible": 426.0
     },
     {
       "id": "alo",
@@ -788,14 +767,46 @@
         "2": 0.0,
         "3": 0.0,
         "6": 0.0,
-        "7": 0.0
+        "7": 0.0,
+        "8": 1.0
       },
       "race_status": {
         "1": "DNF",
         "2": "DNF",
         "3": "",
         "6": "",
-        "7": "DNF"
+        "7": "DNF",
+        "8": ""
+      },
+      "sprint_points": {
+        "2": 0.0,
+        "6": 0.0,
+        "7": 0.0
+      },
+      "total": 1.0,
+      "possible": 425.0
+    },
+    {
+      "id": "per",
+      "family_name": "Perez",
+      "given_name": "Sergio",
+      "constructor_id": "cadillac",
+      "constructor_name": "Cadillac",
+      "race_points": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0
+      },
+      "race_status": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "6": "",
+        "7": "DNF",
+        "8": ""
       },
       "sprint_points": {
         "2": 0.0,
@@ -803,7 +814,37 @@
         "7": 0.0
       },
       "total": 0.0,
-      "possible": 449.0
+      "possible": 424.0
+    },
+    {
+      "id": "str",
+      "family_name": "Stroll",
+      "given_name": "Lance",
+      "constructor_id": "aston_martin",
+      "constructor_name": "Aston Martin",
+      "race_points": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0
+      },
+      "race_status": {
+        "1": "",
+        "2": "DNF",
+        "3": "DNF",
+        "6": "",
+        "7": "",
+        "8": "DNF"
+      },
+      "sprint_points": {
+        "2": 0.0,
+        "6": 0.0,
+        "7": 0.0
+      },
+      "total": 0.0,
+      "possible": 424.0
     },
     {
       "id": "bot",
@@ -816,14 +857,16 @@
         "2": 0.0,
         "3": 0.0,
         "6": 0.0,
-        "7": 0.0
+        "7": 0.0,
+        "8": 0.0
       },
       "race_status": {
         "1": "DNF",
         "2": "",
         "3": "",
         "6": "",
-        "7": ""
+        "7": "",
+        "8": "DNF"
       },
       "sprint_points": {
         "2": 0.0,
@@ -831,7 +874,7 @@
         "7": 0.0
       },
       "total": 0.0,
-      "possible": 449.0
+      "possible": 424.0
     },
     {
       "id": "hul",
@@ -844,14 +887,16 @@
         "2": 0.0,
         "3": 0.0,
         "6": 0.0,
-        "7": 0.0
+        "7": 0.0,
+        "8": 0.0
       },
       "race_status": {
         "1": "DNS",
         "2": "",
         "3": "",
         "6": "DNF",
-        "7": ""
+        "7": "",
+        "8": ""
       },
       "sprint_points": {
         "2": 0.0,
@@ -859,7 +904,7 @@
         "7": 0.0
       },
       "total": 0.0,
-      "possible": 449.0
+      "possible": 424.0
     }
   ]
 }
