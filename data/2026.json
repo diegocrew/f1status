@@ -1,6 +1,6 @@
 {
   "year": 2026,
-  "fetched_at": "2026-06-12T19:06:56.197289+00:00",
+  "fetched_at": "2026-06-13T16:46:15.759805+00:00",
   "source": "openf1",
   "races": [
     {
@@ -367,36 +367,6 @@
       "possible": 499.0
     },
     {
-      "id": "pia",
-      "family_name": "Piastri",
-      "given_name": "Oscar",
-      "constructor_id": "mclaren",
-      "constructor_name": "McLaren",
-      "race_points": {
-        "1": 0.0,
-        "2": 0.0,
-        "3": 18.0,
-        "6": 15.0,
-        "7": 0.0,
-        "8": 12.0
-      },
-      "race_status": {
-        "1": "DNS",
-        "2": "DNS",
-        "3": "",
-        "6": "",
-        "7": "",
-        "8": ""
-      },
-      "sprint_points": {
-        "2": 3.0,
-        "6": 7.0,
-        "7": 5.0
-      },
-      "total": 60.0,
-      "possible": 484.0
-    },
-    {
       "id": "nor",
       "family_name": "Norris",
       "given_name": "Lando",
@@ -422,6 +392,36 @@
         "2": 5.0,
         "6": 8.0,
         "7": 7.0
+      },
+      "total": 58.0,
+      "possible": 482.0
+    },
+    {
+      "id": "pia",
+      "family_name": "Piastri",
+      "given_name": "Oscar",
+      "constructor_id": "mclaren",
+      "constructor_name": "McLaren",
+      "race_points": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 18.0,
+        "6": 15.0,
+        "7": 0.0,
+        "8": 10.0
+      },
+      "race_status": {
+        "1": "DNS",
+        "2": "DNS",
+        "3": "",
+        "6": "",
+        "7": "",
+        "8": ""
+      },
+      "sprint_points": {
+        "2": 3.0,
+        "6": 7.0,
+        "7": 5.0
       },
       "total": 58.0,
       "possible": 482.0
@@ -457,36 +457,6 @@
       "possible": 467.0
     },
     {
-      "id": "had",
-      "family_name": "Hadjar",
-      "given_name": "Isack",
-      "constructor_id": "red_bull_racing",
-      "constructor_name": "Red Bull Racing",
-      "race_points": {
-        "1": 0.0,
-        "2": 4.0,
-        "3": 0.0,
-        "6": 0.0,
-        "7": 10.0,
-        "8": 15.0
-      },
-      "race_status": {
-        "1": "DNF",
-        "2": "",
-        "3": "",
-        "6": "DNF",
-        "7": "",
-        "8": ""
-      },
-      "sprint_points": {
-        "2": 0.0,
-        "6": 0.0,
-        "7": 0.0
-      },
-      "total": 29.0,
-      "possible": 453.0
-    },
-    {
       "id": "gas",
       "family_name": "Gasly",
       "given_name": "Pierre",
@@ -498,7 +468,7 @@
         "3": 6.0,
         "6": 0.0,
         "7": 4.0,
-        "8": 6.0
+        "8": 15.0
       },
       "race_status": {
         "1": "",
@@ -511,6 +481,36 @@
       "sprint_points": {
         "2": 0.0,
         "6": 1.0,
+        "7": 0.0
+      },
+      "total": 35.0,
+      "possible": 459.0
+    },
+    {
+      "id": "had",
+      "family_name": "Hadjar",
+      "given_name": "Isack",
+      "constructor_id": "red_bull_racing",
+      "constructor_name": "Red Bull Racing",
+      "race_points": {
+        "1": 0.0,
+        "2": 4.0,
+        "3": 0.0,
+        "6": 0.0,
+        "7": 10.0,
+        "8": 12.0
+      },
+      "race_status": {
+        "1": "DNF",
+        "2": "",
+        "3": "",
+        "6": "DNF",
+        "7": "",
+        "8": ""
+      },
+      "sprint_points": {
+        "2": 0.0,
+        "6": 0.0,
         "7": 0.0
       },
       "total": 26.0,
@@ -528,7 +528,7 @@
         "3": 2.0,
         "6": 0.0,
         "7": 6.0,
-        "8": 10.0
+        "8": 8.0
       },
       "race_status": {
         "1": "",
@@ -543,8 +543,8 @@
         "6": 0.0,
         "7": 0.0
       },
-      "total": 26.0,
-      "possible": 450.0
+      "total": 24.0,
+      "possible": 448.0
     },
     {
       "id": "bea",
@@ -618,7 +618,7 @@
         "3": 0.0,
         "6": 0.0,
         "7": 0.0,
-        "8": 8.0
+        "8": 6.0
       },
       "race_status": {
         "1": "",
@@ -633,8 +633,8 @@
         "6": 0.0,
         "7": 1.0
       },
-      "total": 13.0,
-      "possible": 437.0
+      "total": 11.0,
+      "possible": 435.0
     },
     {
       "id": "sai",
