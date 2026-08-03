@@ -1,6 +1,6 @@
 {
   "year": 2026,
-  "fetched_at": "2026-07-27T06:34:07.748244+00:00",
+  "fetched_at": "2026-08-03T06:27:51.792518+00:00",
   "source": "openf1",
   "races": [
     {
@@ -158,6 +158,15 @@
     },
     {
       "round": 18,
+      "name": "Bahrain Grand Prix",
+      "code": "BHR",
+      "date": "2026-10-04",
+      "is_sprint_weekend": false,
+      "completed": false,
+      "cancelled": false
+    },
+    {
+      "round": 19,
       "name": "Singapore Grand Prix",
       "code": "SIN",
       "date": "2026-10-11",
@@ -166,7 +175,7 @@
       "cancelled": false
     },
     {
-      "round": 19,
+      "round": 20,
       "name": "United States Grand Prix",
       "code": "USA",
       "date": "2026-10-25",
@@ -175,7 +184,7 @@
       "cancelled": false
     },
     {
-      "round": 20,
+      "round": 21,
       "name": "Mexico City Grand Prix",
       "code": "MEX",
       "date": "2026-11-01",
@@ -184,7 +193,7 @@
       "cancelled": false
     },
     {
-      "round": 21,
+      "round": 22,
       "name": "São Paulo Grand Prix",
       "code": "BRA",
       "date": "2026-11-08",
@@ -193,7 +202,7 @@
       "cancelled": false
     },
     {
-      "round": 22,
+      "round": 23,
       "name": "Las Vegas Grand Prix",
       "code": "LV",
       "date": "2026-11-22",
@@ -202,7 +211,7 @@
       "cancelled": false
     },
     {
-      "round": 23,
+      "round": 24,
       "name": "Qatar Grand Prix",
       "code": "QAT",
       "date": "2026-11-29",
@@ -211,7 +220,7 @@
       "cancelled": false
     },
     {
-      "round": 24,
+      "round": 25,
       "name": "Abu Dhabi Grand Prix",
       "code": "ABU",
       "date": "2026-12-06",
@@ -226,7 +235,7 @@
     7,
     11,
     14,
-    18
+    19
   ],
   "completed_rounds": [
     1,
@@ -291,7 +300,7 @@
         "11": 8.0
       },
       "total": 219.0,
-      "possible": 510.0
+      "possible": 535.0
     },
     {
       "id": "ham",
@@ -332,7 +341,7 @@
         "11": 7.0
       },
       "total": 169.0,
-      "possible": 460.0
+      "possible": 485.0
     },
     {
       "id": "rus",
@@ -373,7 +382,7 @@
         "11": 5.0
       },
       "total": 160.0,
-      "possible": 451.0
+      "possible": 476.0
     },
     {
       "id": "lec",
@@ -414,7 +423,7 @@
         "11": 4.0
       },
       "total": 138.0,
-      "possible": 429.0
+      "possible": 454.0
     },
     {
       "id": "nor",
@@ -455,7 +464,7 @@
         "11": 6.0
       },
       "total": 128.0,
-      "possible": 419.0
+      "possible": 444.0
     },
     {
       "id": "ver",
@@ -496,7 +505,7 @@
         "11": 3.0
       },
       "total": 109.0,
-      "possible": 400.0
+      "possible": 425.0
     },
     {
       "id": "pia",
@@ -537,7 +546,7 @@
         "11": 2.0
       },
       "total": 92.0,
-      "possible": 383.0
+      "possible": 408.0
     },
     {
       "id": "had",
@@ -578,7 +587,7 @@
         "11": 0.0
       },
       "total": 68.0,
-      "possible": 359.0
+      "possible": 384.0
     },
     {
       "id": "law",
@@ -619,7 +628,7 @@
         "11": 1.0
       },
       "total": 43.0,
-      "possible": 334.0
+      "possible": 359.0
     },
     {
       "id": "gas",
@@ -660,7 +669,7 @@
         "11": 0.0
       },
       "total": 42.0,
-      "possible": 333.0
+      "possible": 358.0
     },
     {
       "id": "lin",
@@ -701,7 +710,7 @@
         "11": 0.0
       },
       "total": 23.0,
-      "possible": 314.0
+      "possible": 339.0
     },
     {
       "id": "col",
@@ -742,7 +751,7 @@
         "11": 0.0
       },
       "total": 19.0,
-      "possible": 310.0
+      "possible": 335.0
     },
     {
       "id": "bea",
@@ -783,7 +792,7 @@
         "11": 0.0
       },
       "total": 18.0,
-      "possible": 309.0
+      "possible": 334.0
     },
     {
       "id": "bor",
@@ -824,7 +833,7 @@
         "11": 0.0
       },
       "total": 10.0,
-      "possible": 301.0
+      "possible": 326.0
     },
     {
       "id": "sai",
@@ -865,7 +874,7 @@
         "11": 0.0
       },
       "total": 6.0,
-      "possible": 297.0
+      "possible": 322.0
     },
     {
       "id": "alb",
@@ -906,7 +915,7 @@
         "11": 0.0
       },
       "total": 5.0,
-      "possible": 296.0
+      "possible": 321.0
     },
     {
       "id": "oco",
@@ -947,7 +956,7 @@
         "11": 0.0
       },
       "total": 3.0,
-      "possible": 294.0
+      "possible": 319.0
     },
     {
       "id": "hul",
@@ -988,7 +997,7 @@
         "11": 0.0
       },
       "total": 2.0,
-      "possible": 293.0
+      "possible": 318.0
     },
     {
       "id": "alo",
@@ -1029,7 +1038,7 @@
         "11": 0.0
       },
       "total": 1.0,
-      "possible": 292.0
+      "possible": 317.0
     },
     {
       "id": "per",
@@ -1070,7 +1079,7 @@
         "11": 0.0
       },
       "total": 0.0,
-      "possible": 291.0
+      "possible": 316.0
     },
     {
       "id": "str",
@@ -1111,7 +1120,7 @@
         "11": 0.0
       },
       "total": 0.0,
-      "possible": 291.0
+      "possible": 316.0
     },
     {
       "id": "bot",
@@ -1152,7 +1161,7 @@
         "11": 0.0
       },
       "total": 0.0,
-      "possible": 291.0
+      "possible": 316.0
     }
   ]
 }
