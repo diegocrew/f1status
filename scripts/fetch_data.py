@@ -164,10 +164,15 @@ def fetch_season(year: int) -> dict:
         is_sprint = sprint_sess is not None
         race_date = (race_sess or m)["date_start"][:10]
 
+        # OpenF1 flags cancelled meetings directly (e.g. Bahrain/Saudi 2026) —
+        # trust that over inferring cancellation from an empty results fetch,
+        # which can't tell "actually cancelled" apart from "API call failed".
+        cancelled = bool(m.get("is_cancelled"))
+
         # Future weekends have no results yet — skip their per-session API calls
         # entirely (this is most of the calendar, and the bulk of the runtime).
         # Fetch today's race too, so same-day results are picked up immediately.
-        should_fetch = race_date <= today
+        should_fetch = race_date <= today and not cancelled
         roster, race_results = {}, []
         if should_fetch:
             roster = {d["driver_number"]: d for d in of1("drivers", meeting_key=mk)}
@@ -175,10 +180,6 @@ def fetch_season(year: int) -> dict:
                 race_results = of1("session_result", session_key=race_sess["session_key"])
 
         completed = bool(race_results)
-        # A *strictly past* weekend with no race classification ⇒ cancelled
-        # (e.g. Bahrain/Saudi 2026). A race happening today with no results yet
-        # is simply not-yet-completed, not cancelled.
-        cancelled = (race_date < today) and not completed
 
         if completed:
             completed_rounds.append(rnd)
