@@ -128,6 +128,24 @@ def status_from_flags(row: dict) -> str:
     return ""
 
 
+# OpenF1's session_result is a snapshot of the classification at the time the
+# session ended — it does not get backfilled when a post-race penalty later
+# changes the final result. Verified corrections (against official F1.com
+# standings) go here, keyed by (meeting_name, driver_number) -> points.
+#
+# 2026 Monaco GP: Gasly (#10) received a post-race time penalty dropping him
+# from P3 to P7; Hadjar (#6), Piastri (#81), Lawson (#30) and Lindblad (#41)
+# each moved up one place as a result. OpenF1 still serves the pre-penalty
+# order.
+RACE_RESULT_OVERRIDES: dict[tuple[str, int], float] = {
+    ("Monaco Grand Prix", 6): 15.0,
+    ("Monaco Grand Prix", 81): 12.0,
+    ("Monaco Grand Prix", 30): 10.0,
+    ("Monaco Grand Prix", 41): 8.0,
+    ("Monaco Grand Prix", 10): 6.0,
+}
+
+
 # ── fetch one season from OpenF1 ─────────────────────────────────────────────────
 
 def fetch_season(year: int) -> dict:
@@ -215,7 +233,8 @@ def fetch_season(year: int) -> dict:
                     upsert(num, roster[num])
                 if num not in drivers:        # roster miss → minimal stub
                     upsert(num, {"full_name": f"#{num}", "team_name": ""})
-                pts = float(row.get("points") or 0)
+                pts = RACE_RESULT_OVERRIDES.get((m["meeting_name"], num),
+                                                 float(row.get("points") or 0))
                 drivers[num]["race_points"][str(rnd)] = pts
                 drivers[num]["race_status"][str(rnd)] = status_from_flags(row)
                 credit_constructor(num, pts)
