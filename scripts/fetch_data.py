@@ -82,6 +82,20 @@ def of1(path: str, **params):
     return _get(f"{OPENF1}/{path}", params) or []
 
 
+def fetch_results(session_key: int, *, retries: int = 4, delay: float = 3.0) -> list:
+    """session_result for an already-run session can transiently come back
+    empty (OpenF1 replication lag) even though the race clearly happened —
+    we hit this for the Dutch GP sprint, which silently regressed a
+    completed sprint back to blank. Retry before accepting empty as final."""
+    results = of1("session_result", session_key=session_key)
+    for _ in range(retries - 1):
+        if results:
+            break
+        time.sleep(delay)
+        results = of1("session_result", session_key=session_key)
+    return results
+
+
 # ── helpers ─────────────────────────────────────────────────────────────────────
 
 def race_code(meeting_name: str, country: str) -> str:
@@ -189,7 +203,7 @@ def fetch_season(year: int) -> dict:
         if should_fetch:
             roster = {d["driver_number"]: d for d in of1("drivers", meeting_key=mk)}
             if race_sess:
-                race_results = of1("session_result", session_key=race_sess["session_key"])
+                race_results = fetch_results(race_sess["session_key"])
 
         completed = bool(race_results)
 
@@ -210,7 +224,7 @@ def fetch_season(year: int) -> dict:
 
         if is_sprint:
             sprint_rounds.append(rnd)
-            sprint_results = (of1("session_result", session_key=sprint_sess["session_key"])
+            sprint_results = (fetch_results(sprint_sess["session_key"])
                               if should_fetch else [])
             if sprint_results:
                 completed_sprint_rounds.append(rnd)
