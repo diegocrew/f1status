@@ -139,6 +139,18 @@ def fetch_season(year: int) -> dict:
     completed_rounds, completed_sprint_rounds, cancelled_rounds = [], [], []
     sprint_rounds: list[int] = []
 
+    # Constructor points, attributed to whichever team a driver raced for in
+    # that specific round — not their current/final team — so a mid-season
+    # loan (e.g. a driver swap between two teams for a couple of rounds)
+    # credits each team only for the rounds it actually fielded them.
+    constructor_totals: dict[str, float] = {}
+    constructor_names: dict[str, str] = {}
+
+    def credit_constructor(num: int, pts: float):
+        cid = drivers[num]["constructor_id"]
+        constructor_totals[cid] = constructor_totals.get(cid, 0.0) + pts
+        constructor_names[cid] = drivers[num]["constructor_name"]
+
     def upsert(num: int, info: dict):
         given, family = split_name(info.get("full_name", ""))
         if num not in drivers:
@@ -189,8 +201,10 @@ def fetch_season(year: int) -> dict:
                     upsert(num, roster[num])
                 if num not in drivers:        # roster miss → minimal stub
                     upsert(num, {"full_name": f"#{num}", "team_name": ""})
-                drivers[num]["race_points"][str(rnd)] = float(row.get("points") or 0)
+                pts = float(row.get("points") or 0)
+                drivers[num]["race_points"][str(rnd)] = pts
                 drivers[num]["race_status"][str(rnd)] = status_from_flags(row)
+                credit_constructor(num, pts)
         elif cancelled:
             cancelled_rounds.append(rnd)
 
@@ -205,7 +219,9 @@ def fetch_season(year: int) -> dict:
                     if num in roster:
                         upsert(num, roster[num])
                     if num in drivers:
-                        drivers[num]["sprint_points"][str(rnd)] = float(row.get("points") or 0)
+                        pts = float(row.get("points") or 0)
+                        drivers[num]["sprint_points"][str(rnd)] = pts
+                        credit_constructor(num, pts)
 
         races_out.append({
             "round": rnd,
@@ -230,6 +246,14 @@ def fetch_season(year: int) -> dict:
         d["possible"] = d["total"] + max_per_driver
         d.pop("_num", None)
 
+    constructors = sorted(
+        (
+            {"id": cid, "name": constructor_names[cid], "total": total}
+            for cid, total in constructor_totals.items()
+        ),
+        key=lambda c: -c["total"],
+    )
+
     return {
         "year": year,
         "fetched_at": now.isoformat(),
@@ -240,6 +264,7 @@ def fetch_season(year: int) -> dict:
         "completed_sprint_rounds": sorted(completed_sprint_rounds),
         "cancelled_rounds": sorted(cancelled_rounds),
         "drivers": sorted(drivers.values(), key=lambda d: -d["total"]),
+        "constructors": constructors,
     }
 
 
