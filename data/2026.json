@@ -1406,11 +1406,11 @@
       "possible": 101.0
     },
     {
-      "id": "#50",
-      "family_name": "#50",
-      "given_name": "#50",
-      "constructor_id": "",
-      "constructor_name": "",
+      "id": "hir",
+      "family_name": "Hirakawa",
+      "given_name": "Ryo",
+      "constructor_id": "haas_f1_team",
+      "constructor_name": "Haas F1 Team",
       "race_points": {
         "21": 1.0
       },
@@ -1633,7 +1633,7 @@
     {
       "id": "haas_f1_team",
       "name": "Haas F1 Team",
-      "total": 30.0
+      "total": 31.0
     },
     {
       "id": "audi",

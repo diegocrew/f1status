@@ -55,6 +55,18 @@ RACE_CODES = {
     "Abu Dhabi Grand Prix": "ABU",
 }
 
+# OpenF1's Mexico roster omitted Hirakawa even though the race classification
+# includes his result.
+DRIVER_ROSTER_OVERRIDES: dict[str, dict[int, dict]] = {
+    "Mexico City Grand Prix": {
+        50: {
+            "full_name": "Ryo HIRAKAWA",
+            "name_acronym": "HIR",
+            "team_name": "Haas F1 Team",
+        },
+    },
+}
+
 
 # ── HTTP ───────────────────────────────────────────────────────────────────────
 
@@ -220,6 +232,8 @@ def fetch_season(year: int) -> dict:
         roster, race_results = {}, []
         if should_fetch:
             roster = {d["driver_number"]: d for d in of1("drivers", meeting_key=mk)}
+            for num, info in DRIVER_ROSTER_OVERRIDES.get(m["meeting_name"], {}).items():
+                roster.setdefault(num, info)
             if race_sess:
                 race_results = fetch_results(race_sess["session_key"])
 

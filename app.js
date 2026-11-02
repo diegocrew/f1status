@@ -95,10 +95,8 @@ function processData(raw) {
     possible: d.total + maxPerDriver,
   })).sort((a, b) => b.total - a.total);
 
-  // Constructors: real points come pre-attributed per round (raw.constructors),
-  // so a mid-season driver swap credits each team only for the rounds it
-  // actually fielded them. Theoretical max is still summed from each
-  // driver's *current* team, since that's who they'll score for going forward.
+  // Constructor points are pre-attributed per round. Each team has two future
+  // seats, so a substitute driver must not create a third seat in the max.
   const consMap = {};
   const ensure = (k, name) => {
     if (!consMap[k]) consMap[k] = { name, total: 0, possible: 0, color: TEAM_COLORS[k] || '#ccc' };
@@ -108,7 +106,10 @@ function processData(raw) {
     ensure(teamKey(c.id), c.name).total += c.total;
   }
   for (const d of drivers) {
-    ensure(teamKey(d.constructor_id), d.constructor_name).possible += d.possible;
+    ensure(teamKey(d.constructor_id), d.constructor_name);
+  }
+  for (const c of Object.values(consMap)) {
+    c.possible = c.total + maxPerDriver * 2;
   }
   const constructors = Object.values(consMap).sort((a, b) => b.total - a.total);
 
