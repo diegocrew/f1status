@@ -11,6 +11,7 @@ A real-time Formula 1 season tracker that displays driver and constructor champi
 - **Season Projection**: Average of last 3 races projected across remaining races
 - **DNF/DNS Tracking**: Clearly marked retirements and non-starts
 - **Constructor Sidebar**: Constructor championship standings with theoretical maximum points
+- **Season history**: Browse 2025 and 2024 results from the History seasons menu; historical seasons show final points without max, projection, or form
 - **Responsive Design**: Clean, modern UI with sticky headers and horizontal scrolling
 
 ## Data Source
@@ -30,8 +31,9 @@ The fetcher also:
 - Marks cancelled races — a past Grand Prix with no race classification (e.g. the 2026 Bahrain
   and Saudi Arabian GPs) is flagged `cancelled` and shown as a `cnc` column
 
-Run `python scripts/fetch_data.py 2026` to regenerate; add `--no-check` to skip the Jolpica
-cross-check.
+Run `python scripts/fetch_data.py 2026` to regenerate the current season, or specify past years
+such as `python scripts/fetch_data.py 2025 2024` to generate their dedicated data files.
+Add `--no-check` to skip the Jolpica cross-check.
 
 ## Project Structure
 
@@ -40,8 +42,10 @@ f1status/
 ├── index.html           # Main HTML file with styling
 ├── app.js               # Frontend logic for data processing & rendering
 ├── data/
-│   ├── 2026.json       # Season data (auto-generated)
-│   └── .gitkeep
+│   ├── .gitkeep
+│   ├── 2024.json        # Historical season data
+│   ├── 2025.json        # Historical season data
+│   └── 2026.json        # Current season data (auto-generated)
 ├── scripts/
 │   └── fetch_data.py    # Fetches from OpenF1 (primary) + cross-checks vs Jolpica
 ├── .github/            # GitHub Pages deployment config

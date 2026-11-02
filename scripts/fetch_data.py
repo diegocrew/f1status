@@ -143,18 +143,30 @@ def status_from_flags(row: dict) -> str:
 # OpenF1's session_result is a snapshot of the classification at the time the
 # session ended — it does not get backfilled when a post-race penalty later
 # changes the final result. Verified corrections (against official F1.com
-# standings) go here, keyed by (meeting_name, driver_number) -> points.
+# standings) go here, keyed by (year, meeting_name, driver_number) -> points.
 #
 # 2026 Monaco GP: Gasly (#10) received a post-race time penalty dropping him
 # from P3 to P7; Hadjar (#6), Piastri (#81), Lawson (#30) and Lindblad (#41)
 # each moved up one place as a result. OpenF1 still serves the pre-penalty
 # order.
-RACE_RESULT_OVERRIDES: dict[tuple[str, int], float] = {
-    ("Monaco Grand Prix", 6): 15.0,
-    ("Monaco Grand Prix", 81): 12.0,
-    ("Monaco Grand Prix", 30): 10.0,
-    ("Monaco Grand Prix", 41): 8.0,
-    ("Monaco Grand Prix", 10): 6.0,
+#
+# 2025 Monaco GP: OpenF1 serves an outdated classification after the race
+# result was corrected; the official result moves Piastri, Hadjar, Lawson, and
+# Gasly to their final points.
+#
+# 2024 Monaco GP: OpenF1 serves the pre-penalty points for Piastri and Gasly.
+RACE_RESULT_OVERRIDES: dict[tuple[int, str, int], float] = {
+    (2024, "Monaco Grand Prix", 81): 18.0,
+    (2024, "Monaco Grand Prix", 10): 1.0,
+    (2026, "Monaco Grand Prix", 6): 15.0,
+    (2026, "Monaco Grand Prix", 81): 12.0,
+    (2026, "Monaco Grand Prix", 30): 10.0,
+    (2026, "Monaco Grand Prix", 41): 8.0,
+    (2026, "Monaco Grand Prix", 10): 6.0,
+    (2025, "Monaco Grand Prix", 81): 15.0,
+    (2025, "Monaco Grand Prix", 6): 8.0,
+    (2025, "Monaco Grand Prix", 30): 4.0,
+    (2025, "Monaco Grand Prix", 10): 0.0,
 }
 
 
@@ -179,7 +191,8 @@ def fetch_season(year: int) -> dict:
         sess_by_meeting.setdefault(s["meeting_key"], {})[s["session_name"]] = s
 
     races_out: list[dict] = []
-    drivers: dict[int, dict] = {}        # keyed by driver_number
+    drivers: dict[str, dict] = {}        # keyed by driver acronym
+    driver_keys_by_number: dict[int, str] = {}
     completed_rounds, completed_sprint_rounds, cancelled_rounds = [], [], []
     sprint_rounds: list[int] = []
 
@@ -191,25 +204,27 @@ def fetch_season(year: int) -> dict:
     constructor_names: dict[str, str] = {}
 
     def credit_constructor(num: int, pts: float):
-        cid = drivers[num]["constructor_id"]
+        driver = drivers[driver_keys_by_number[num]]
+        cid = driver["constructor_id"]
         constructor_totals[cid] = constructor_totals.get(cid, 0.0) + pts
-        constructor_names[cid] = drivers[num]["constructor_name"]
+        constructor_names[cid] = driver["constructor_name"]
 
     def upsert(num: int, info: dict):
         given, family = split_name(info.get("full_name", ""))
-        if num not in drivers:
-            drivers[num] = {
-                "id": (info.get("name_acronym") or family).lower(),
+        driver_id = (info.get("name_acronym") or family).lower()
+        if driver_id not in drivers:
+            drivers[driver_id] = {
+                "id": driver_id,
                 "family_name": family,
                 "given_name": given,
                 "constructor_id": constructor_id(info.get("team_name", "")),
                 "constructor_name": info.get("team_name", ""),
                 "race_points": {}, "race_status": {}, "sprint_points": {},
-                "_num": num,
             }
+        driver_keys_by_number[num] = driver_id
         # refresh team each round (handles mid-season swaps)
-        drivers[num]["constructor_id"] = constructor_id(info.get("team_name", ""))
-        drivers[num]["constructor_name"] = info.get("team_name", "")
+        drivers[driver_id]["constructor_id"] = constructor_id(info.get("team_name", ""))
+        drivers[driver_id]["constructor_name"] = info.get("team_name", "")
 
     today = now.date().isoformat()
     for rnd, m in enumerate(gp, start=1):
@@ -245,12 +260,13 @@ def fetch_season(year: int) -> dict:
                 num = row["driver_number"]
                 if num in roster:
                     upsert(num, roster[num])
-                if num not in drivers:        # roster miss → minimal stub
+                if num not in driver_keys_by_number:  # roster miss → minimal stub
                     upsert(num, {"full_name": f"#{num}", "team_name": ""})
-                pts = RACE_RESULT_OVERRIDES.get((m["meeting_name"], num),
+                pts = RACE_RESULT_OVERRIDES.get((year, m["meeting_name"], num),
                                                  float(row.get("points") or 0))
-                drivers[num]["race_points"][str(rnd)] = pts
-                drivers[num]["race_status"][str(rnd)] = status_from_flags(row)
+                driver = drivers[driver_keys_by_number[num]]
+                driver["race_points"][str(rnd)] = pts
+                driver["race_status"][str(rnd)] = status_from_flags(row)
                 credit_constructor(num, pts)
         elif cancelled:
             cancelled_rounds.append(rnd)
@@ -265,9 +281,10 @@ def fetch_season(year: int) -> dict:
                     num = row["driver_number"]
                     if num in roster:
                         upsert(num, roster[num])
-                    if num in drivers:
+                    if num in driver_keys_by_number:
                         pts = float(row.get("points") or 0)
-                        drivers[num]["sprint_points"][str(rnd)] = pts
+                        driver = drivers[driver_keys_by_number[num]]
+                        driver["sprint_points"][str(rnd)] = pts
                         credit_constructor(num, pts)
 
         races_out.append({
@@ -290,12 +307,17 @@ def fetch_season(year: int) -> dict:
 
     for d in drivers.values():
         d["total"] = sum(d["race_points"].values()) + sum(d["sprint_points"].values())
-        d["possible"] = d["total"] + max_per_driver
-        d.pop("_num", None)
+        if year >= now.year:
+            d["possible"] = d["total"] + max_per_driver
 
     constructors = sorted(
         (
-            {"id": cid, "name": constructor_names[cid], "total": total}
+            {
+                "id": cid,
+                "name": constructor_names[cid],
+                "total": total,
+                **({"possible": total + max_per_driver * 2} if year >= now.year else {}),
+            }
             for cid, total in constructor_totals.items()
         ),
         key=lambda c: -c["total"],
@@ -320,42 +342,54 @@ def fetch_season(year: int) -> dict:
 def cross_check(year: int, data: dict) -> None:
     """Compare OpenF1-derived results against Jolpica. Reports only; never mutates."""
     print("  cross-checking against Jolpica …")
-    try:
-        # Fail fast: Jolpica is only an optional validator, so don't let a dead
-        # host stall the run (one short attempt, not 4×20s of retries).
-        mr = _get(f"{JOLPICA}/{year}/results.json", {"limit": 2000},
-                  retries=1, timeout=12)
-        if not mr:
-            print("  ! Jolpica returned no data — skipping cross-check")
-            return
-        jraces = mr["MRData"]["RaceTable"]["Races"]
-    except requests.RequestException as e:
-        print(f"  ! Jolpica unreachable ({e}) — skipping cross-check")
-        return
-
-    # Jolpica points keyed by (raceName, driver code/family)
-    jol = {}
-    for r in jraces:
-        name = r["raceName"]
-        for res in r.get("Results", []):
-            drv = res["Driver"]
-            key = (name, (drv.get("code") or drv["familyName"]).upper())
-            st = res.get("status", "")
-            finished = st == "Finished" or st.startswith("+")
-            jol[key] = {"points": float(res.get("points", 0)), "finished": finished, "status": st}
-
-    races_by_round = {r["round"]: r for r in data["races"]}
     issues = 0
+    jol: dict[tuple[int, str], dict] = {}
+    checked_rounds: set[int] = set()
+    races_by_round = {race["round"]: race for race in data["races"]}
+    for race in data["races"]:
+        if not race["completed"]:
+            continue
+        rnd = race["round"]
+        try:
+            mr = _get(f"{JOLPICA}/{year}/{rnd}/results.json", {"limit": 200},
+                      retries=2, timeout=12)
+        except requests.RequestException as e:
+            print(f"  ! Jolpica unavailable for {race['code']} ({e})")
+            issues += 1
+            continue
+        time.sleep(0.4)
+        if not mr:
+            print(f"  ? Jolpica returned no results for {race['code']}")
+            issues += 1
+            continue
+        jraces = mr["MRData"]["RaceTable"]["Races"]
+        if not jraces:
+            print(f"  ? Jolpica returned no results for {race['code']}")
+            issues += 1
+            continue
+        checked_rounds.add(rnd)
+        for result in jraces[0].get("Results", []):
+            driver = result["Driver"]
+            status = result.get("status", "")
+            code = (driver.get("code") or driver["familyName"]).upper()
+            jol[(rnd, code)] = {
+                "points": float(result.get("points", 0)),
+                "finished": status in ("Finished", "Lapped") or status.startswith("+"),
+                "status": status,
+            }
+
     for d in data["drivers"]:
         code = d["id"].upper()
         for rnd_str, pts in d["race_points"].items():
-            race = races_by_round.get(int(rnd_str))
+            rnd = int(rnd_str)
+            if rnd not in checked_rounds:
+                continue
+            race = races_by_round.get(rnd)
             if not race:
                 continue
-            key = (race["name"], code)
+            key = (rnd, code)
             if key not in jol:
-                # also try family name
-                key = (race["name"], d["family_name"].upper())
+                key = (rnd, d["family_name"].upper())
             if key not in jol:
                 print(f"  ? {d['family_name']:12} {race['code']}: not found in Jolpica")
                 issues += 1

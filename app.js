@@ -1,5 +1,6 @@
-// Add years here as seasons begin. No historical data before 2026.
-const AVAILABLE_YEARS = [2026]; // add 2027 here next year
+const CURRENT_YEAR = 2026;
+const HISTORY_YEARS = [2025, 2024];
+const SEASON_YEARS = [CURRENT_YEAR, ...HISTORY_YEARS];
 
 const TEAM_COLORS = {
   mercedes:     '#00D2BE',
@@ -81,6 +82,7 @@ function sprintDate(raceDateStr) {
 // ── data processing ──────────────────────────────────────────────────────────
 
 function processData(raw) {
+  const historical = raw.year < CURRENT_YEAR;
   const completedR  = new Set(raw.completed_rounds);
   const completedSR = new Set(raw.completed_sprint_rounds);
   const cancelledR  = new Set(raw.cancelled_rounds);
@@ -90,10 +92,10 @@ function processData(raw) {
   const futureSprints = raw.sprint_rounds.filter(r => !completedSR.has(r) && !cancelledR.has(r)).length;
   const maxPerDriver  = futureRaces * 25 + futureSprints * 8;
 
-  const drivers = raw.drivers.map(d => ({
-    ...d,
-    possible: d.total + maxPerDriver,
-  })).sort((a, b) => b.total - a.total);
+  const drivers = raw.drivers.map(d => historical
+    ? { ...d }
+    : { ...d, possible: d.total + maxPerDriver }
+  ).sort((a, b) => b.total - a.total);
 
   // Constructor points are pre-attributed per round. Each team has two future
   // seats, so a substitute driver must not create a third seat in the max.
@@ -108,12 +110,15 @@ function processData(raw) {
   for (const d of drivers) {
     ensure(teamKey(d.constructor_id), d.constructor_name);
   }
-  for (const c of Object.values(consMap)) {
-    c.possible = c.total + maxPerDriver * 2;
+  if (!historical) {
+    for (const c of Object.values(consMap)) {
+      c.possible = c.total + maxPerDriver * 2;
+    }
   }
   const constructors = Object.values(consMap).sort((a, b) => b.total - a.total);
 
   return {
+    historical,
     races: raw.races,
     sprintRounds: raw.sprint_rounds.slice().sort((a, b) => a - b),
     completedR, completedSR, cancelledR,
@@ -124,7 +129,7 @@ function processData(raw) {
 // ── driver table ─────────────────────────────────────────────────────────────
 
 function buildDriverTable(data) {
-  const { races, sprintRounds, completedR, completedSR, cancelledR, drivers } = data;
+  const { historical, races, sprintRounds, completedR, completedSR, cancelledR, drivers } = data;
 
   const tbl   = document.getElementById('driversTbl');
   tbl.innerHTML = '';
@@ -149,9 +154,11 @@ function buildDriverTable(data) {
     gth(fmtDate(race.date), 'rgrp');
   });
   gth('', 'tgrp');
-  gth('', 'blank');
-  gth('', 'blank');
-  gth('', 'blank');
+  if (!historical) {
+    gth('', 'blank');
+    gth('', 'blank');
+    gth('', 'blank');
+  }
 
   // Row 2 – column labels
   const cr = thead.insertRow();
@@ -171,9 +178,11 @@ function buildDriverTable(data) {
     cth(`r${String(i + 1).padStart(2, '0')}<br><small>${race.code}</small>`, 'rh');
   });
   cth('total', 'th');
-  cth('max', 'ph');
-  cth('form', 'fh');
-  cth('proj', 'xh');
+  if (!historical) {
+    cth('max', 'ph');
+    cth('form', 'fh');
+    cth('proj', 'xh');
+  }
 
   // Data rows
   for (const d of drivers) {
@@ -225,32 +234,32 @@ function buildDriverTable(data) {
     }
 
     cell('totcell', d.total);
-    cell('poscell', d.possible);
+    if (!historical) {
+      cell('poscell', d.possible);
 
-    // ── form rating 0–100 (last 5 completed races) ──
-    const completedRaceList = races.filter(r => completedR.has(r.round));
-    const last5 = completedRaceList.slice(-5);
-    const form   = computeForm(d, last5);
-    const formTd = tr.insertCell();
-    formTd.className = 'formcell';
-    if (form !== null) {
-      formTd.textContent = form;
-      formTd.style.background = formColor(form);
+      const completedRaceList = races.filter(r => completedR.has(r.round));
+      const last5 = completedRaceList.slice(-5);
+      const form   = computeForm(d, last5);
+      const formTd = tr.insertCell();
+      formTd.className = 'formcell';
+      if (form !== null) {
+        formTd.textContent = form;
+        formTd.style.background = formColor(form);
+      }
+
+      const last3 = completedRaceList.slice(-3);
+      const avg3  = last3.length === 0 ? 0
+                  : last3.reduce((s, r) => s + (d.race_points[String(r.round)] ?? 0), 0) / last3.length;
+      const futureRaceCount = races.filter(r => !r.completed && !r.cancelled).length;
+      const projected = Math.round(d.total + avg3 * futureRaceCount);
+      cell('projcell', projected);
     }
-
-    // ── season projection (last 3 race avg × remaining races) ──
-    const last3 = completedRaceList.slice(-3);
-    const avg3  = last3.length === 0 ? 0
-                : last3.reduce((s, r) => s + (d.race_points[String(r.round)] ?? 0), 0) / last3.length;
-    const futureRaceCount = races.filter(r => !r.completed && !r.cancelled).length;
-    const projected = Math.round(d.total + avg3 * futureRaceCount);
-    cell('projcell', projected);
   }
 }
 
 // ── constructors sidebar ─────────────────────────────────────────────────────
 
-function buildConstructors(constructors) {
+function buildConstructors(constructors, historical) {
   const list = document.getElementById('consList');
   list.innerHTML = '';
 
@@ -263,7 +272,7 @@ function buildConstructors(constructors) {
       <span class="con-rank">${i + 1}</span>
       <div class="con-info">
         <div class="con-name">${c.name}</div>
-        <div class="con-max">theoretical max ${c.possible.toLocaleString()} pts</div>
+        ${historical ? '' : `<div class="con-max">theoretical max ${c.possible.toLocaleString()} pts</div>`}
       </div>
       <div class="con-pts-wrap">
         <div class="con-pts">${c.total}</div>
@@ -276,7 +285,7 @@ function buildConstructors(constructors) {
 // ── load & render ─────────────────────────────────────────────────────────────
 
 async function init() {
-  const year = +document.getElementById('yearSel').value;
+  const year = selectedYear;
   const st   = document.getElementById('status');
 
   st.textContent = `Loading ${year}…`;
@@ -291,7 +300,7 @@ async function init() {
     const data = processData(raw);
 
     buildDriverTable(data);
-    buildConstructors(data.constructors);
+    buildConstructors(data.constructors, data.historical);
 
     st.textContent = '';
     document.getElementById('seasonLabel').textContent = `${year} Season`;
@@ -304,15 +313,51 @@ async function init() {
 
 // ── boot ─────────────────────────────────────────────────────────────────────
 
-const sel = document.getElementById('yearSel');
-AVAILABLE_YEARS.forEach(y => {
-  const o = document.createElement('option');
-  o.value = y; o.textContent = `${y} Season`;
-  sel.appendChild(o);
+let selectedYear = CURRENT_YEAR;
+const historyToggle = document.getElementById('historyToggle');
+const historyMenu = document.getElementById('historyMenu');
+const seasonLabel = document.getElementById('seasonLabel');
+
+SEASON_YEARS.forEach(year => {
+  const option = document.createElement('button');
+  option.type = 'button';
+  option.className = 'history-option';
+  option.setAttribute('role', 'menuitem');
+  option.dataset.year = year;
+  option.textContent = `${year} Season`;
+  historyMenu.appendChild(option);
 });
 
-// Hide the dropdown when only one year is available
-if (AVAILABLE_YEARS.length === 1) sel.style.display = 'none';
+historyToggle.addEventListener('click', () => {
+  const isExpanded = historyToggle.getAttribute('aria-expanded') === 'true';
+  historyToggle.setAttribute('aria-expanded', String(!isExpanded));
+  historyMenu.hidden = isExpanded;
+});
 
-sel.addEventListener('change', init);
+historyMenu.addEventListener('click', event => {
+  const option = event.target.closest('[data-year]');
+  if (!option) return;
+  selectedYear = Number(option.dataset.year);
+  seasonLabel.textContent = `${selectedYear} Season`;
+  historyMenu.hidden = true;
+  historyToggle.setAttribute('aria-expanded', 'false');
+  init();
+});
+
+document.addEventListener('click', event => {
+  if (!event.target.closest('.history-picker')) {
+    historyMenu.hidden = true;
+    historyToggle.setAttribute('aria-expanded', 'false');
+  }
+});
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') {
+    historyMenu.hidden = true;
+    historyToggle.setAttribute('aria-expanded', 'false');
+    historyToggle.focus();
+  }
+});
+
+seasonLabel.textContent = `${selectedYear} Season`;
 init();

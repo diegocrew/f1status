@@ -88,6 +88,34 @@ body {
   cursor: pointer;
 }
 
+.history-picker { position: relative; }
+
+.history-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 30;
+  min-width: 130px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--surface);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+}
+
+.history-menu[hidden] { display: none; }
+
+.toolbar .history-option {
+  display: block;
+  width: 100%;
+  padding: 7px 9px;
+  border: 0;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.toolbar .history-option:hover { background: #EDE9E3; }
+
 .toolbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
 
 .toolbar button {
@@ -291,9 +319,12 @@ tbody tr.zero-row .nc { color: #AAAAAA !important; font-weight: 400; }
   <span class="toolbar-logo">F1</span>
   <span class="toolbar-title">Points Tracker</span>
   <span class="toolbar-season" id="seasonLabel"></span>
+  <div class="history-picker">
+    <button id="historyToggle" type="button" aria-haspopup="menu" aria-expanded="false">History seasons ▾</button>
+    <div class="history-menu" id="historyMenu" role="menu" hidden></div>
+  </div>
   <div class="toolbar-right">
     <span id="status">Loading…</span>
-    <select id="yearSel"></select>
     <button onclick="init()">↻ Refresh</button>
   </div>
 </div>
