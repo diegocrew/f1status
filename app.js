@@ -1,5 +1,5 @@
 const CURRENT_YEAR = 2026;
-const HISTORY_YEARS = [2025, 2024];
+const HISTORY_YEARS = [2025, 2024, 2023, 2022, 2021, 2020];
 const SEASON_YEARS = [CURRENT_YEAR, ...HISTORY_YEARS];
 
 const TEAM_COLORS = {
@@ -11,7 +11,11 @@ const TEAM_COLORS = {
   alpine:       '#FF87BC',
   haas:         '#B6BABD',
   rb:           '#6692FF',
+  alphatauri:   '#2B4562',
   aston_martin: '#229971',
+  alfa_romeo:   '#900000',
+  racing_point: '#F596C8',
+  renault:      '#FFF500',
   audi:         '#C9B84C',
   cadillac:     '#888888',
 };
@@ -26,8 +30,12 @@ function teamKey(id) {
   if (s.includes('alpine'))     return 'alpine';
   if (s.includes('haas'))       return 'haas';
   if (s.includes('rb') || s.includes('racing_bulls') || s.includes('visa') ||
-      s.includes('alphatauri')  || s.includes('toro')) return 'rb';
+      s.includes('toro')) return 'rb';
+  if (s.includes('alphatauri')) return 'alphatauri';
   if (s.includes('aston'))      return 'aston_martin';
+  if (s.includes('alfa_romeo')) return 'alfa_romeo';
+  if (s.includes('racing_point')) return 'racing_point';
+  if (s.includes('renault')) return 'renault';
   if (s.includes('audi') || s.includes('sauber') || s.includes('kick')) return 'audi';
   if (s.includes('cadillac') || s.includes('andretti')) return 'cadillac';
   return s;

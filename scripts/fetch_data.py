@@ -3,8 +3,8 @@ Fetches F1 season data and writes processed JSON to data/{year}.json for the
 GitHub Pages frontend.
 
 PRIMARY source : OpenF1   (https://api.openf1.org/v1)  — explicit points + dnf/dns/dsq flags
-CROSS-CHECK    : Jolpica   (https://api.jolpi.ca/ergast/f1) — Ergast-compatible, used only to
-                 validate OpenF1 and warn on discrepancies. Never overwrites the data.
+ARCHIVES       : Jolpica  (https://api.jolpi.ca/ergast/f1) — complete historical classifications
+CROSS-CHECK    : Jolpica  — validates OpenF1-derived results and warns on discrepancies.
 
 Why OpenF1 is primary: it exposes per-driver `points`, `dnf`, `dns`, `dsq` booleans directly,
 so retirements/non-starts can't silently render as blanks (the failure mode we hit when a
@@ -26,6 +26,7 @@ import requests
 
 OPENF1 = "https://api.openf1.org/v1"
 JOLPICA = "https://api.jolpi.ca/ergast/f1"
+JOLPICA_ARCHIVE_YEARS = {2020, 2021, 2022, 2023}
 
 # 3-letter column codes keyed by OpenF1 meeting_name. Falls back to country[:3].
 RACE_CODES = {
@@ -48,6 +49,13 @@ RACE_CODES = {
     "Azerbaijan Grand Prix": "AZB",
     "Singapore Grand Prix": "SIN",
     "United States Grand Prix": "USA",
+    "70th Anniversary Grand Prix": "GBR",
+    "Styrian Grand Prix": "AUT",
+    "Tuscan Grand Prix": "ITA",
+    "Eifel Grand Prix": "GER",
+    "Portuguese Grand Prix": "POR",
+    "Turkish Grand Prix": "TUR",
+    "Emilia Romagna Grand Prix": "ITA",
     "Mexico City Grand Prix": "MEX",
     "São Paulo Grand Prix": "BRA",
     "Las Vegas Grand Prix": "LV",
@@ -78,7 +86,14 @@ def _get(url: str, params: dict | None = None, *, retries: int = 4,
             r = requests.get(url, params=params or {}, timeout=timeout)
             if r.status_code == 404:
                 return None
-            if r.status_code == 429 or r.status_code >= 500:
+            if r.status_code == 429:
+                try:
+                    retry_after = float(r.headers.get("Retry-After", ""))
+                except ValueError:
+                    retry_after = 0
+                time.sleep(retry_after or min(60, 2 ** (attempt + 1)))
+                continue
+            if r.status_code >= 500:
                 time.sleep(1.5 * (attempt + 1))
                 continue
             r.raise_for_status()
@@ -175,6 +190,9 @@ RACE_RESULT_OVERRIDES: dict[tuple[int, str, int], float] = {
 def fetch_season(year: int) -> dict:
     now = datetime.now(timezone.utc)
 
+    if year in JOLPICA_ARCHIVE_YEARS:
+        return fetch_jolpica_season(year)
+
     print("  fetching meetings + sessions …")
     meetings = of1("meetings", year=year)
     sessions = of1("sessions", year=year)
@@ -184,6 +202,8 @@ def fetch_season(year: int) -> dict:
         (m for m in meetings if "grand prix" in m["meeting_name"].lower()),
         key=lambda m: m["date_start"],
     )
+    if not gp:
+        return fetch_jolpica_season(year)
 
     # Index sessions by meeting_key → {session_name: session}
     sess_by_meeting: dict[int, dict[str, dict]] = {}
@@ -337,6 +357,137 @@ def fetch_season(year: int) -> dict:
     }
 
 
+def fetch_jolpica_collection(year: int, endpoint: str, collection: str) -> list[dict]:
+    items = []
+    offset = 0
+    result_count = 0
+    while True:
+        payload = _get(
+            f"{JOLPICA}/{year}/{endpoint}",
+            {"limit": 100, "offset": offset},
+            retries=5,
+            timeout=20,
+        )
+        time.sleep(1.1)
+        if not payload:
+            raise RuntimeError(f"Jolpica returned no {endpoint} data for {year}")
+
+        metadata = payload["MRData"]
+        page = metadata["RaceTable"].get("Races", [])
+        if not page:
+            return items
+        items.extend(page)
+        page_count = (len(page) if collection == "Races" else
+                      sum(len(race.get(collection, [])) for race in page))
+        result_count += page_count
+        if result_count >= int(metadata.get("total", result_count)):
+            return items
+        offset += page_count
+
+
+def fetch_jolpica_season(year: int) -> dict:
+    print("  fetching historical data from Jolpica …")
+    races = fetch_jolpica_collection(year, "races.json", "Races")
+    sprints = fetch_jolpica_collection(year, "sprint.json", "SprintResults")
+    sprints_by_round = {
+        int(race["round"]): race.get("SprintResults", [])
+        for race in sprints
+    }
+
+    drivers: dict[str, dict] = {}
+    constructor_totals: dict[str, float] = {}
+    constructor_names: dict[str, str] = {}
+    completed_rounds = []
+    completed_sprint_rounds = []
+    sprint_rounds = sorted(sprints_by_round)
+    races_out = []
+
+    for race in races:
+        rnd = int(race["round"])
+        race_results = fetch_jolpica_collection(
+            year, f"{rnd}/results.json", "Results"
+        )
+        if not race_results:
+            raise RuntimeError(f"Jolpica returned no {year} round {rnd} results")
+        race_results = race_results[0].get("Results", [])
+        completed_rounds.append(rnd)
+
+        def credit_results(results: list[dict], is_sprint: bool = False):
+            for result in results:
+                driver_info = result["Driver"]
+                driver_id = (driver_info.get("code") or driver_info["driverId"]).lower()
+                constructor = result["Constructor"]
+                team_name = constructor["name"]
+                team_id = constructor_id(team_name)
+                driver = drivers.setdefault(driver_id, {
+                    "id": driver_id,
+                    "family_name": driver_info["familyName"],
+                    "given_name": driver_info["givenName"],
+                    "constructor_id": team_id,
+                    "constructor_name": team_name,
+                    "race_points": {},
+                    "race_status": {},
+                    "sprint_points": {},
+                })
+                driver["constructor_id"] = team_id
+                driver["constructor_name"] = team_name
+                points = float(result.get("points") or 0)
+                if is_sprint:
+                    driver["sprint_points"][str(rnd)] = points
+                else:
+                    driver["race_points"][str(rnd)] = points
+                    status = result.get("status", "")
+                    if status == "Did not start":
+                        driver["race_status"][str(rnd)] = "DNS"
+                    elif status not in ("Finished", "Lapped") and not status.startswith("+"):
+                        driver["race_status"][str(rnd)] = "DNF"
+                    else:
+                        driver["race_status"][str(rnd)] = ""
+                constructor_totals[team_id] = constructor_totals.get(team_id, 0.0) + points
+                constructor_names[team_id] = team_name
+
+        credit_results(race_results)
+
+        sprint_results = sprints_by_round.get(rnd, [])
+        if sprint_results:
+            completed_sprint_rounds.append(rnd)
+            credit_results(sprint_results, is_sprint=True)
+
+        location = race.get("Circuit", {}).get("Location", {})
+        races_out.append({
+            "round": rnd,
+            "name": race["raceName"],
+            "code": race_code(race["raceName"], location.get("country", "")),
+            "date": race["date"],
+            "is_sprint_weekend": rnd in sprints_by_round,
+            "completed": True,
+            "cancelled": False,
+        })
+
+    for driver in drivers.values():
+        driver["total"] = sum(driver["race_points"].values()) + sum(driver["sprint_points"].values())
+
+    constructors = sorted(
+        (
+            {"id": team_id, "name": constructor_names[team_id], "total": total}
+            for team_id, total in constructor_totals.items()
+        ),
+        key=lambda team: -team["total"],
+    )
+    return {
+        "year": year,
+        "fetched_at": datetime.now(timezone.utc).isoformat(),
+        "source": "jolpica",
+        "races": races_out,
+        "sprint_rounds": sprint_rounds,
+        "completed_rounds": completed_rounds,
+        "completed_sprint_rounds": completed_sprint_rounds,
+        "cancelled_rounds": [],
+        "drivers": sorted(drivers.values(), key=lambda driver: -driver["total"]),
+        "constructors": constructors,
+    }
+
+
 # ── cross-check against Jolpica ──────────────────────────────────────────────────
 
 def cross_check(year: int, data: dict) -> None:
@@ -420,7 +571,10 @@ def main():
         print(f"Processing {year} …")
         data = fetch_season(year)
         if "--no-check" not in flags:
-            cross_check(year, data)
+            if data["source"] == "openf1":
+                cross_check(year, data)
+            else:
+                print("  ! Jolpica is the data source — skipping same-source cross-check")
         path = os.path.join("data", f"{year}.json")
         with open(path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)

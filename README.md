@@ -11,12 +11,12 @@ A real-time Formula 1 season tracker that displays driver and constructor champi
 - **Season Projection**: Average of last 3 races projected across remaining races
 - **DNF/DNS Tracking**: Clearly marked retirements and non-starts
 - **Constructor Sidebar**: Constructor championship standings with theoretical maximum points
-- **Season history**: Browse 2025 and 2024 results from the History seasons menu; historical seasons show final points without max, projection, or form
+- **Season history**: Browse 2025–2020 results from the History seasons menu; historical seasons show final points without max, projection, or form
 - **Responsive Design**: Clean, modern UI with sticky headers and horizontal scrolling
 
 ## Data Source
 
-Two independent APIs are used so results can be cross-validated:
+The fetcher uses two APIs:
 
 - **Primary — OpenF1** (https://api.openf1.org/v1): exposes per-driver `points` plus explicit
   `dnf` / `dns` / `dsq` booleans, so retirements and non-starts can never silently render as
@@ -25,6 +25,9 @@ Two independent APIs are used so results can be cross-validated:
   OpenF1-derived results against Jolpica and prints any discrepancy. It is **reporting only** —
   it never overwrites the data.
 
+The 2020–2023 archives use Jolpica directly because OpenF1 historical results for those seasons
+are incomplete or unreliable.
+
 The fetcher also:
 - Detects sprint weekends (meeting has a `Sprint` session)
 - Handles mid-season driver transfers (team refreshed each round)
@@ -32,7 +35,8 @@ The fetcher also:
   and Saudi Arabian GPs) is flagged `cancelled` and shown as a `cnc` column
 
 Run `python scripts/fetch_data.py 2026` to regenerate the current season, or specify past years
-such as `python scripts/fetch_data.py 2025 2024` to generate their dedicated data files.
+such as `python scripts/fetch_data.py 2025 2024 2023 2022 2021 2020` to generate dedicated
+data files. Seasons 2020–2023 use Jolpica for complete historical results.
 Add `--no-check` to skip the Jolpica cross-check.
 
 ## Project Structure
@@ -43,6 +47,10 @@ f1status/
 ├── app.js               # Frontend logic for data processing & rendering
 ├── data/
 │   ├── .gitkeep
+│   ├── 2020.json        # Historical season data
+│   ├── 2021.json        # Historical season data
+│   ├── 2022.json        # Historical season data
+│   ├── 2023.json        # Historical season data
 │   ├── 2024.json        # Historical season data
 │   ├── 2025.json        # Historical season data
 │   └── 2026.json        # Current season data (auto-generated)
