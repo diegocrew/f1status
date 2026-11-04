@@ -26,7 +26,7 @@ import requests
 
 OPENF1 = "https://api.openf1.org/v1"
 JOLPICA = "https://api.jolpi.ca/ergast/f1"
-JOLPICA_ARCHIVE_YEARS = {2020, 2021, 2022, 2023}
+JOLPICA_ARCHIVE_YEARS = set(range(2014, 2024))
 
 # 3-letter column codes keyed by OpenF1 meeting_name. Falls back to country[:3].
 RACE_CODES = {
@@ -61,6 +61,13 @@ RACE_CODES = {
     "Las Vegas Grand Prix": "LV",
     "Qatar Grand Prix": "QAT",
     "Abu Dhabi Grand Prix": "ABU",
+    "Malaysian Grand Prix": "MAL",
+    "Russian Grand Prix": "RUS",
+    "German Grand Prix": "GER",
+    "French Grand Prix": "FRA",
+    "Mexican Grand Prix": "MEX",
+    "Brazilian Grand Prix": "BRA",
+    "European Grand Prix": "AZB",
 }
 
 # OpenF1's Mexico roster omitted Hirakawa even though the race classification
@@ -427,6 +434,7 @@ def fetch_jolpica_season(year: int) -> dict:
                     "constructor_name": team_name,
                     "race_points": {},
                     "race_status": {},
+                    "race_position": {},
                     "sprint_points": {},
                 })
                 driver["constructor_id"] = team_id
@@ -436,6 +444,7 @@ def fetch_jolpica_season(year: int) -> dict:
                     driver["sprint_points"][str(rnd)] = points
                 else:
                     driver["race_points"][str(rnd)] = points
+                    driver.setdefault("race_position", {})[str(rnd)] = int(result["position"])
                     status = result.get("status", "")
                     if status == "Did not start":
                         driver["race_status"][str(rnd)] = "DNS"

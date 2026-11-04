@@ -11,7 +11,7 @@ A real-time Formula 1 season tracker that displays driver and constructor champi
 - **Season Projection**: Average of last 3 races projected across remaining races
 - **DNF/DNS Tracking**: Clearly marked retirements and non-starts
 - **Constructor Sidebar**: Constructor championship standings with theoretical maximum points
-- **Season history**: Browse 2025–2020 results from the History seasons menu; historical seasons show final points without max, projection, or form
+- **Season history**: Browse 2025–2014 results from the History seasons menu; historical seasons show final points without max, projection, or form
 - **Responsive Design**: Clean, modern UI with sticky headers and horizontal scrolling
 
 ## Data Source
@@ -25,8 +25,10 @@ The fetcher uses two APIs:
   OpenF1-derived results against Jolpica and prints any discrepancy. It is **reporting only** —
   it never overwrites the data.
 
-The 2020–2023 archives use Jolpica directly because OpenF1 historical results for those seasons
-are incomplete or unreliable.
+The 2014–2023 archives use Jolpica directly because OpenF1 has no or incomplete historical
+results for those seasons. Jolpica archives also store each driver's finishing position
+(`race_position`), so podium colours stay correct for unusual points (e.g. 2014 Abu Dhabi
+double points).
 
 The fetcher also:
 - Detects sprint weekends (meeting has a `Sprint` session)
@@ -36,7 +38,7 @@ The fetcher also:
 
 Run `python scripts/fetch_data.py 2026` to regenerate the current season, or specify past years
 such as `python scripts/fetch_data.py 2025 2024 2023 2022 2021 2020` to generate dedicated
-data files. Seasons 2020–2023 use Jolpica for complete historical results.
+data files. Seasons 2014–2023 use Jolpica for complete historical results.
 Add `--no-check` to skip the Jolpica cross-check.
 
 ## Project Structure
@@ -47,6 +49,7 @@ f1status/
 ├── app.js               # Frontend logic for data processing & rendering
 ├── data/
 │   ├── .gitkeep
+│   ├── 2014.json … 2019.json  # Historical season data
 │   ├── 2020.json        # Historical season data
 │   ├── 2021.json        # Historical season data
 │   ├── 2022.json        # Historical season data
@@ -64,7 +67,8 @@ f1status/
 
 ### Points Display
 - **Podium (1st, 2nd, 3rd)**: 25, 18, 15 points - Color-coded green, silver, bronze
-- **Points (4th-10th)**: 12, 10, 8, 6, 4, 2, 1 points - Standard display
+  - 2019–2024 fastest-lap bonus: 26, 19, 16 are still 1st/2nd/3rd and keep podium colours
+- **Points (4th-10th)**: 12, 10, 8, 6, 4, 2, 1 points - Standard display (+1 for fastest lap in 2019–2024)
 - **DNF (Did Not Finish)**: Red text - driver retired during the race
 - **DNS (Did Not Start)**: Gray text - driver didn't participate
 - **Blank cell**: No points scored but completed the race

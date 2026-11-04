@@ -1,5 +1,5 @@
 const CURRENT_YEAR = 2026;
-const HISTORY_YEARS = [2025, 2024, 2023, 2022, 2021, 2020];
+const HISTORY_YEARS = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014];
 const SEASON_YEARS = [CURRENT_YEAR, ...HISTORY_YEARS];
 
 const TEAM_COLORS = {
@@ -18,6 +18,12 @@ const TEAM_COLORS = {
   renault:      '#FFF500',
   audi:         '#C9B84C',
   cadillac:     '#888888',
+  force_india:  '#F596C8',
+  lotus:        '#FFB800',
+  toro_rosso:   '#469BFF',
+  sauber:       '#9B0000',
+  manor:        '#ED1C24',
+  caterham:     '#005030',
 };
 
 function teamKey(id) {
@@ -29,13 +35,18 @@ function teamKey(id) {
   if (s.includes('williams'))   return 'williams';
   if (s.includes('alpine'))     return 'alpine';
   if (s.includes('haas'))       return 'haas';
-  if (s.includes('rb') || s.includes('racing_bulls') || s.includes('visa') ||
-      s.includes('toro')) return 'rb';
+  if (s.includes('toro'))       return 'toro_rosso';
+  if (s.includes('force_india')) return 'force_india';
+  if (s.includes('lotus'))      return 'lotus';
+  if (s.includes('manor') || s.includes('marussia')) return 'manor';
+  if (s.includes('caterham'))   return 'caterham';
+  if (s.includes('rb') || s.includes('racing_bulls') || s.includes('visa')) return 'rb';
   if (s.includes('alphatauri')) return 'alphatauri';
   if (s.includes('aston'))      return 'aston_martin';
   if (s.includes('alfa_romeo')) return 'alfa_romeo';
   if (s.includes('racing_point')) return 'racing_point';
   if (s.includes('renault')) return 'renault';
+  if (s === 'sauber')           return 'sauber';
   if (s.includes('audi') || s.includes('sauber') || s.includes('kick')) return 'audi';
   if (s.includes('cadillac') || s.includes('andretti')) return 'cadillac';
   return s;
@@ -45,12 +56,19 @@ function sprintClass(pts) {
   return { 8:'s8', 7:'s7', 6:'s6', 5:'s5', 4:'s4', 3:'s3', 2:'s2c', 1:'s1c' }[pts] || '';
 }
 
-function raceClass(pts) {
-  const map = { 25:'p25', 18:'p18', 15:'p15', 12:'p12', 10:'p10', 8:'p8', 6:'p6', 4:'p4', 2:'p2', 1:'p1' };
-  return map[pts] || (pts >= 1 ? 'p1' : '');
+// 2019–2024 awarded +1 for fastest lap to a top-10 finisher, so 26/19/16 are still 1st/2nd/3rd.
+const RACE_CLASS = {
+  25:'p25', 26:'p25', 18:'p18', 19:'p18', 15:'p15', 16:'p15',
+  12:'p12', 10:'p10', 8:'p8', 6:'p6', 4:'p4', 2:'p2', 1:'p1',
+};
+const PODIUM_CLASS = { 1:'p25', 2:'p18', 3:'p15' };
+
+function raceClass(pts, position) {
+  if (position != null) return PODIUM_CLASS[position] || (pts >= 1 ? 'p1' : '');
+  return RACE_CLASS[pts] || (pts >= 1 ? 'p1' : '');
 }
 
-const RACE_FORM_SCORE = { 25: 20, 18: 16, 15: 13, 12: 10, 10: 8, 8: 6, 6: 5, 4: 4, 2: 3, 1: 2 };
+const RACE_FORM_SCORE = { 25: 20, 26: 20, 18: 16, 19: 16, 15: 13, 16: 13, 12: 10, 10: 8, 8: 6, 6: 5, 4: 4, 2: 3, 1: 2 };
 
 function raceScore(pts, status) {
   if (status === 'DNF' || status === 'DNS') return -7;
@@ -228,7 +246,8 @@ function buildDriverTable(data) {
         const pts    = d.race_points[String(race.round)] ?? 0;
         const status = d.race_status?.[String(race.round)] ?? '';
         if (pts > 0) {
-          td.textContent = pts; td.className = raceClass(pts);
+          td.textContent = pts;
+          td.className = raceClass(pts, d.race_position?.[String(race.round)]);
         } else if (status === 'DNF') {
           td.className = 'dnf'; td.textContent = 'DNF';
         } else if (status === 'DNS') {
