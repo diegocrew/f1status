@@ -1,0 +1,393 @@
+{
+  "from": 2000,
+  "to": 2026,
+  "sources": [
+    {
+      "label": "Formula 1: the family tree of the current teams",
+      "url": "https://www.formula1.com/en/latest/article/the-family-tree-f1-11-teams-and-how-they-came-to-be.2QBA1PPMf0bC8mp2xxqZeq"
+    },
+    {
+      "label": "The Race: 2026 FIA entry list and team names",
+      "url": "https://www.the-race.com/formula-1/f1-2026-entry-list-driver-numbers-chassis-engines/"
+    },
+    {
+      "label": "Motorsport.com: 2026 engine suppliers",
+      "url": "https://www.motorsport.com/f1/news/every-f1-teams-engine-supplier-for-the-2026-season/10789027/"
+    }
+  ],
+  "teams": [
+    {
+      "id": "mclaren",
+      "label": "McLaren",
+      "first_entry": 1966,
+      "last_entry": null,
+      "color": "#FF8000",
+      "note": "The same team throughout this period; sponsor names and engine partners change.",
+      "names": [
+        [2000, 2004, "West McLaren Mercedes"],
+        [2005, 2006, "Team McLaren Mercedes"],
+        [2007, 2013, "Vodafone McLaren Mercedes"],
+        [2014, 2014, "McLaren Mercedes"],
+        [2015, 2015, "McLaren Honda"],
+        [2016, 2017, "McLaren Honda Formula 1 Team"],
+        [2018, 2025, "McLaren F1 Team"],
+        [2026, 2026, "McLaren Mastercard F1 Team"]
+      ],
+      "engines": [
+        [2000, 2014, "Mercedes"],
+        [2015, 2017, "Honda"],
+        [2018, 2020, "Renault"],
+        [2021, 2026, "Mercedes"]
+      ]
+    },
+    {
+      "id": "ferrari",
+      "label": "Ferrari",
+      "first_entry": 1950,
+      "last_entry": null,
+      "color": "#E8002D",
+      "note": "The only team to have competed in every season of the World Championship since 1950.",
+      "names": [
+        [2000, 2010, "Scuderia Ferrari Marlboro"],
+        [2011, 2018, "Scuderia Ferrari"],
+        [2019, 2021, "Scuderia Ferrari Mission Winnow"],
+        [2022, 2023, "Scuderia Ferrari"],
+        [2024, 2026, "Scuderia Ferrari HP"]
+      ],
+      "engines": [[2000, 2026, "Ferrari"]]
+    },
+    {
+      "id": "williams",
+      "label": "Williams",
+      "first_entry": 1977,
+      "last_entry": null,
+      "color": "#64C4FF",
+      "note": "Williams continues through ownership and engine changes. The present team was founded in 1977.",
+      "names": [
+        [2000, 2005, "BMW WilliamsF1 Team"],
+        [2006, 2006, "Williams F1 Team"],
+        [2007, 2011, "AT&T Williams"],
+        [2012, 2013, "Williams F1 Team"],
+        [2014, 2018, "Williams Martini Racing"],
+        [2019, 2019, "ROKiT Williams Racing"],
+        [2020, 2024, "Williams Racing"],
+        [2025, 2025, "Atlassian Williams Racing"],
+        [2026, 2026, "Atlassian Williams F1 Team"]
+      ],
+      "engines": [
+        [2000, 2005, "BMW"],
+        [2006, 2006, "Cosworth"],
+        [2007, 2009, "Toyota"],
+        [2010, 2011, "Cosworth"],
+        [2012, 2013, "Renault"],
+        [2014, 2026, "Mercedes"]
+      ]
+    },
+    {
+      "id": "enstone",
+      "label": "Benetton / Renault / Alpine",
+      "first_entry": 1981,
+      "last_entry": null,
+      "color": "#FF87BC",
+      "note": "The Enstone lineage began as Toleman, became Benetton in 1986, Renault in 2002, Lotus in 2012, Renault again in 2016, and Alpine in 2021. Not the separate Lotus Racing / Caterham team.",
+      "names": [
+        [2000, 2000, "Mild Seven Benetton Playlife"],
+        [2001, 2001, "Mild Seven Benetton Renault"],
+        [2002, 2006, "Mild Seven Renault F1 Team"],
+        [2007, 2009, "ING Renault F1 Team"],
+        [2010, 2010, "Renault F1 Team"],
+        [2011, 2011, "Lotus Renault GP"],
+        [2012, 2015, "Lotus F1 Team"],
+        [2016, 2018, "Renault Sport Formula One Team"],
+        [2019, 2019, "Renault F1 Team"],
+        [2020, 2020, "Renault DP World F1 Team"],
+        [2021, 2021, "Alpine F1 Team"],
+        [2022, 2026, "BWT Alpine F1 Team"]
+      ],
+      "engines": [
+        [2000, 2000, "Playlife (Renault)"],
+        [2001, 2014, "Renault"],
+        [2015, 2015, "Mercedes"],
+        [2016, 2025, "Renault"],
+        [2026, 2026, "Mercedes"]
+      ]
+    },
+    {
+      "id": "silverstone",
+      "label": "Jordan / Force India / Aston Martin",
+      "first_entry": 1991,
+      "last_entry": null,
+      "color": "#229971",
+      "note": "Jordan became Midland in 2006, Spyker in 2007, Force India in 2008, Racing Point in 2019, and Aston Martin in 2021. The 2006 sale introduced Spyker branding mid-season. In 2018 Racing Point Force India was a new legal entry using the former team's assets; this row follows the operation, not championship-entry continuity.",
+      "names": [
+        [2000, 2000, "Benson & Hedges Jordan"],
+        [2001, 2001, "Benson & Hedges Jordan Honda"],
+        [2002, 2002, "DHL Jordan Honda"],
+        [2003, 2003, "Benson & Hedges Jordan Ford"],
+        [2004, 2004, "Jordan Ford"],
+        [2005, 2005, "Jordan Grand Prix"],
+        [2006, 2006, "Midland / Spyker MF1 Racing"],
+        [2007, 2007, "Etihad Aldar Spyker F1 Team"],
+        [2008, 2011, "Force India F1 Team"],
+        [2012, 2017, "Sahara Force India F1 Team"],
+        [2018, 2018, "Sahara Force India / Racing Point Force India"],
+        [2019, 2019, "SportPesa Racing Point F1 Team"],
+        [2020, 2020, "BWT Racing Point F1 Team"],
+        [2021, 2023, "Aston Martin Cognizant F1 Team"],
+        [2024, 2026, "Aston Martin Aramco F1 Team"]
+      ],
+      "engines": [
+        [2000, 2000, "Mugen-Honda"],
+        [2001, 2002, "Honda"],
+        [2003, 2004, "Ford (Cosworth)"],
+        [2005, 2006, "Toyota"],
+        [2007, 2008, "Ferrari"],
+        [2009, 2025, "Mercedes"],
+        [2026, 2026, "Honda"]
+      ]
+    },
+    {
+      "id": "milton_keynes",
+      "label": "Jaguar / Red Bull",
+      "first_entry": 1997,
+      "last_entry": null,
+      "color": "#3671C6",
+      "note": "Stewart debuted in 1997, became Jaguar in 2000, and was acquired by Red Bull for 2005. TAG Heuer and Honda RBPT are engine branding, not new teams.",
+      "names": [
+        [2000, 2002, "Jaguar Racing F1 Team"],
+        [2003, 2003, "HSBC Jaguar Racing"],
+        [2004, 2004, "Jaguar Racing F1 Team"],
+        [2005, 2012, "Red Bull Racing"],
+        [2013, 2015, "Infiniti Red Bull Racing"],
+        [2016, 2017, "Red Bull Racing"],
+        [2018, 2020, "Aston Martin Red Bull Racing"],
+        [2021, 2021, "Red Bull Racing Honda"],
+        [2022, 2026, "Oracle Red Bull Racing"]
+      ],
+      "engines": [
+        [2000, 2005, "Cosworth"],
+        [2006, 2006, "Ferrari"],
+        [2007, 2015, "Renault"],
+        [2016, 2018, "TAG Heuer (Renault)"],
+        [2019, 2021, "Honda"],
+        [2022, 2022, "Red Bull Powertrains (Honda)"],
+        [2023, 2025, "Honda RBPT"],
+        [2026, 2026, "Red Bull Ford"]
+      ]
+    },
+    {
+      "id": "brackley",
+      "label": "BAR / Honda / Brawn / Mercedes",
+      "first_entry": 1999,
+      "last_entry": null,
+      "color": "#00D2BE",
+      "note": "BAR debuted in 1999 after acquiring Tyrrell's entry. The Brackley operation became Honda in 2006, Brawn in 2009, and Mercedes in 2010. The earlier Mercedes works team of 1954-1955 was a separate operation.",
+      "names": [
+        [2000, 2005, "Lucky Strike BAR Honda"],
+        [2006, 2006, "Lucky Strike Honda Racing F1 Team"],
+        [2007, 2008, "Honda Racing F1 Team"],
+        [2009, 2009, "Brawn GP Formula One Team"],
+        [2010, 2011, "Mercedes GP Petronas F1 Team"],
+        [2012, 2014, "Mercedes AMG Petronas F1 Team"],
+        [2015, 2016, "Mercedes AMG Petronas Formula One Team"],
+        [2017, 2019, "Mercedes AMG Petronas Motorsport"],
+        [2020, 2026, "Mercedes-AMG Petronas Formula One Team"]
+      ],
+      "engines": [
+        [2000, 2008, "Honda"],
+        [2009, 2026, "Mercedes"]
+      ]
+    },
+    {
+      "id": "hinwil",
+      "label": "Sauber / BMW / Alfa Romeo / Audi",
+      "first_entry": 1993,
+      "last_entry": null,
+      "color": "#9B0000",
+      "note": "The Hinwil team became BMW Sauber in 2006, returned to independent ownership in 2010, used Alfa Romeo branding in 2019-2023, and became Audi in 2026. BMW Sauber kept its name in 2010 despite switching to Ferrari engines.",
+      "names": [
+        [2000, 2001, "Red Bull Sauber Petronas"],
+        [2002, 2005, "Sauber Petronas"],
+        [2006, 2010, "BMW Sauber F1 Team"],
+        [2011, 2017, "Sauber F1 Team"],
+        [2018, 2018, "Alfa Romeo Sauber F1 Team"],
+        [2019, 2019, "Alfa Romeo Racing"],
+        [2020, 2022, "Alfa Romeo Racing Orlen"],
+        [2023, 2023, "Alfa Romeo F1 Team Stake"],
+        [2024, 2025, "Stake F1 Team Kick Sauber"],
+        [2026, 2026, "Audi Revolut F1 Team"]
+      ],
+      "engines": [
+        [2000, 2005, "Petronas (Ferrari)"],
+        [2006, 2009, "BMW"],
+        [2010, 2025, "Ferrari"],
+        [2026, 2026, "Audi"]
+      ]
+    },
+    {
+      "id": "faenza",
+      "label": "Minardi / Toro Rosso / Racing Bulls",
+      "first_entry": 1985,
+      "last_entry": null,
+      "color": "#6692FF",
+      "note": "Minardi was acquired by Red Bull and renamed Toro Rosso for 2006, AlphaTauri for 2020, RB for 2024, and Racing Bulls for 2025. It is separate from Red Bull Racing.",
+      "names": [
+        [2000, 2000, "Telefonica Minardi Fondmetal"],
+        [2001, 2001, "European Minardi F1"],
+        [2002, 2002, "KL Minardi Asiatech"],
+        [2003, 2003, "European Minardi F1 Team"],
+        [2004, 2005, "Minardi F1 Team"],
+        [2006, 2017, "Scuderia Toro Rosso"],
+        [2018, 2019, "Red Bull Toro Rosso Honda"],
+        [2020, 2022, "Scuderia AlphaTauri Honda"],
+        [2023, 2023, "Scuderia AlphaTauri"],
+        [2024, 2024, "Visa Cash App RB F1 Team"],
+        [2025, 2026, "Visa Cash App Racing Bulls F1 Team"]
+      ],
+      "engines": [
+        [2000, 2000, "Fondmetal (Cosworth)"],
+        [2001, 2001, "European (Cosworth)"],
+        [2002, 2002, "Asiatech"],
+        [2003, 2006, "Cosworth"],
+        [2007, 2013, "Ferrari"],
+        [2014, 2015, "Renault"],
+        [2016, 2016, "Ferrari"],
+        [2017, 2017, "Renault"],
+        [2018, 2021, "Honda"],
+        [2022, 2022, "Red Bull Powertrains (Honda)"],
+        [2023, 2025, "Honda RBPT"],
+        [2026, 2026, "Red Bull Ford"]
+      ]
+    },
+    {
+      "id": "haas",
+      "label": "Haas",
+      "first_entry": 2016,
+      "last_entry": null,
+      "color": "#888888",
+      "note": "A new entry in 2016, not a continuation of Super Aguri or Manor. Buying the former Marussia factory did not transfer its championship entry. TGR branding in 2026 does not mean Toyota engines: Haas still uses Ferrari power.",
+      "names": [
+        [2016, 2020, "Haas F1 Team"],
+        [2021, 2021, "Uralkali Haas F1 Team"],
+        [2022, 2022, "Haas F1 Team"],
+        [2023, 2025, "MoneyGram Haas F1 Team"],
+        [2026, 2026, "TGR Haas F1 Team"]
+      ],
+      "engines": [[2016, 2026, "Ferrari"]]
+    },
+    {
+      "id": "cadillac",
+      "label": "Cadillac",
+      "first_entry": 2026,
+      "last_entry": null,
+      "color": "#777777",
+      "note": "A new 11th team in 2026, backed by General Motors and TWG. Uses Ferrari engines on debut rather than a Cadillac-built power unit.",
+      "names": [[2026, 2026, "Cadillac Formula 1 Team"]],
+      "engines": [[2026, 2026, "Ferrari"]]
+    },
+    {
+      "id": "arrows",
+      "label": "Arrows",
+      "first_entry": 1978,
+      "last_entry": 2002,
+      "color": "#E87924",
+      "note": "Stopped racing during 2002 after financial problems. No successor entry; Super Aguri later used old Arrows chassis but was a separate team.",
+      "names": [
+        [2000, 2000, "Arrows F1 Team"],
+        [2001, 2001, "Orange Arrows Asiatech"],
+        [2002, 2002, "Orange Arrows"]
+      ],
+      "engines": [
+        [2000, 2000, "Supertec (Renault)"],
+        [2001, 2001, "Asiatech"],
+        [2002, 2002, "Cosworth"]
+      ]
+    },
+    {
+      "id": "prost",
+      "label": "Prost",
+      "first_entry": 1976,
+      "last_entry": 2001,
+      "color": "#3559AE",
+      "note": "Ligier debuted in 1976 and became Prost in 1997. Prost closed after the 2001 season; it was not followed by Toyota.",
+      "names": [
+        [2000, 2000, "Gauloises Prost Peugeot"],
+        [2001, 2001, "Prost Grand Prix"]
+      ],
+      "engines": [
+        [2000, 2000, "Peugeot"],
+        [2001, 2001, "Acer (Ferrari)"]
+      ]
+    },
+    {
+      "id": "toyota",
+      "label": "Toyota",
+      "first_entry": 2002,
+      "last_entry": 2009,
+      "color": "#DC3535",
+      "note": "A new works team in 2002. Toyota withdrew at the end of 2009; no successor entry continued the team.",
+      "names": [[2002, 2009, "Panasonic Toyota Racing"]],
+      "engines": [[2002, 2009, "Toyota"]]
+    },
+    {
+      "id": "super_aguri",
+      "label": "Super Aguri",
+      "first_entry": 2006,
+      "last_entry": 2008,
+      "color": "#B63232",
+      "note": "A separate Honda-supported entry. Withdrew after four races in 2008. Not an Arrows continuation and not a predecessor of Haas.",
+      "names": [[2006, 2008, "Super Aguri F1 Team"]],
+      "engines": [[2006, 2008, "Honda"]]
+    },
+    {
+      "id": "caterham",
+      "label": "Lotus Racing / Caterham",
+      "first_entry": 2010,
+      "last_entry": 2014,
+      "color": "#005030",
+      "note": "New in 2010 as Lotus Racing, renamed Team Lotus in 2011 and Caterham in 2012. Separate from the Enstone Lotus / Renault team and the original Team Lotus. Last raced in 2014.",
+      "names": [
+        [2010, 2010, "Lotus Racing"],
+        [2011, 2011, "Team Lotus"],
+        [2012, 2014, "Caterham F1 Team"]
+      ],
+      "engines": [
+        [2010, 2010, "Cosworth"],
+        [2011, 2014, "Renault"]
+      ]
+    },
+    {
+      "id": "hrt",
+      "label": "Hispania / HRT",
+      "first_entry": 2010,
+      "last_entry": 2012,
+      "color": "#AE9352",
+      "note": "A new entry in 2010, originally planned as Campos and launched as Hispania. Rebranded HRT and closed after 2012.",
+      "names": [
+        [2010, 2010, "Hispania Racing F1 Team"],
+        [2011, 2012, "HRT Formula 1 Team"]
+      ],
+      "engines": [[2010, 2012, "Cosworth"]]
+    },
+    {
+      "id": "manor",
+      "label": "Virgin / Marussia / Manor",
+      "first_entry": 2010,
+      "last_entry": 2016,
+      "color": "#ED1C24",
+      "note": "Entered as Virgin in 2010, became Marussia, and continued as Manor after rescue from administration. Last raced in 2016 and closed before the 2017 season. Separate from Haas.",
+      "names": [
+        [2010, 2010, "Virgin Racing"],
+        [2011, 2011, "Marussia Virgin Racing"],
+        [2012, 2014, "Marussia F1 Team"],
+        [2015, 2015, "Manor Marussia F1 Team"],
+        [2016, 2016, "Manor Racing MRT"]
+      ],
+      "engines": [
+        [2010, 2013, "Cosworth"],
+        [2014, 2015, "Ferrari"],
+        [2016, 2016, "Mercedes"]
+      ]
+    }
+  ]
+}

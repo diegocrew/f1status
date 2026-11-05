@@ -1,5 +1,8 @@
 const CURRENT_YEAR = 2026;
-const HISTORY_YEARS = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014];
+const HISTORY_YEARS = [
+  2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014,
+  2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000,
+];
 const SEASON_YEARS = [CURRENT_YEAR, ...HISTORY_YEARS];
 
 const TEAM_COLORS = {
@@ -313,25 +316,40 @@ function buildConstructors(constructors, historical) {
 
 async function init() {
   const year = selectedYear;
+  const view = activeView;
+  const request = ++loadRequest;
   const st   = document.getElementById('status');
 
-  st.textContent = `Loading ${year}…`;
+  st.textContent = view === 'teams' ? 'Loading teams…' : `Loading ${year}…`;
   st.className   = '';
-  document.getElementById('driversTbl').innerHTML = '';
-  document.getElementById('consList').innerHTML   = '';
+  if (view === 'teams') {
+    document.getElementById('teamsTbl').replaceChildren();
+    document.getElementById('teamsNotes').replaceChildren();
+    document.getElementById('teamsSources').replaceChildren();
+    document.getElementById('teamsSummary').textContent = '';
+  } else {
+    document.getElementById('driversTbl').innerHTML = '';
+    document.getElementById('consList').innerHTML   = '';
+  }
 
   try {
-    const res = await fetch(`data/${year}.json`);
-    if (!res.ok) throw new Error(`No data for ${year} — run fetch_data.py first (HTTP ${res.status})`);
+    const res = await fetch(view === 'teams' ? 'data/teams.json' : `data/${year}.json`);
+    if (!res.ok) throw new Error(view === 'teams'
+      ? `Could not load team history (HTTP ${res.status})`
+      : `No data for ${year} — run fetch_data.py first (HTTP ${res.status})`);
     const raw  = await res.json();
-    const data = processData(raw);
-
-    buildDriverTable(data);
-    buildConstructors(data.constructors, data.historical);
+    if (request !== loadRequest) return;
+    if (view === 'teams') {
+      buildTeams(raw);
+    } else {
+      const data = processData(raw);
+      buildDriverTable(data);
+      buildConstructors(data.constructors, data.historical);
+    }
 
     st.textContent = '';
-    document.getElementById('seasonLabel').textContent = `${year} Season`;
   } catch (e) {
+    if (request !== loadRequest) return;
     st.textContent = e.message;
     st.className   = 'error';
     console.error(e);
@@ -341,9 +359,27 @@ async function init() {
 // ── boot ─────────────────────────────────────────────────────────────────────
 
 let selectedYear = CURRENT_YEAR;
+let activeView = 'season';
+let loadRequest = 0;
 const historyToggle = document.getElementById('historyToggle');
 const historyMenu = document.getElementById('historyMenu');
 const seasonLabel = document.getElementById('seasonLabel');
+const teamsToggle = document.getElementById('teamsToggle');
+
+function selectView(view) {
+  activeView = view;
+  document.getElementById('seasonPanel').hidden = view === 'teams';
+  document.getElementById('teamsPanel').hidden = view !== 'teams';
+  teamsToggle.setAttribute('aria-pressed', String(view === 'teams'));
+  seasonLabel.textContent = view === 'teams' ? 'Team history' : `${selectedYear} Season`;
+  historyMenu.hidden = true;
+  historyToggle.setAttribute('aria-expanded', 'false');
+  init();
+}
+
+teamsToggle.addEventListener('click', () => {
+  selectView(activeView === 'teams' ? 'season' : 'teams');
+});
 
 SEASON_YEARS.forEach(year => {
   const option = document.createElement('button');
@@ -365,10 +401,7 @@ historyMenu.addEventListener('click', event => {
   const option = event.target.closest('[data-year]');
   if (!option) return;
   selectedYear = Number(option.dataset.year);
-  seasonLabel.textContent = `${selectedYear} Season`;
-  historyMenu.hidden = true;
-  historyToggle.setAttribute('aria-expanded', 'false');
-  init();
+  selectView('season');
 });
 
 document.addEventListener('click', event => {

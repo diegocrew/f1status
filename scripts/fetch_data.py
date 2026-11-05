@@ -26,7 +26,7 @@ import requests
 
 OPENF1 = "https://api.openf1.org/v1"
 JOLPICA = "https://api.jolpi.ca/ergast/f1"
-JOLPICA_ARCHIVE_YEARS = set(range(2014, 2024))
+JOLPICA_ARCHIVE_YEARS = set(range(2000, 2024))
 
 # 3-letter column codes keyed by OpenF1 meeting_name. Falls back to country[:3].
 RACE_CODES = {
@@ -133,6 +133,8 @@ def fetch_results(session_key: int, *, retries: int = 4, delay: float = 3.0) -> 
 # ── helpers ─────────────────────────────────────────────────────────────────────
 
 def race_code(meeting_name: str, country: str) -> str:
+    if meeting_name == "European Grand Prix" and country != "Azerbaijan":
+        return "EUR"
     return RACE_CODES.get(meeting_name, (country or "???")[:3].upper())
 
 

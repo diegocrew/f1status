@@ -96,6 +96,8 @@ body {
   left: 0;
   z-index: 30;
   min-width: 130px;
+  max-height: min(70vh, 650px);
+  overflow-y: auto;
   padding: 4px;
   border: 1px solid var(--border);
   border-radius: 3px;
@@ -311,6 +313,51 @@ tbody tr.zero-row .nc { color: #AAAAAA !important; font-weight: 400; }
 .dns      { background: transparent !important; color: #B0AAA2 !important; font-size: 9px; font-weight: 700; letter-spacing: 0.06em; }
 .formcell { font-weight: 700; font-size: 13px; min-width: 48px; }
 .projcell { background: #EDE9FF !important; font-weight: 700; color: #5533CC; min-width: 52px; font-size: 13px; }
+
+[hidden] { display: none !important; }
+.toolbar button[aria-pressed="true"] { background: var(--race-bg); color: var(--race-hdr); border-color: #BBCDE9; }
+
+.teams-panel { flex: 1; min-height: 0; overflow: auto; padding: 16px 18px; }
+.teams-heading { display: flex; align-items: baseline; flex-wrap: wrap; gap: 12px; margin-bottom: 8px; }
+.teams-heading h1 { font-size: 17px; }
+.teams-heading p, .teams-intro { color: #666; line-height: 1.6; }
+.teams-legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.teams-scroll { max-height: 65vh; overflow: auto; border: 1px solid var(--border); border-radius: 4px; }
+.teams-table { border-collapse: separate; border-spacing: 0; }
+.teams-table th, .teams-table td { min-width: 180px; width: 180px; max-width: 180px; padding: 10px; white-space: normal; text-align: left; vertical-align: top; }
+.teams-table th:nth-child(2), .teams-table td:nth-child(2) { position: static; border-right: 1px solid var(--border); }
+.teams-table thead th { position: sticky; top: 0; z-index: 10; height: 34px; background: var(--race-bg); color: var(--race-hdr); }
+.teams-table th:first-child { position: sticky; left: 0; min-width: 225px; width: 225px; max-width: 225px; background: var(--surface); border-right: 2px solid var(--border); z-index: 11; }
+.teams-table thead th:first-child { z-index: 15; background: var(--race-bg); }
+.teams-table tbody th { border-bottom: 1px solid var(--border); border-left: 4px solid var(--team-color); }
+.teams-table tbody th a { display: block; color: var(--text); font-size: 12px; line-height: 1.5; text-decoration: none; }
+.teams-table tbody th a:hover { text-decoration: underline; }
+.teams-table small { display: block; color: var(--muted); font-weight: 400; margin-top: 5px; }
+.teams-table td { height: 110px; border-right: 1px solid var(--border); }
+.team-entry-name { font-weight: 600; line-height: 1.4; margin-bottom: 6px; }
+.team-engine { font-size: 11px; color: #666; margin-bottom: 6px; }
+.teams-table .team-inactive { background: #F7F6F4; color: #C4BFB8; }
+.team-badge { display: inline-block; font-size: 9px; font-weight: 600; line-height: 1.5; padding: 1px 5px; margin: 2px 3px 0 0; border-radius: 3px; }
+.team-new { background: #DDF0DF; color: #235D2A; }
+.team-renamed { background: #E8F0FF; color: #1A3A6B; }
+.team-badge.team-engine { background: #EEE8FB; color: #60428D; }
+.team-ended { background: #FBE5E1; color: #9A3830; }
+.teams-notes { margin-top: 18px; max-width: 1000px; line-height: 1.6; }
+.teams-notes h2 { font-size: 14px; margin-bottom: 8px; }
+.teams-notes h3 { font-size: 12px; margin-top: 12px; }
+.teams-notes p, .teams-notes li { color: #666; }
+.teams-notes a { color: var(--race-hdr); }
+.teams-notes ul { padding-left: 18px; }
+.teams-notes [id] { scroll-margin-top: 12px; }
+.teams-notes [id]:target { background: var(--race-bg); outline: 4px solid var(--race-bg); }
+
+@media (max-width: 700px) {
+  .toolbar { padding: 0 8px; gap: 7px; }
+  .toolbar-title { display: none; }
+  .toolbar button { padding: 5px 8px; }
+  .teams-panel { padding: 12px 8px; }
+  .teams-table th:first-child { min-width: 150px; width: 150px; max-width: 150px; }
+}
 </style>
 </head>
 <body>
@@ -323,13 +370,14 @@ tbody tr.zero-row .nc { color: #AAAAAA !important; font-weight: 400; }
     <button id="historyToggle" type="button" aria-haspopup="menu" aria-expanded="false">History seasons ▾</button>
     <div class="history-menu" id="historyMenu" role="menu" hidden></div>
   </div>
+  <button id="teamsToggle" type="button" aria-pressed="false" aria-controls="teamsPanel">Teams</button>
   <div class="toolbar-right">
     <span id="status">Loading…</span>
     <button onclick="init()">↻ Refresh</button>
   </div>
 </div>
 
-<div class="page-body">
+<div class="page-body" id="seasonPanel">
   <div class="drivers-panel">
     <table id="driversTbl"></table>
   </div>
@@ -342,6 +390,32 @@ tbody tr.zero-row .nc { color: #AAAAAA !important; font-weight: 400; }
   </aside>
 </div>
 
+<section class="teams-panel" id="teamsPanel" aria-labelledby="teamsTitle" hidden>
+  <div class="teams-heading">
+    <h1 id="teamsTitle">Team history</h1>
+    <p id="teamsSummary"></p>
+  </div>
+  <p class="teams-intro">Follow each team's names and engine suppliers across the years. Scroll sideways for later seasons; select a lineage for its history.</p>
+  <div class="teams-legend" aria-label="Timeline legend">
+    <span class="team-badge team-new">New entry</span>
+    <span class="team-badge team-renamed">Name change</span>
+    <span class="team-badge team-engine">Engine change</span>
+    <span class="team-badge team-ended">Final season</span>
+  </div>
+  <div class="teams-scroll" tabindex="0" role="region" aria-label="Team names and engines by season">
+    <table class="teams-table" id="teamsTbl" aria-label="Formula 1 team history, 2000 to 2026"></table>
+  </div>
+  <div class="teams-notes">
+    <h2>Lineage notes</h2>
+    <p>Rows follow team operations, not just legal entries or reused brands. Name changes include sponsor changes. A final season may include a mid-season withdrawal; a dash means the team was not active that year.</p>
+    <div id="teamsNotes"></div>
+    <h3>About the data</h3>
+    <p>Curated from the supplied team/engine tables, with lineage clarifications and updated 2026 names and suppliers. Names are representative season labels, not a race-by-race record of every sponsor variant. Brackets identify rebadged engine suppliers.</p>
+    <ul id="teamsSources"></ul>
+  </div>
+</section>
+
+<script src="teams.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
