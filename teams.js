@@ -5,6 +5,7 @@ function teamPeriodValue(periods, year) {
 function buildTeams(data) {
   const table = document.getElementById('teamsTbl');
   table.replaceChildren();
+  table.setAttribute('aria-label', `Formula 1 team history, ${data.from} to ${data.to}`);
   const years = Array.from({ length: data.to - data.from + 1 }, (_, i) => data.from + i);
   const active = data.teams.filter(team => team.first_entry <= data.to &&
     (team.last_entry == null || team.last_entry >= data.to)).length;
@@ -65,6 +66,9 @@ function buildTeams(data) {
       if (year === team.first_entry) events.push(['new', 'New entry']);
       const previousName = teamPeriodValue(team.names, year - 1);
       const previousEngine = teamPeriodValue(team.engines, year - 1);
+      if (!previousName && year > data.from && year > team.first_entry) {
+        events.push(['new', 'Returned']);
+      }
       if (previousName && previousName !== name) events.push(['renamed', 'Name change']);
       if (previousEngine && previousEngine !== engine) events.push(['engine', 'Engine change']);
       if (year === team.last_entry) events.push(['ended', 'Final season']);

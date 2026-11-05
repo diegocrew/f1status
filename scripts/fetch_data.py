@@ -26,7 +26,7 @@ import requests
 
 OPENF1 = "https://api.openf1.org/v1"
 JOLPICA = "https://api.jolpi.ca/ergast/f1"
-JOLPICA_ARCHIVE_YEARS = set(range(2000, 2024))
+JOLPICA_ARCHIVE_YEARS = set(range(1980, 2024))
 
 # 3-letter column codes keyed by OpenF1 meeting_name. Falls back to country[:3].
 RACE_CODES = {
@@ -68,6 +68,17 @@ RACE_CODES = {
     "Mexican Grand Prix": "MEX",
     "Brazilian Grand Prix": "BRA",
     "European Grand Prix": "AZB",
+    "San Marino Grand Prix": "SMR",
+    "Detroit Grand Prix": "DET",
+    "Dallas Grand Prix": "DAL",
+    "United States Grand Prix West": "USW",
+    "United States Grand Prix East": "USE",
+    "Caesars Palace Grand Prix": "CPL",
+    "South African Grand Prix": "RSA",
+    "Argentine Grand Prix": "ARG",
+    "Luxembourg Grand Prix": "LUX",
+    "Pacific Grand Prix": "PAC",
+    "Swiss Grand Prix": "SUI",
 }
 
 # OpenF1's Mexico roster omitted Hirakawa even though the race classification
@@ -191,6 +202,24 @@ RACE_RESULT_OVERRIDES: dict[tuple[int, str, int], float] = {
     (2025, "Monaco Grand Prix", 6): 8.0,
     (2025, "Monaco Grand Prix", 30): 4.0,
     (2025, "Monaco Grand Prix", 10): 0.0,
+}
+
+# Jolpica omits the 1995 Brazilian GP constructor-only fuel penalties.
+# Verified totals: https://www.statsf1.com/en/1995.aspx
+HISTORICAL_CONSTRUCTOR_TOTAL_OVERRIDES = {
+    (1995, "benetton"): 137.0,
+    (1995, "williams"): 112.0,
+}
+
+# Brazil 1983 left second place vacant after Rosberg's exclusion; Jolpica
+# compresses the classified finishers. Preserve the unpromoted positions.
+# https://www.statsf1.com/en/1983/bresil/classement.aspx
+HISTORICAL_RACE_POSITION_OVERRIDES = {
+    (1983, 1): {
+        "lauda": 3, "laffite": 4, "tambay": 5, "surer": 6, "prost": 7,
+        "warwick": 8, "serra": 9, "arnoux": 10, "sullivan": 11,
+        "mansell": 12, "cecotto": 14, "salazar": 15, "winkelhock": 16,
+    },
 }
 
 
@@ -368,6 +397,7 @@ def fetch_season(year: int) -> dict:
 
 def fetch_jolpica_collection(year: int, endpoint: str, collection: str) -> list[dict]:
     items = []
+    by_round = {}
     offset = 0
     result_count = 0
     while True:
@@ -384,10 +414,21 @@ def fetch_jolpica_collection(year: int, endpoint: str, collection: str) -> list[
         metadata = payload["MRData"]
         page = metadata["RaceTable"].get("Races", [])
         if not page:
+            if result_count < int(metadata["total"]):
+                raise RuntimeError(f"Incomplete Jolpica {endpoint} data for {year}")
             return items
-        items.extend(page)
+        for race in page:
+            if collection == "Races":
+                items.append(race)
+            elif race["round"] in by_round:
+                by_round[race["round"]][collection].extend(race.get(collection, []))
+            else:
+                by_round[race["round"]] = {**race, collection: list(race.get(collection, []))}
+                items.append(by_round[race["round"]])
         page_count = (len(page) if collection == "Races" else
                       sum(len(race.get(collection, [])) for race in page))
+        if not page_count:
+            raise RuntimeError(f"Empty Jolpica {endpoint} page for {year}")
         result_count += page_count
         if result_count >= int(metadata.get("total", result_count)):
             return items
@@ -402,6 +443,10 @@ def fetch_jolpica_season(year: int) -> dict:
         int(race["round"]): race.get("SprintResults", [])
         for race in sprints
     }
+    results_by_round = {
+        int(race["round"]): race["Results"]
+        for race in fetch_jolpica_collection(year, "results.json", "Results")
+    } if year < 2000 else None
 
     drivers: dict[str, dict] = {}
     constructor_totals: dict[str, float] = {}
@@ -413,12 +458,12 @@ def fetch_jolpica_season(year: int) -> dict:
 
     for race in races:
         rnd = int(race["round"])
-        race_results = fetch_jolpica_collection(
-            year, f"{rnd}/results.json", "Results"
-        )
+        race_results = (results_by_round.get(rnd, []) if results_by_round is not None
+                        else fetch_jolpica_collection(year, f"{rnd}/results.json", "Results"))
         if not race_results:
             raise RuntimeError(f"Jolpica returned no {year} round {rnd} results")
-        race_results = race_results[0].get("Results", [])
+        if results_by_round is None:
+            race_results = race_results[0].get("Results", [])
         completed_rounds.append(rnd)
 
         def credit_results(results: list[dict], is_sprint: bool = False):
@@ -446,10 +491,14 @@ def fetch_jolpica_season(year: int) -> dict:
                     driver["sprint_points"][str(rnd)] = points
                 else:
                     driver["race_points"][str(rnd)] = points
-                    driver.setdefault("race_position", {})[str(rnd)] = int(result["position"])
+                    driver["race_position"][str(rnd)] = HISTORICAL_RACE_POSITION_OVERRIDES.get(
+                        (year, rnd), {}
+                    ).get(driver_info["driverId"], int(result["position"]))
                     status = result.get("status", "")
                     if status == "Did not start":
                         driver["race_status"][str(rnd)] = "DNS"
+                    elif status in ("Did not qualify", "Did not prequalify"):
+                        driver["race_status"][str(rnd)] = "DNQ"
                     elif status not in ("Finished", "Lapped") and not status.startswith("+"):
                         driver["race_status"][str(rnd)] = "DNF"
                     else:
@@ -485,6 +534,8 @@ def fetch_jolpica_season(year: int) -> dict:
         ),
         key=lambda team: -team["total"],
     )
+    if year < 2000:
+        apply_historical_standings(year, drivers, constructors)
     return {
         "year": year,
         "fetched_at": datetime.now(timezone.utc).isoformat(),
@@ -494,9 +545,57 @@ def fetch_jolpica_season(year: int) -> dict:
         "completed_rounds": completed_rounds,
         "completed_sprint_rounds": completed_sprint_rounds,
         "cancelled_rounds": [],
-        "drivers": sorted(drivers.values(), key=lambda driver: -driver["total"]),
+        "drivers": sorted(
+            drivers.values(),
+            key=lambda driver: (
+                driver.get("championship_status") == "DSQ",
+                driver.get("championship_position", float("inf")), -driver["total"]
+            ),
+        ),
         "constructors": constructors,
     }
+
+
+def apply_historical_standings(year: int, drivers: dict[str, dict],
+                               constructors: list[dict]) -> None:
+    """Keep counted championship points separate from the per-race scores."""
+    for endpoint, collection, entity, entries in (
+        ("driverStandings", "DriverStandings", "Driver", list(drivers.values())),
+        ("constructorStandings", "ConstructorStandings", "Constructor", constructors),
+    ):
+        payload = _get(f"{JOLPICA}/{year}/{endpoint}.json", {"limit": 100},
+                       retries=5, timeout=20)
+        time.sleep(1.1)
+        if not payload:
+            raise RuntimeError(f"Jolpica returned no {endpoint} for {year}")
+        metadata = payload["MRData"]
+        lists = metadata["StandingsTable"].get("StandingsLists", [])
+        standings = lists[0].get(collection, []) if lists else []
+        if not standings or len(standings) != int(metadata["total"]):
+            raise RuntimeError(f"Incomplete Jolpica {endpoint} for {year}")
+        by_id = {}
+        for standing in standings:
+            info = standing[entity]
+            key = ((info.get("code") or info["driverId"]).lower()
+                   if entity == "Driver" else constructor_id(info["name"]))
+            by_id[key] = standing
+        for entry in entries:
+            standing = by_id.get(entry["id"])
+            if standing is None:
+                raise RuntimeError(f"No {year} {endpoint} entry for {entry['id']}")
+            entry["total"] = float(standing["points"])
+            if entity == "Constructor":
+                entry["total"] = HISTORICAL_CONSTRUCTOR_TOTAL_OVERRIDES.get(
+                    (year, entry["id"]), entry["total"]
+                )
+            if standing.get("position"):
+                entry["championship_position"] = int(standing["position"])
+            if standing.get("positionText") == "D":
+                entry["championship_status"] = "DSQ"
+        if entity == "Constructor":
+            constructors.sort(key=lambda team: (
+                team.get("championship_position", float("inf")), -team["total"]
+            ))
 
 
 # ── cross-check against Jolpica ──────────────────────────────────────────────────

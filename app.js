@@ -2,6 +2,8 @@ const CURRENT_YEAR = 2026;
 const HISTORY_YEARS = [
   2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014,
   2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000,
+  1999, 1998, 1997, 1996, 1995, 1994, 1993, 1992, 1991, 1990,
+  1989, 1988, 1987, 1986, 1985, 1984, 1983, 1982, 1981, 1980,
 ];
 const SEASON_YEARS = [CURRENT_YEAR, ...HISTORY_YEARS];
 
@@ -110,6 +112,18 @@ function sprintDate(raceDateStr) {
 
 // ── data processing ──────────────────────────────────────────────────────────
 
+function championshipOrder(a, b) {
+  if (a.championship_position != null || b.championship_position != null) {
+    return (a.championship_position ?? Infinity) - (b.championship_position ?? Infinity)
+      || b.total - a.total;
+  }
+  if (a.championship_status !== b.championship_status) {
+    if (a.championship_status === 'DSQ') return 1;
+    if (b.championship_status === 'DSQ') return -1;
+  }
+  return b.total - a.total;
+}
+
 function processData(raw) {
   const historical = raw.year < CURRENT_YEAR;
   const completedR  = new Set(raw.completed_rounds);
@@ -124,7 +138,7 @@ function processData(raw) {
   const drivers = raw.drivers.map(d => historical
     ? { ...d }
     : { ...d, possible: d.total + maxPerDriver }
-  ).sort((a, b) => b.total - a.total);
+  ).sort(championshipOrder);
 
   // Constructor points are pre-attributed per round. Each team has two future
   // seats, so a substitute driver must not create a third seat in the max.
@@ -134,7 +148,9 @@ function processData(raw) {
     return consMap[k];
   };
   for (const c of raw.constructors) {
-    ensure(teamKey(c.id), c.name).total += c.total;
+    const constructor = ensure(teamKey(c.id), c.name);
+    constructor.total += c.total;
+    if (c.championship_position != null) constructor.championship_position = c.championship_position;
   }
   for (const d of drivers) {
     ensure(teamKey(d.constructor_id), d.constructor_name);
@@ -144,7 +160,7 @@ function processData(raw) {
       c.possible = c.total + maxPerDriver * 2;
     }
   }
-  const constructors = Object.values(consMap).sort((a, b) => b.total - a.total);
+  const constructors = Object.values(consMap).sort(championshipOrder);
 
   return {
     historical,
@@ -255,6 +271,8 @@ function buildDriverTable(data) {
           td.className = 'dnf'; td.textContent = 'DNF';
         } else if (status === 'DNS') {
           td.className = 'dns'; td.textContent = 'DNS';
+        } else if (status === 'DNQ') {
+          td.className = 'dnq'; td.textContent = 'DNQ';
         }
       } else if (cancelledR.has(race.round)) {
         td.className = 'cancelled'; td.textContent = 'cnc';
@@ -263,7 +281,17 @@ function buildDriverTable(data) {
       }
     }
 
-    cell('totcell', d.total);
+    const total = cell('totcell', d.total);
+    if (d.championship_status === 'DSQ') {
+      total.textContent = `${d.total} (DSQ)`;
+      total.title = 'Excluded from the drivers championship; race points retained.';
+    } else if (historical && d.championship_position != null) {
+      const earned = Object.values(d.race_points).reduce((sum, pts) => sum + pts, 0)
+        + Object.values(d.sprint_points).reduce((sum, pts) => sum + pts, 0);
+      if (earned !== d.total) {
+        total.title = `${d.total} counted championship points; ${earned} points across all races.`;
+      }
+    }
     if (!historical) {
       cell('poscell', d.possible);
 
@@ -328,6 +356,7 @@ async function init() {
     document.getElementById('teamsSources').replaceChildren();
     document.getElementById('teamsSummary').textContent = '';
   } else {
+    document.getElementById('seasonNote').hidden = year >= 2000;
     document.getElementById('driversTbl').innerHTML = '';
     document.getElementById('consList').innerHTML   = '';
   }

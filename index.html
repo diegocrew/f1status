@@ -311,6 +311,8 @@ tbody tr.zero-row .nc { color: #AAAAAA !important; font-weight: 400; }
 /* status cells — transparent, distinguished by a small colored label only */
 .dnf      { background: transparent !important; color: #D85C5C !important; font-size: 9px; font-weight: 700; letter-spacing: 0.06em; }
 .dns      { background: transparent !important; color: #B0AAA2 !important; font-size: 9px; font-weight: 700; letter-spacing: 0.06em; }
+.dnq      { background: transparent !important; color: #9B8055 !important; font-size: 9px; font-weight: 700; letter-spacing: 0.06em; }
+.season-note { color: #666; font-size: 11px; line-height: 1.5; margin-bottom: 8px; }
 .formcell { font-weight: 700; font-size: 13px; min-width: 48px; }
 .projcell { background: #EDE9FF !important; font-weight: 700; color: #5533CC; min-width: 52px; font-size: 13px; }
 
@@ -379,6 +381,7 @@ tbody tr.zero-row .nc { color: #AAAAAA !important; font-weight: 400; }
 
 <div class="page-body" id="seasonPanel">
   <div class="drivers-panel">
+    <p class="season-note" id="seasonNote" hidden>Totals and ordering follow the final championship standings, including dropped scores and exclusions. Race cells show the points awarded in each race. DNQ includes non-qualification and pre-qualification failures.</p>
     <table id="driversTbl"></table>
   </div>
 
@@ -397,20 +400,20 @@ tbody tr.zero-row .nc { color: #AAAAAA !important; font-weight: 400; }
   </div>
   <p class="teams-intro">Follow each team's names and engine suppliers across the years. Scroll sideways for later seasons; select a lineage for its history.</p>
   <div class="teams-legend" aria-label="Timeline legend">
-    <span class="team-badge team-new">New entry</span>
+    <span class="team-badge team-new">New entry / return</span>
     <span class="team-badge team-renamed">Name change</span>
     <span class="team-badge team-engine">Engine change</span>
     <span class="team-badge team-ended">Final season</span>
   </div>
   <div class="teams-scroll" tabindex="0" role="region" aria-label="Team names and engines by season">
-    <table class="teams-table" id="teamsTbl" aria-label="Formula 1 team history, 2000 to 2026"></table>
+    <table class="teams-table" id="teamsTbl" aria-label="Formula 1 team history"></table>
   </div>
   <div class="teams-notes">
     <h2>Lineage notes</h2>
-    <p>Rows follow team operations, not just legal entries or reused brands. Name changes include sponsor changes. A final season may include a mid-season withdrawal; a dash means the team was not active that year.</p>
+    <p>Rows follow team operations, not just legal entries or reused brands. Name changes include sponsor changes. Years include attempted entries, even if a team never qualified. A final season may include a mid-season withdrawal; a dash means the team was not active that year. Notes explain mergers and breaks in participation.</p>
     <div id="teamsNotes"></div>
     <h3>About the data</h3>
-    <p>Curated from the supplied team/engine tables, with lineage clarifications and updated 2026 names and suppliers. Names are representative season labels, not a race-by-race record of every sponsor variant. Brackets identify rebadged engine suppliers.</p>
+    <p>Curated from the supplied team/engine tables and historical season records, with lineage clarifications and updated 2026 names and suppliers. Names are representative season labels, not a race-by-race record of every sponsor variant. Brackets identify rebadged engine suppliers; a slash between engines indicates multiple suppliers in that season.</p>
     <ul id="teamsSources"></ul>
   </div>
 </section>
