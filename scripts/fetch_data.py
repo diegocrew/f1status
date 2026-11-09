@@ -362,6 +362,8 @@ def fetch_season(year: int) -> dict:
         if rnd not in completed_sprint_rounds and rnd not in cancelled_rounds
     )
     max_per_driver = future_races * 25 + future_sprints * 8
+    # A team's best finish is 1-2: 25+18 per race, 8+7 per sprint
+    max_per_team = future_races * (25 + 18) + future_sprints * (8 + 7)
 
     for d in drivers.values():
         d["total"] = sum(d["race_points"].values()) + sum(d["sprint_points"].values())
@@ -374,7 +376,7 @@ def fetch_season(year: int) -> dict:
                 "id": cid,
                 "name": constructor_names[cid],
                 "total": total,
-                **({"possible": total + max_per_driver * 2} if year >= now.year else {}),
+                **({"possible": total + max_per_team} if year >= now.year else {}),
             }
             for cid, total in constructor_totals.items()
         ),

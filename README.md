@@ -126,8 +126,8 @@ Results come from OpenF1 and are cross-checked against Jolpica/Ergast. Note:
 - DNF/DNS come straight from OpenF1's `dnf`/`dns` flags; `dsq` is treated as a non-finish
 - Blank/finished-without-points cells mean the driver completed the race outside the points
 - 1980–1999 constructor totals use final standings to preserve penalties and scoring eligibility;
-  later seasons sum team points by round. Theoretical maximum assumes two future
-  seats per team, so substitute appearances do not add a third seat.
+  later seasons sum team points by round.   Theoretical maximum assumes a 1-2 finish
+    for each team (25+18 per race, 8+7 per sprint), so substitute appearances do not add a third seat.
 - A cancelled race is a past Grand Prix that has no race classification in OpenF1
 
 ## Technical Details

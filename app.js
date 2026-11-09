@@ -134,6 +134,8 @@ function processData(raw) {
   const futureRaces   = raw.races.filter(r => !r.completed && !r.cancelled).length;
   const futureSprints = raw.sprint_rounds.filter(r => !completedSR.has(r) && !cancelledR.has(r)).length;
   const maxPerDriver  = futureRaces * 25 + futureSprints * 8;
+  // A team's best finish is 1-2: 25+18 per race, 8+7 per sprint
+  const maxPerTeam    = futureRaces * (25 + 18) + futureSprints * (8 + 7);
 
   const drivers = raw.drivers.map(d => historical
     ? { ...d }
@@ -157,7 +159,7 @@ function processData(raw) {
   }
   if (!historical) {
     for (const c of Object.values(consMap)) {
-      c.possible = c.total + maxPerDriver * 2;
+      c.possible = c.total + maxPerTeam;
     }
   }
   const constructors = Object.values(consMap).sort(championshipOrder);
