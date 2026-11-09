@@ -1,6 +1,6 @@
 {
   "year": 2026,
-  "fetched_at": "2026-11-09T03:13:52.892655+00:00",
+  "fetched_at": "2026-11-09T16:14:01.310467+00:00",
   "source": "openf1",
   "races": [
     {
@@ -1663,67 +1663,67 @@
       "id": "mercedes",
       "name": "Mercedes",
       "total": 652.0,
-      "possible": 802.0
+      "possible": 781.0
     },
     {
       "id": "ferrari",
       "name": "Ferrari",
       "total": 510.0,
-      "possible": 660.0
+      "possible": 639.0
     },
     {
       "id": "red_bull_racing",
       "name": "Red Bull Racing",
       "total": 415.0,
-      "possible": 565.0
+      "possible": 544.0
     },
     {
       "id": "mclaren",
       "name": "McLaren",
       "total": 398.0,
-      "possible": 548.0
+      "possible": 527.0
     },
     {
       "id": "racing_bulls",
       "name": "Racing Bulls",
       "total": 114.0,
-      "possible": 264.0
+      "possible": 243.0
     },
     {
       "id": "alpine",
       "name": "Alpine",
       "total": 69.0,
-      "possible": 219.0
+      "possible": 198.0
     },
     {
       "id": "haas_f1_team",
       "name": "Haas F1 Team",
       "total": 31.0,
-      "possible": 181.0
+      "possible": 160.0
     },
     {
       "id": "audi",
       "name": "Audi",
       "total": 28.0,
-      "possible": 178.0
+      "possible": 157.0
     },
     {
       "id": "williams",
       "name": "Williams",
       "total": 12.0,
-      "possible": 162.0
+      "possible": 141.0
     },
     {
       "id": "aston_martin",
       "name": "Aston Martin",
       "total": 7.0,
-      "possible": 157.0
+      "possible": 136.0
     },
     {
       "id": "cadillac",
       "name": "Cadillac",
       "total": 0.0,
-      "possible": 150.0
+      "possible": 129.0
     }
   ]
 }
